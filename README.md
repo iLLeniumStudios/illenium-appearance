@@ -1,10 +1,5 @@
 # fivem-appearance
 
-## Credits
-- Original Script: https://github.com/pedr0fontoura/fivem-appearance
-- Tattoo's Support: https://github.com/franfdezmorales/fivem-appearance
-- Last Maintained Fork for QB: https://github.com/mirrox1337/aj-fivem-appearance
-
 ## Requirements
 
 - [qb-core](https://github.com/qbcore-framework/qb-core) (Latest)
@@ -116,3 +111,8 @@ RegisterNUICallback('cDataPed', function(data)
     end
 end)
 ```
+
+## Credits
+- Original Script: https://github.com/pedr0fontoura/fivem-appearance
+- Tattoo's Support: https://github.com/franfdezmorales/fivem-appearance
+- Last Maintained Fork for QB: https://github.com/mirrox1337/aj-fivem-appearance
