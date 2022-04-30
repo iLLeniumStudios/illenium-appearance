@@ -519,7 +519,7 @@ CreateThread(function()
 
     local clothingCombo = ComboZone:Create(zones, {
         name = "clothingCombo",
-        debugPoly = true
+        debugPoly = false
     })
     clothingCombo:onPlayerInOut(function(isPointInside, point, zone)
         if isPointInside then
@@ -552,7 +552,7 @@ CreateThread(function()
 
     local clothingRoomsCombo = ComboZone:Create(roomZones, {
         name = "clothingRoomsCombo",
-        debugPoly = true
+        debugPoly = false
     })
     clothingRoomsCombo:onPlayerInOut(function(isPointInside, point, zone)
         if isPointInside then
