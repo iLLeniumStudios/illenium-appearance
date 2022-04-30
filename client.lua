@@ -575,17 +575,15 @@ CreateThread(function()
             if string.find(zoneName, 'ClothingRooms_') then
                 if IsControlJustReleased(0, 38) then
                     local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zoneName, 15))]
-                    local gradeLevel = 0
-                    if clothingRoom.isGang then
-                        gradeLevel = PlayerData.gang.grade.level
-                    else
-                        gradeLevel = PlayerData.job.grade.level
-                    end
+                    local gradeLevel = clothingRoom.isGang and PlayerData.gang.grade.level or PlayerData.job.grade.level
                     local gender = "male"
                     if PlayerData.charinfo.gender == 1 then
                         gender = "female"
                     end
-                    TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', Config.Outfits[PlayerJob.name][gender])
+                    if gradeLevel > #Config.Outfits[PlayerJob.name][gender] then
+                        gradeLevel = #Config.Outfits[PlayerJob.name][gender]
+                    end
+                    TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', Config.Outfits[PlayerJob.name][gender][gradeLevel])
                 end
             elseif zoneName == 'clothing' then
                 if IsControlJustReleased(0, 38) then

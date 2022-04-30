@@ -15,7 +15,7 @@
 
 - Everything from standalone fivem-appearance
 - Player outfits
-- Clothing Rooms
+- Rank based Clothing Rooms for Jobs / Gangs
 - Tattoo's Support
 - Hair Textures
 - Polyzone Support
