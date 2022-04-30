@@ -35,7 +35,6 @@ https://streamable.com/qev2h7
 
 - Delete / stop `qb-clothing`
 - Delete / stop any tattoo shop resources e.g., `qb-tattooshop`
-- Remove `qb-clothing` dependency from `qb-apartments` and `qb-houses`
 - Put `setr fivem-appearance:locale "en"` in your server.cfg
 - Put `ensure fivem-appearance` in your server.cfg
 - Follow the code below to replace the events
