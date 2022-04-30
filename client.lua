@@ -23,7 +23,6 @@ end
 
 AddEventHandler('onResourceStart', function(resource)
     if resource == GetCurrentResourceName() then
-        Wait(200)
         PlayerData = QBCore.Functions.GetPlayerData()
         PlayerJob = PlayerData.job
         PlayerGang = PlayerData.gang
@@ -512,13 +511,15 @@ CreateThread(function()
     for k, v in pairs(Config.Stores) do
         zones[#zones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
             name = v.shopType,
+            minZ = v.coords.z - 1.5,
+            maxZ = v.coords.z + 1,
             debugPoly = false
         })
     end
 
     local clothingCombo = ComboZone:Create(zones, {
         name = "clothingCombo",
-        debugPoly = false
+        debugPoly = true
     })
     clothingCombo:onPlayerInOut(function(isPointInside, point, zone)
         if isPointInside then
@@ -543,13 +544,15 @@ CreateThread(function()
     for k, v in pairs(Config.ClothingRooms) do
         roomZones[#roomZones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
             name = 'ClothingRooms_' .. k,
+            minZ = v.coords.z - 1.5,
+            maxZ = v.coords.z + 1,
             debugPoly = false
         })
     end
 
     local clothingRoomsCombo = ComboZone:Create(roomZones, {
         name = "clothingRoomsCombo",
-        debugPoly = false
+        debugPoly = true
     })
     clothingRoomsCombo:onPlayerInOut(function(isPointInside, point, zone)
         if isPointInside then
