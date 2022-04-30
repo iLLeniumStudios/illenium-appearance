@@ -4,7 +4,6 @@ local zoneName = nil
 local inZone = false
 
 local allMyOutfits = {}
-local isPurchaseSuccessful = false
 local PlayerData = {}
 local PlayerJob = {}
 local PlayerGang = {}
