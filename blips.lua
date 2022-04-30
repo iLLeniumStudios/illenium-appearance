@@ -27,6 +27,15 @@ CreateThread(function()
             BeginTextCommandSetBlipName("STRING")
             AddTextComponentString("Tattoo Shop")
             EndTextCommandSetBlipName(tattooShop)
+        elseif Config.Stores[k].shopType == "surgeon" then
+            local surgeonShop = AddBlipForCoord(Config.Stores[k].coords)
+            SetBlipSprite(surgeonShop, 102)
+            SetBlipColour(surgeonShop, 4)
+            SetBlipScale  (surgeonShop, 0.7)
+            SetBlipAsShortRange(surgeonShop, true)
+            BeginTextCommandSetBlipName("STRING")
+            AddTextComponentString("Plastic Surgeon")
+            EndTextCommandSetBlipName(surgeonShop)
         end
     end
 end)
