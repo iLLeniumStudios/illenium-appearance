@@ -22,6 +22,8 @@
 - Ped Menu command (/pedmenu) (Configurable)
 - Reload Skin command (/reloadskin)
 - Improved code quality
+- No additional SQL needed. Uses the default `qb-clothing` schema
+- Plastic Surgeons
 
 ## New Preview (with Tattoos)
 

@@ -36,6 +36,7 @@ Config.Stores = {
     [26] = {shopType = 'tattoo', coords = vector3(-3170.0, 1075.0, 20.8), width = 2, length = 2},
     [27] = {shopType = 'tattoo', coords = vector3(1864.6, 3747.7, 33.0), width = 2, length = 2},
     [28] = {shopType = 'tattoo', coords = vector3(-293.7, 6200.0, 31.4), width = 2, length = 2},
+    [29] = {shopType = 'surgeon', coords = vector3(299.68, -572.99, 43.26), width = 2, length = 2},
 }
 
 Config.ClothingRooms = {

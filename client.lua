@@ -161,6 +161,18 @@ local function OpenTattooShop()
     })
 end
 
+local function OpenSurgeonShop()
+    OpenShop({
+        ped = false,
+        headBlend = true,
+        faceFeatures = true,
+        headOverlays = false,
+        components = false,
+        props = false,
+        tattoos = false
+    })
+end
+
 RegisterNetEvent('fivem-appearance:client:openClothingShop', OpenClothingShop)
 
 RegisterNetEvent('fivem-appearance:client:saveOutfit', function()
@@ -518,6 +530,8 @@ CreateThread(function()
                 exports['qb-core']:DrawText('[E] Barber')
             elseif zoneName == 'tattoo' then
                 exports['qb-core']:DrawText('[E] Tattoo Shop')
+            elseif zoneName == 'surgeon' then
+                exports['qb-core']:DrawText('[E] Plastic Surgeon')
             end
         else
             inZone = false
@@ -584,6 +598,10 @@ CreateThread(function()
             elseif zoneName == 'tattoo' then
                 if IsControlJustReleased(0, 38) then
                     OpenTattooShop()
+                end
+            elseif zoneName == 'surgeon' then
+                if IsControlJustReleased(0, 38) then
+                    OpenSurgeonShop()
                 end
             end
         else
