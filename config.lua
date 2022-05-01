@@ -1,5 +1,8 @@
 Config = {}
 
+Config.MigrateOldFivemAppearanceData = false
+Config.MigrateQBClothingData = false
+
 Config.Debug = false
 
 Config.Money = 100

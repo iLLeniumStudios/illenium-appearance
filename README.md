@@ -22,6 +22,7 @@
 - No additional SQL needed. Uses the default `qb-clothing` schema
 - Plastic Surgeons
 - qb-target Support
+- Skin migration support (qb-clothing / old fivem-appearance)
 
 ## New Preview (with Tattoos)
 
@@ -29,16 +30,45 @@ https://streamable.com/qev2h7
 
 ## Setup
 
-**NOTE:** This might NOT pick up existing outfits / skins. It is recommended to use this on a new server. You can adopt your old outfits / skins as well if you're experienced enough. I will not be providing help on how to do that.
-
 - Delete / stop `qb-clothing`
 - Delete / stop any tattoo shop resources e.g., `qb-tattooshop`
 - Put `setr fivem-appearance:locale "en"` in your server.cfg
 - Put `ensure fivem-appearance` in your server.cfg
 - Follow the code below to replace the events
 
-## Replace the `qb-multicharacter:server:getSkin` callback with:
-#### Line: 151 qb-multicharacter/server/main.lua
+**NOTE:** ~~This might NOT pick up existing outfits / skins. It is recommended to use this on a new server.~~ You can now use the migration guide below to migrate the skins from other skin resources
+
+## Migrating skins from other clothing resources
+
+### qb-clothing
+
+- Run the following command while in-game
+
+```lua
+/migrateskins qb-clothing
+```
+
+- Wait until all the skins are migrated to the new format
+- Restart the server
+
+### fivem-appearance (aj, mirrox1337 etc)
+
+Migration demo: https://streamable.com/ydxoqb
+
+- Run the following command while in-game
+
+```lua
+/migrateskins fivem-appearance
+```
+
+- Wait until all the skins are migrated to the new format
+- Restart the server
+
+
+## qb-multicharacter support
+
+- Replace the `qb-multicharacter:server:getSkin` callback on Line: 151 of qb-multicharacter/server/main.lua with:
+
 ```lua
 QBCore.Functions.CreateCallback("qb-multicharacter:server:getSkin", function(source, cb, cid)
     local result = MySQL.Sync.fetchAll('SELECT * FROM playerskins WHERE citizenid = ? AND active = ?', {cid, 1})
@@ -49,8 +79,9 @@ QBCore.Functions.CreateCallback("qb-multicharacter:server:getSkin", function(sou
     end
 end)
 ```
-## Replace the `RegisterNUICallback('cDataPed', function(data)'` callback  with:
-#### Line: 109 qb-multicharacter/client/main.lua
+
+- Replace the `RegisterNUICallback('cDataPed', function(data)'` callback on Line: 109 of qb-multicharacter/client/main.lua with:
+
 ```lua
 RegisterNUICallback('cDataPed', function(data)
     local cData = data.cData

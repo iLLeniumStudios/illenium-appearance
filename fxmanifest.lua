@@ -14,11 +14,13 @@ client_scripts {
   '@PolyZone/client.lua',
 	'@PolyZone/BoxZone.lua',
 	'@PolyZone/ComboZone.lua',
+  'migrate/client.lua'
 }
 
 server_scripts {
   'server.lua',
 	'@oxmysql/lib/MySQL.lua',
+  'migrate/server.lua'
 }
 
 shared_scripts {
