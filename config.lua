@@ -12,8 +12,39 @@ Config.UseTarget = GetConvar('UseTarget', 'false') == 'true'
 Config.EnablePedMenu = true
 Config.PedMenuGroup = 'admin'
 
+Config.Blips = {
+    ['clothing'] = {
+        Show = true,
+        Sprite = 366,
+        Color = 47,
+        Scale = 0.7,
+        Name = "Clothing Store",
+    },
+    ['barber'] = {
+        Show = true,
+        Sprite = 71,
+        Color = 0,
+        Scale = 0.7,
+        Name = "Barber",
+    },
+    ['tattoo'] = {
+        Show = true,
+        Sprite = 75,
+        Color = 4,
+        Scale = 0.7,
+        Name = "Tattoo Shop",
+    },
+    ['surgeon'] = {
+        Show = true,
+        Sprite = 102,
+        Color = 4,
+        Scale = 0.7,
+        Name = "Plastic Surgeon",
+    }
+}
+
 Config.Stores = {
-    [1] = {shopType = 'clothing', coords = vector3(1693.2, 4828.11, 42.07), width = 4, length = 4},
+    [1] = {shopType = 'clothing', coords = vector3(1693.2, 4828.11, 42.07), width = 4, length = 4, showBlip = true}, -- showBlip overrides the blip visibilty configured above for the group
     [2] = {shopType = 'clothing', coords = vector3(-705.5, -149.22, 37.42), width = 4, length = 4},
     [3] = {shopType = 'clothing', coords = vector3(-1192.61, -768.4, 17.32), width = 4, length = 4},
     [4] = {shopType = 'clothing', coords = vector3(425.91, -801.03, 29.49), width = 4, length = 4},
