@@ -374,16 +374,22 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
 end)
 
 function getPlayerJobOutfits(clothingRoom)
+    local outfits = {}
     local gender = "male"
     if PlayerData.charinfo.gender == 1 then
         gender = "female"
     end
     local gradeLevel = clothingRoom.isGang and PlayerData.gang.grade.level or PlayerData.job.grade.level
-    if gradeLevel > #Config.Outfits[PlayerJob.name][gender] then
-        gradeLevel = #Config.Outfits[PlayerJob.name][gender]
+
+    for i = 0, #Config.Outfits[PlayerJob.name][gender], 1 do
+        for k,v in pairs(Config.Outfits[PlayerJob.name][gender][i].grades) do
+            if v == gradeLevel then
+                outfits[#outfits+1] = Config.Outfits[PlayerJob.name][gender][i]
+            end
+        end
     end
 
-    return Config.Outfits[PlayerJob.name][gender][gradeLevel]
+    return outfits
 end
 
 function SetupZones()
@@ -486,7 +492,7 @@ function SetupTargets()
         end
         exports['qb-target']:AddBoxZone(v.shopType .. k, v.coords, v.length, v.width, {
             name = v.shopType .. k,
-            debugPoly = true,
+            debugPoly = false,
             minZ = v.coords.z-1,
             maxZ = v.coords.z+1,
         }, {
@@ -504,8 +510,8 @@ function SetupTargets()
 
     for k, v in pairs(Config.ClothingRooms) do
         local action = nil
-        local outfits = getPlayerJobOutfits(v)
         action = function(entity)
+            local outfits = getPlayerJobOutfits(v)
             TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', outfits)
         end
 
