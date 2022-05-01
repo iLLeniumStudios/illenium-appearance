@@ -8,9 +8,9 @@ version '1.2.2'
 
 client_scripts {
   'game/build/client.js',
-  'command.lua',
   'blips.lua',
   'client.lua',
+  'backward-events.lua',
   '@PolyZone/client.lua',
 	'@PolyZone/BoxZone.lua',
 	'@PolyZone/ComboZone.lua',
@@ -34,5 +34,3 @@ files {
 }
 
 ui_page 'web/build/index.html'
-
-provide 'qb-clothing'
