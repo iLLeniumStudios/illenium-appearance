@@ -21,6 +21,11 @@ RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerJob = JobInfo
 end)
 
+RegisterNetEvent('QBCore:Client:OnGangUpdate', function(GangInfo)
+    PlayerData.gang = GangInfo
+    PlayerGang = GangInfo
+end)
+
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerJob = PlayerData.job
@@ -379,12 +384,13 @@ function getPlayerJobOutfits(clothingRoom)
     if PlayerData.charinfo.gender == 1 then
         gender = "female"
     end
-    local gradeLevel = clothingRoom.isGang and PlayerData.gang.grade.level or PlayerData.job.grade.level
+    local gradeLevel = clothingRoom.isGang and PlayerGang.grade.level or PlayerJob.grade.level
+    local jobName = clothingRoom.isGang and PlayerGang.name or PlayerJob.name
 
-    for i = 0, #Config.Outfits[PlayerJob.name][gender], 1 do
-        for k,v in pairs(Config.Outfits[PlayerJob.name][gender][i].grades) do
+    for i = 0, #Config.Outfits[jobName][gender], 1 do
+        for k,v in pairs(Config.Outfits[jobName][gender][i].grades) do
             if v == gradeLevel then
-                outfits[#outfits+1] = Config.Outfits[PlayerJob.name][gender][i]
+                outfits[#outfits+1] = Config.Outfits[jobName][gender][i]
             end
         end
     end
@@ -443,7 +449,9 @@ function SetupZones()
     clothingRoomsCombo:onPlayerInOut(function(isPointInside, point, zone)
         if isPointInside then
             zoneName = zone.name
-            if (PlayerData.job.name == Config.ClothingRooms[tonumber(string.sub(zone.name, 15))].requiredJob) then
+            local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zone.name, 15))]
+            local jobName = clothingRoom.isGang and PlayerGang.name or PlayerJob.name
+            if (jobName == clothingRoom.requiredJob) then
                 inZone = true
                 exports['qb-core']:DrawText('[E] Clothing Room')
             end
