@@ -506,7 +506,20 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
     end)
 end)
 
-CreateThread(function()
+function getPlayerJobOutfits(clothingRoom)
+    local gender = "male"
+    if PlayerData.charinfo.gender == 1 then
+        gender = "female"
+    end
+    local gradeLevel = clothingRoom.isGang and PlayerData.gang.grade.level or PlayerData.job.grade.level
+    if gradeLevel > #Config.Outfits[PlayerJob.name][gender] then
+        gradeLevel = #Config.Outfits[PlayerJob.name][gender]
+    end
+
+    return Config.Outfits[PlayerJob.name][gender][gradeLevel]
+end
+
+function SetupZones()
     local zones = {}
     for k, v in pairs(Config.Stores) do
         zones[#zones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
@@ -566,10 +579,90 @@ CreateThread(function()
             exports['qb-core']:HideText()
         end
     end)
-end)
+end
 
--- Clothing Thread
-CreateThread(function()
+function SetupTargets()
+    for k, v in pairs(Config.Stores) do
+        local opts = {}
+        if v.shopType == 'barber' then
+            opts = {
+                action = function(entity)
+                    OpenBarberShop()
+                end,
+                icon = "fas fa-scissors",
+                label = "Barber",
+            }
+        elseif v.shopType == 'clothing' then
+            opts = {
+                action = function(entity)
+                    TriggerEvent("fivem-appearance:client:openClothingShopMenu")
+                end,
+                icon = "fas fa-tshirt",
+                label = "Clothing Store",
+            }
+        elseif v.shopType == 'tattoo' then
+            opts = {
+                action = function(entity)
+                    OpenTattooShop()
+                end,
+                icon = "fas fa-pen",
+                label = "Tattoos",
+            }
+        elseif v.shopType == 'surgeon' then
+            opts = {
+                action = function(entity)
+                    OpenSurgeonShop()
+                end,
+                icon = "fas fa-scalpel",
+                label = "Plastic Surgeon"
+            }
+        end
+        exports['qb-target']:AddBoxZone(v.shopType .. k, v.coords, v.length, v.width, {
+            name = v.shopType .. k,
+            debugPoly = true,
+            minZ = v.coords.z-1,
+            maxZ = v.coords.z+1,
+        }, {
+            options = {
+                {
+                    type = "client",
+                    action = opts.action,
+                    icon = opts.icon,
+                    label = opts.label,
+                },
+            },
+            distance = 3
+        })
+    end
+
+    for k, v in pairs(Config.ClothingRooms) do
+        local action = nil
+        local outfits = getPlayerJobOutfits(v)
+        action = function(entity)
+            TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', outfits)
+        end
+
+        exports['qb-target']:AddBoxZone('clothing_' .. v.requiredJob .. k, v.coords, v.length, v.width, {
+            name = 'clothing_' .. v.requiredJob .. k,
+            debugPoly = false,
+            minZ = v.coords.z - 2,
+            maxZ = v.coords.z + 2,
+        }, {
+            options = {
+                {
+                    type = "client",
+                    action = action,
+                    icon = "fas fa-sign-in-alt",
+                    label = "Clothing",
+                    job = v.requiredJob
+                },
+            },
+            distance = 3
+        })
+    end
+end
+
+function ZonesLoop()
     Wait(1000)
     while true do
         local sleep = 1000
@@ -578,15 +671,8 @@ CreateThread(function()
             if string.find(zoneName, 'ClothingRooms_') then
                 if IsControlJustReleased(0, 38) then
                     local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zoneName, 15))]
-                    local gradeLevel = clothingRoom.isGang and PlayerData.gang.grade.level or PlayerData.job.grade.level
-                    local gender = "male"
-                    if PlayerData.charinfo.gender == 1 then
-                        gender = "female"
-                    end
-                    if gradeLevel > #Config.Outfits[PlayerJob.name][gender] then
-                        gradeLevel = #Config.Outfits[PlayerJob.name][gender]
-                    end
-                    TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', Config.Outfits[PlayerJob.name][gender][gradeLevel])
+                    local outfits = getPlayerJobOutfits(clothingRoom)
+                    TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', outfits)
                 end
             elseif zoneName == 'clothing' then
                 if IsControlJustReleased(0, 38) then
@@ -609,5 +695,14 @@ CreateThread(function()
             sleep = 1000
         end
         Wait(sleep)
+    end
+end
+
+CreateThread(function()
+    if Config.UseTarget then
+        SetupTargets()
+    else
+        SetupZones()
+        ZonesLoop()
     end
 end)

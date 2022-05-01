@@ -5,6 +5,8 @@
 - [qb-core](https://github.com/qbcore-framework/qb-core) (Latest)
 - [qb-menu](https://github.com/qbcore-framework/qb-menu)
 - [qb-input](https://github.com/qbcore-framework/qb-input)
+- [qb-target](https://github.com/BerkieBb/qb-target) (Optional)
+
 
 ## Features
 
@@ -19,6 +21,7 @@
 - Improved code quality
 - No additional SQL needed. Uses the default `qb-clothing` schema
 - Plastic Surgeons
+- qb-target Support
 
 ## New Preview (with Tattoos)
 
