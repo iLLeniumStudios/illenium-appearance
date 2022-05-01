@@ -19,8 +19,8 @@ client_scripts {
 
 server_scripts {
   'server.lua',
-	'@oxmysql/lib/MySQL.lua',
-  'migrate/server.lua'
+  '@oxmysql/lib/MySQL.lua',
+  'migrate/server.lua',
 }
 
 shared_scripts {
@@ -36,3 +36,5 @@ files {
 }
 
 ui_page 'web/build/index.html'
+
+provide 'qb-clothing'
