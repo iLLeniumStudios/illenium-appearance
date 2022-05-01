@@ -1,5 +1,7 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
+local outfitCache = {}
+
 local function getMoneyForShop(shopType)
     local money = 0
     if shopType == "clothing" then
@@ -45,9 +47,18 @@ QBCore.Functions.CreateCallback('fivem-appearance:server:getOutfits', function(s
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local myOutfits = {}
+    if outfitCache[Player.PlayerData.citizenid] == nil then
+        outfitCache[Player.PlayerData.citizenid] = {}
+    else
+        TriggerClientEvent("QBCore:Notify", src, "Got from cache")
+        cb(outfitCache[Player.PlayerData.citizenid])
+        return
+    end
+
     local result = MySQL.Sync.fetchAll('SELECT * FROM player_outfits WHERE citizenid = ?', { Player.PlayerData.citizenid })
     for i=1, #result, 1 do
 		myOutfits[#myOutfits+1] = {id = result[i].id, outfitname = result[i].outfitname, model = result[i].model, skin = json.decode(result[i].skin), outfitId = result[i].outfitId}
+        outfitCache[Player.PlayerData.citizenid][#outfitCache[Player.PlayerData.citizenid]+1] = myOutfits[#myOutfits]
 	end
     cb(myOutfits)
 end)
@@ -88,15 +99,25 @@ RegisterNetEvent('fivem-appearance:server:saveOutfit', function(name, appearance
             name,
             appearance.model,
             json.encode(appearance),
-            outfitId,    
-        }, function()
+            outfitId,
+        }, function(id)
+            outfitCache[Player.PlayerData.citizenid][#outfitCache[Player.PlayerData.citizenid]+1] = {id = id, outfitname = name, model = appearance.model, skin = appearance, outfitId = outfitId}
             TriggerClientEvent('QBCore:Notify', src, 'Outfit ' .. name .. ' has been saved', 'success')
         end)
     end
 end)
 
 RegisterNetEvent('fivem-appearance:server:deleteOutfit', function(id)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
     MySQL.query('DELETE FROM player_outfits WHERE id = ?', {id})
+    
+    for k, v in ipairs(outfitCache[Player.PlayerData.citizenid]) do
+        if v.id == id then
+            table.remove(outfitCache[Player.PlayerData.citizenid], k)
+            break
+        end
+    end
 end)
 
 if Config.EnablePedMenu then

@@ -298,6 +298,7 @@ end)
 
 RegisterNetEvent("fivem-appearance:client:changeOutfitMenu", function(data)
     QBCore.Functions.TriggerCallback('fivem-appearance:server:getOutfits', function(result)
+        local tattoos = exports["fivem-appearance"]:getPedTattoos()
         local outfitMenu = {{
             header = '< Go Back',
             params = {
@@ -306,6 +307,7 @@ RegisterNetEvent("fivem-appearance:client:changeOutfitMenu", function(data)
             }
         }}
         for i = 1, #result, 1 do
+            result[i].skin.tattoos = tattoos
             outfitMenu[#outfitMenu + 1] = {
                 header = result[i].outfitname,
                 params = {
