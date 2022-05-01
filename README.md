@@ -29,6 +29,7 @@ Discord: https://discord.gg/ZVJEkjUTkx
 - Plastic Surgeons
 - qb-target Support
 - Skin migration support (qb-clothing / old fivem-appearance)
+- Player specific outfit locations (Restricted via CitizenID)
 
 ## New Preview (with Tattoos)
 

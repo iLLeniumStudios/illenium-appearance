@@ -1,8 +1,5 @@
 Config = {}
 
-Config.MigrateOldFivemAppearanceData = false
-Config.MigrateQBClothingData = false
-
 Config.Debug = false
 
 Config.ClothingCost = 100
@@ -86,6 +83,21 @@ Config.ClothingRooms = {
     --[3] = {requiredJob = "ambulance", coords = vector3(338.70, 659.61, 14.71)},    
     --[4] = {requiredJob = "ambulance", coords = vector3(-1098.45, 1751.71, 23.35)},    
     --[6] = {requiredJob = "police", coords = vector3(-77.59, -129.17, 5.03)},
+}
+
+
+Config.PlayerOutfitRooms = {
+    -- Sample outfit room config
+--[[
+    [1] = {
+        coords = vector3(287.29, -573.41, 43.17),
+        width = 3,
+        length = 3,
+        citizenIDs = {
+            "BHH65156",
+        }
+    },
+    ]]--
 }
 
 Config.Outfits = {

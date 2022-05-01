@@ -378,6 +378,24 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
     end)
 end)
 
+function isPlayerAllowedForOutfitRoom(outfitRoom)
+    local isAllowed = false
+    for i = 1, #outfitRoom.citizenIDs, 1 do
+        if outfitRoom.citizenIDs[i] == PlayerData.citizenid then
+            isAllowed = true
+            break
+        end
+    end
+    return isAllowed
+end
+
+function OpenOutfitRoom(outfitRoom)
+    local isAllowed = isPlayerAllowedForOutfitRoom(outfitRoom)
+    if isAllowed then        
+        TriggerEvent('qb-clothing:client:openOutfitMenu')
+    end
+end
+
 function getPlayerJobOutfits(clothingRoom)
     local outfits = {}
     local gender = "male"
@@ -398,7 +416,7 @@ function getPlayerJobOutfits(clothingRoom)
     return outfits
 end
 
-function SetupZones()
+function SetupStoreZones()
     local zones = {}
     for k, v in pairs(Config.Stores) do
         zones[#zones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
@@ -411,7 +429,7 @@ function SetupZones()
 
     local clothingCombo = ComboZone:Create(zones, {
         name = "clothingCombo",
-        debugPoly = false
+        debugPoly = Config.Debug
     })
     clothingCombo:onPlayerInOut(function(isPointInside, point, zone)
         if isPointInside then
@@ -431,7 +449,9 @@ function SetupZones()
             exports['qb-core']:HideText()
         end
     end)
+end
 
+function SetupClothingRoomZones()
     local roomZones = {}
     for k, v in pairs(Config.ClothingRooms) do
         roomZones[#roomZones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
@@ -444,7 +464,7 @@ function SetupZones()
 
     local clothingRoomsCombo = ComboZone:Create(roomZones, {
         name = "clothingRoomsCombo",
-        debugPoly = false
+        debugPoly = Config.Debug
     })
     clothingRoomsCombo:onPlayerInOut(function(isPointInside, point, zone)
         if isPointInside then
@@ -460,6 +480,43 @@ function SetupZones()
             exports['qb-core']:HideText()
         end
     end)
+end
+
+function SetupPlayerOutfitRoomZones()
+    local roomZones = {}
+    for k, v in pairs(Config.PlayerOutfitRooms) do
+        roomZones[#roomZones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
+            name = 'PlayerOutfitRooms_' .. k,
+            minZ = v.coords.z - 1.5,
+            maxZ = v.coords.z + 1,
+            debugPoly = false
+        })
+    end
+
+    local playerOutfitRoomsCombo = ComboZone:Create(roomZones, {
+        name = "playerOutfitRoomsCombo",
+        debugPoly = Config.Debug
+    })
+    playerOutfitRoomsCombo:onPlayerInOut(function(isPointInside, point, zone)
+        if isPointInside then
+            zoneName = zone.name
+            local outfitRoom = Config.PlayerOutfitRooms[tonumber(string.sub(zone.name, 19))]
+            local isAllowed = isPlayerAllowedForOutfitRoom(outfitRoom)
+            if isAllowed then
+                inZone = true
+                exports['qb-core']:DrawText('[E] Outfits')
+            end
+        else
+            inZone = false
+            exports['qb-core']:HideText()
+        end
+    end)
+end
+
+function SetupZones()
+    SetupStoreZones()
+    SetupClothingRoomZones()
+    SetupPlayerOutfitRoomZones()
 end
 
 function SetupTargets()
@@ -500,7 +557,7 @@ function SetupTargets()
         end
         exports['qb-target']:AddBoxZone(v.shopType .. k, v.coords, v.length, v.width, {
             name = v.shopType .. k,
-            debugPoly = false,
+            debugPoly = Config.Debug,
             minZ = v.coords.z-1,
             maxZ = v.coords.z+1,
         }, {
@@ -525,7 +582,7 @@ function SetupTargets()
 
         exports['qb-target']:AddBoxZone('clothing_' .. v.requiredJob .. k, v.coords, v.length, v.width, {
             name = 'clothing_' .. v.requiredJob .. k,
-            debugPoly = false,
+            debugPoly = Config.Debug,
             minZ = v.coords.z - 2,
             maxZ = v.coords.z + 2,
         }, {
@@ -536,6 +593,30 @@ function SetupTargets()
                     icon = "fas fa-sign-in-alt",
                     label = "Clothing",
                     job = v.requiredJob
+                },
+            },
+            distance = 3
+        })
+    end
+
+    for k, v in pairs(Config.PlayerOutfitRooms) do
+        exports['qb-target']:AddBoxZone('playeroutfitroom_' .. k, v.coords, v.length, v.width, {
+            name = 'playeroutfitroom_' .. k,
+            debugPoly = Config.Debug,
+            minZ = v.coords.z - 2,
+            maxZ = v.coords.z + 2,
+        }, {
+            options = {
+                {
+                    type = "client",
+                    action = function(entity)
+                        OpenOutfitRoom(v)
+                    end,
+                    icon = "fas fa-sign-in-alt",
+                    label = "Outfits",
+                    canInteract = function(entity)
+                        return isPlayerAllowedForOutfitRoom(v)
+                    end
                 },
             },
             distance = 3
@@ -554,6 +635,11 @@ function ZonesLoop()
                     local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zoneName, 15))]
                     local outfits = getPlayerJobOutfits(clothingRoom)
                     TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', outfits)
+                end
+            elseif string.find(zoneName, 'PlayerOutfitRooms_') then
+                if IsControlJustReleased(0, 38) then
+                    local outfitRoom = Config.PlayerOutfitRooms[tonumber(string.sub(zoneName, 19))]
+                    OpenOutfitRoom(outfitRoom)
                 end
             elseif zoneName == 'clothing' then
                 if IsControlJustReleased(0, 38) then
