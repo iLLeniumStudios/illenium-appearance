@@ -50,7 +50,6 @@ QBCore.Functions.CreateCallback('fivem-appearance:server:getOutfits', function(s
     if outfitCache[Player.PlayerData.citizenid] == nil then
         outfitCache[Player.PlayerData.citizenid] = {}
     else
-        TriggerClientEvent("QBCore:Notify", src, "Got from cache")
         cb(outfitCache[Player.PlayerData.citizenid])
         return
     end
