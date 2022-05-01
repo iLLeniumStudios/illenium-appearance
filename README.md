@@ -6,8 +6,9 @@ A replacement for qb-clothing and other clothing resources for qb-core
 
 Discord: https://discord.gg/ZVJEkjUTkx
 
-## Requirements
+## Dependencies
 
+- [PolyZone](https://github.com/mkafrin/PolyZone)
 - [qb-core](https://github.com/qbcore-framework/qb-core) (Latest)
 - [qb-menu](https://github.com/qbcore-framework/qb-menu)
 - [qb-input](https://github.com/qbcore-framework/qb-input)
