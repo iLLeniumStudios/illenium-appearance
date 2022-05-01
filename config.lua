@@ -54,7 +54,7 @@ Config.ClothingRooms = {
 Config.Outfits = {
     ['police'] = {
         ['male'] = {
-            [0] = {
+            [1] = {
                 outfitLabel = 'Short Sleeve',
                 outfitData = {
                     ['pants'] = {item = 24, texture = 0}, -- Pants
@@ -71,7 +71,7 @@ Config.Outfits = {
                 },
                 grades = {0, 1, 2, 3, 4},
             },
-            [1] = {
+            [2] = {
                 outfitLabel = 'Trooper Tan',
                 outfitData = {
                     ['pants'] = {item = 24, texture = 0}, -- Pants
@@ -88,7 +88,7 @@ Config.Outfits = {
                 },
                 grades = {0, 1, 2, 3, 4},
             },
-            [2] = {
+            [3] = {
                 outfitLabel = 'Long Sleeve',
                 outfitData = {
                     ['pants'] = {item = 24, texture = 0}, -- Pants
@@ -105,7 +105,7 @@ Config.Outfits = {
                 },
                 grades = {1, 2, 3, 4},
             },
-            [3] = {
+            [4] = {
                 outfitLabel = 'Trooper Black',
                 outfitData = {
                     ['pants'] = {item = 24, texture = 0}, -- Pants
@@ -122,7 +122,7 @@ Config.Outfits = {
                 },
                 grades = {2, 3, 4},
             },
-            [4] = {
+            [5] = {
                 outfitLabel = 'SWAT',
                 outfitData = {
                     ['pants'] = {item = 130, texture = 1}, -- Pants
@@ -140,7 +140,7 @@ Config.Outfits = {
             }
         },
         ['female'] = {
-            [0] = {
+            [1] = {
                 outfitLabel = 'Short Sleeve',
                 outfitData = {
                     ['pants'] = {item = 133, texture = 0}, -- Pants
@@ -157,7 +157,7 @@ Config.Outfits = {
                 },
                 grades = {0, 1, 2, 3, 4},
             },
-            [1] = {
+            [2] = {
                 outfitLabel = 'Trooper Tan',
                 outfitData = {
                     ['pants'] = {item = 133, texture = 0}, -- Pants
@@ -174,7 +174,7 @@ Config.Outfits = {
                 },
                 grades = {0, 1, 2, 3, 4},
             },
-            [2] = {
+            [3] = {
                 outfitLabel = 'Long Sleeve',
                 outfitData = {
                     ['pants'] = {item = 133, texture = 0}, -- Pants
@@ -191,7 +191,7 @@ Config.Outfits = {
                 },
                 grades = {1, 2, 3, 4},
             },
-            [3] = {
+            [4] = {
                 outfitLabel = 'Trooper Black',
                 outfitData = {
                     ['pants'] = {item = 133, texture = 0}, -- Pants
@@ -208,7 +208,7 @@ Config.Outfits = {
                 },
                 grades = {2, 3, 4},
             },
-            [4] = {
+            [5] = {
                 outfitLabel = 'SWAT',
                 outfitData = {
                     ['pants'] = {item = 135, texture = 1}, -- Pants
@@ -229,7 +229,7 @@ Config.Outfits = {
     },
     ['realestate'] = {
         ['male'] = {
-            [0] = {
+            [1] = {
                 -- Outfits
                 outfitLabel = 'Worker',
                 outfitData = {
@@ -249,7 +249,7 @@ Config.Outfits = {
             }
         },
         ['female'] = {
-            [0] = {
+            [1] = {
                 outfitLabel = 'Worker',
                 outfitData = {
                     ["pants"]       = { item = 57, texture = 2},  -- Pants
@@ -270,7 +270,7 @@ Config.Outfits = {
     },
     ['ambulance'] = {
         ['male'] = {
-            [0] = {
+            [1] = {
                 outfitLabel = 'T-Shirt',
                 outfitData = {
                     ['arms'] = {item = 85, texture = 0}, -- Arms
@@ -289,7 +289,7 @@ Config.Outfits = {
                 },
                 grades = {0, 1, 2, 3, 4},
             },
-            [1] = {
+            [2] = {
                 outfitLabel = 'Polo',
                 outfitData = {
                     ['arms'] = {item = 90, texture = 0}, -- Arms
@@ -308,7 +308,7 @@ Config.Outfits = {
                 },
                 grades = {2, 3, 4},
             },
-            [2] = {
+            [3] = {
                 outfitLabel = 'Doctor',
                 outfitData = {
                     ['arms'] = {item = 93, texture = 0}, -- Arms
@@ -329,7 +329,7 @@ Config.Outfits = {
             }
         },
         ['female'] = {
-            [0] = {
+            [1] = {
                 outfitLabel = 'T-Shirt',
                 outfitData = {
                     ['arms'] = {item = 109, texture = 0}, -- Arms
@@ -348,7 +348,7 @@ Config.Outfits = {
                 },
                 grades = {0, 1, 2, 3, 4},
             },
-            [1] = {
+            [2] = {
                 outfitLabel = 'Polo',
                 outfitData = {
                     ['arms'] = {item = 105, texture = 0}, -- Arms
@@ -367,7 +367,7 @@ Config.Outfits = {
                 },
                 grades = {2, 3, 4},
             },
-            [2] = {
+            [3] = {
                 outfitLabel = 'Doctor',
                 outfitData = {
                     ['arms'] = {item = 105, texture = 0}, -- Arms
