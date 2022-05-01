@@ -38,3 +38,7 @@ files {
 ui_page 'web/build/index.html'
 
 provide 'qb-clothing'
+
+dependencies {
+  'qb-core',
+}
