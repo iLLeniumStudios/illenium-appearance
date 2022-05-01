@@ -6,10 +6,10 @@ local function MigrateFivemAppearance(source)
     local allPlayers = MySQL.Sync.fetchAll('SELECT * FROM players')
     local playerSkins = {}
     for i=1, #allPlayers, 1 do
-        if allPlayers.skin then
+        if allPlayers[i].skin then
             playerSkins[#playerSkins+1] = {
-                citizenID = allPlayers.citizenid,
-                skin = allPlayers.skin
+                citizenID = allPlayers[i].citizenid,
+                skin = allPlayers[i].skin
             }
         end
     end
