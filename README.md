@@ -40,6 +40,8 @@ https://streamable.com/qev2h7
 
 ## Migrating skins from other clothing resources
 
+Migration demo: https://streamable.com/ydxoqb
+
 ### qb-clothing
 
 - Run the following command while in-game
@@ -52,8 +54,6 @@ https://streamable.com/qev2h7
 - Restart the server
 
 ### fivem-appearance (aj, mirrox1337 etc)
-
-Migration demo: https://streamable.com/ydxoqb
 
 - Run the following command while in-game
 
