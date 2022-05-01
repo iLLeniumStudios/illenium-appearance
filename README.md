@@ -1,5 +1,9 @@
 # fivem-appearance
 
+A replacement for qb-clothing and other clothing resources for qb-core
+
+<img src="https://i.imgur.com/4UlcRJQ.png" alt="fivem-appearance with Tattoos" />
+
 Discord: https://discord.gg/ZVJEkjUTkx
 
 ## Requirements
