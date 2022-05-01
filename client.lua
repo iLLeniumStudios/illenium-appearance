@@ -84,24 +84,24 @@ RegisterNetEvent('qb-clothes:client:CreateFirstCharacter', function()
     end)
 end)
 
-function OpenShop(config, isPedMenu)
-    QBCore.Functions.TriggerCallback("fivem-appearance:server:hasMoney", function(hasMoney)
+function OpenShop(config, isPedMenu, shopType)
+    QBCore.Functions.TriggerCallback("fivem-appearance:server:hasMoney", function(hasMoney, money)
         if not hasMoney and not isPedMenu then
-            QBCore.Functions.Notify("Not enough cash. Need $" .. Config.Money, "error")
+            QBCore.Functions.Notify("Not enough cash. Need $" .. money, "error")
             return
         end
 
         exports['fivem-appearance']:startPlayerCustomization(function(appearance)
             if appearance then
                 if not isPedMenu then
-                    TriggerServerEvent("fivem-appearance:server:chargeCustomer")
+                    TriggerServerEvent("fivem-appearance:server:chargeCustomer", shopType)
                 end
                 TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
             else
                 QBCore.Functions.Notify("Cancelled Customization")
             end
         end, config)
-    end)
+    end, shopType)
 end
 
 local function OpenClothingShop(isPedMenu)
@@ -125,7 +125,7 @@ local function OpenClothingShop(isPedMenu)
             tattoos = true
         }
     end
-    OpenShop(config, isPedMenu)
+    OpenShop(config, isPedMenu, 'clothing')
 end
 
 local function OpenBarberShop()
@@ -137,7 +137,7 @@ local function OpenBarberShop()
         components = false,
         props = false,
         tattoos = false
-    })
+    }, false, 'barber')
 end
 
 local function OpenTattooShop()
@@ -149,7 +149,7 @@ local function OpenTattooShop()
         components = false,
         props = false,
         tattoos = true
-    })
+    }, false, 'tattoo')
 end
 
 local function OpenSurgeonShop()
@@ -161,7 +161,7 @@ local function OpenSurgeonShop()
         components = false,
         props = false,
         tattoos = false
-    })
+    }, false, 'surgeon')
 end
 
 RegisterNetEvent('fivem-appearance:client:openClothingShop', OpenClothingShop)
@@ -215,7 +215,7 @@ function OpenMenu(isPedMenu, backEvent, menuType, menuData)
         }
     }}
     if menuType == "default" then
-        local header = "Buy Clothing - $" .. Config.Money
+        local header = "Buy Clothing - $" .. Config.ClothingCost
         if isPedMenu then
             header = "Change Clothing"
         end
@@ -404,7 +404,7 @@ function SetupZones()
         zones[#zones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
             name = v.shopType,
             minZ = v.coords.z - 1.5,
-            maxZ = v.coords.z + 1,
+            maxZ = v.coords.z + 1.5,
             debugPoly = false
         })
     end

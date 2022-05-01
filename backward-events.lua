@@ -24,7 +24,7 @@ RegisterNetEvent('qb-clothing:client:openMenu', function()
         components = true,
         props = true,
         tattoos = true
-    }, true)
+    }, true, 'all')
 end)
 
 RegisterNetEvent('qb-clothing:client:openOutfitMenu', function()

@@ -5,7 +5,10 @@ Config.MigrateQBClothingData = false
 
 Config.Debug = false
 
-Config.Money = 100
+Config.ClothingCost = 100
+Config.BarberCost = 100
+Config.TattooCost = 100
+Config.SurgeonCost = 100
 
 Config.UseTarget = GetConvar('UseTarget', 'false') == 'true'
 
