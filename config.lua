@@ -4,9 +4,7 @@ Config.Debug = false
 
 Config.Money = 100
 
---Config.UseTarget = GetConvar('UseTarget', 'false') == 'true'
-
-Config.UseTarget = true
+Config.UseTarget = GetConvar('UseTarget', 'false') == 'true'
 
 Config.EnablePedMenu = true
 Config.PedMenuGroup = 'admin'
