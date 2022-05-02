@@ -86,6 +86,7 @@
     "opacity": "Opacity",
     "style": "Style",
     "color": "Color",
+    "secondColor": "Base color",
     "blemishes": "Blemishes",
     "beard": "Beard",
     "eyebrows": "Eyebrows",
