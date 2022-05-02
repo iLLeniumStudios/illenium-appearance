@@ -17,6 +17,14 @@ local function getMoneyForShop(shopType)
     return money
 end
 
+local function getOutfitsForPlayer(citizenid)
+    outfitCache[citizenid] = {}
+    local result = MySQL.Sync.fetchAll('SELECT * FROM player_outfits WHERE citizenid = ?', { citizenid })
+    for i=1, #result, 1 do
+        outfitCache[citizenid][#outfitCache[citizenid]+1] = {id = result[i].id, outfitname = result[i].outfitname, model = result[i].model, skin = json.decode(result[i].skin), outfitId = result[i].outfitId}
+	end
+end
+
 -- Callback(s)
 
 QBCore.Functions.CreateCallback('fivem-appearance:server:getAppearance', function(source, cb)
@@ -46,20 +54,10 @@ end)
 QBCore.Functions.CreateCallback('fivem-appearance:server:getOutfits', function(source, cb)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    local myOutfits = {}
     if outfitCache[Player.PlayerData.citizenid] == nil then
-        outfitCache[Player.PlayerData.citizenid] = {}
-    else
-        cb(outfitCache[Player.PlayerData.citizenid])
-        return
+        getOutfitsForPlayer(Player.PlayerData.citizenid)
     end
-
-    local result = MySQL.Sync.fetchAll('SELECT * FROM player_outfits WHERE citizenid = ?', { Player.PlayerData.citizenid })
-    for i=1, #result, 1 do
-		myOutfits[#myOutfits+1] = {id = result[i].id, outfitname = result[i].outfitname, model = result[i].model, skin = json.decode(result[i].skin), outfitId = result[i].outfitId}
-        outfitCache[Player.PlayerData.citizenid][#outfitCache[Player.PlayerData.citizenid]+1] = myOutfits[#myOutfits]
-	end
-    cb(myOutfits)
+    cb(outfitCache[Player.PlayerData.citizenid])
 end)
 
 RegisterServerEvent("fivem-appearance:server:saveAppearance", function(appearance)
@@ -91,6 +89,9 @@ end)
 RegisterNetEvent('fivem-appearance:server:saveOutfit', function(name, appearance)
     local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
+    if outfitCache[Player.PlayerData.citizenid] == nil then
+        getOutfitsForPlayer(Player.PlayerData.citizenid)
+    end
     if appearance ~= nil then
         local outfitId = "outfit-" .. math.random(1, 10) .. "-" .. math.random(1111, 9999)
         MySQL.Async.insert('INSERT INTO player_outfits (citizenid, outfitname, model, skin, outfitId) VALUES (?, ?, ?, ?, ?)', {
