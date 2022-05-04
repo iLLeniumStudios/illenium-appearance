@@ -132,3 +132,7 @@ RegisterNetEvent('qb-clothing:client:loadOutfit', function(oData)
         end
     end
 end)
+
+RegisterNetEvent("qb-multicharacter:client:chooseChar", function()
+    TriggerServerEvent("fivem-appearance:server:resetOutfitCache")
+end)

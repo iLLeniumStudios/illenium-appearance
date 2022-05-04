@@ -120,6 +120,14 @@ RegisterNetEvent('fivem-appearance:server:deleteOutfit', function(id)
     end
 end)
 
+RegisterNetEvent("fivem-appearance:server:resetOutfitCache", function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if Player then
+        outfitCache[Player.PlayerData.citizenid] = nil
+    end
+end)
+
 if Config.EnablePedMenu then
     QBCore.Commands.Add('pedmenu', 'Open Ped Menu', {}, false, function(source, args)
         TriggerClientEvent("fivem-appearance:client:openClothingShopMenu", source, true)
