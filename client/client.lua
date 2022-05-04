@@ -3,7 +3,6 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local zoneName = nil
 local inZone = false
 
-local allMyOutfits = {}
 local PlayerData = {}
 local PlayerJob = {}
 local PlayerGang = {}
@@ -67,9 +66,9 @@ local function getConfigForPermission(hasPedPerms)
 end
 
 RegisterNetEvent('qb-clothes:client:CreateFirstCharacter', function()
-    QBCore.Functions.GetPlayerData(function(PlayerData)
+    QBCore.Functions.GetPlayerData(function(pd)
         local skin = 'mp_m_freemode_01'
-        if PlayerData.charinfo.gender == 1 then
+        if pd.charinfo.gender == 1 then
             skin = "mp_f_freemode_01"
         end
         exports['fivem-appearance']:setPlayerModel(skin)
@@ -279,7 +278,7 @@ RegisterNetEvent("fivem-appearance:client:openJobOutfitsListMenu", function(data
         }
     }}
     if data.menuData then
-        for k, v in pairs(data.menuData) do
+        for _, v in pairs(data.menuData) do
             menu[#menu + 1] = {
                 header = v.outfitLabel,
                 params = {
@@ -354,7 +353,7 @@ RegisterNetEvent('fivem-appearance:client:deleteOutfit', function(id)
 end)
 
 RegisterNetEvent('fivem-appearance:client:openJobOutfitsMenu', function(outfitsToShow)
-    OpenMenu(isPedMenu, "fivem-appearance:client:openJobOutfitsMenu", "job-outfit", outfitsToShow)
+    OpenMenu(nil, "fivem-appearance:client:openJobOutfitsMenu", "job-outfit", outfitsToShow)
 end)
 
 RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
@@ -367,7 +366,7 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
         end
         exports['fivem-appearance']:setPlayerAppearance(appearance)
 
-        for k, v in pairs(GetGamePool('CObject')) do
+        for _, v in pairs(GetGamePool('CObject')) do
             if IsEntityAttachedToEntity(PlayerPedId(), v) then
                 SetEntityAsMissionEntity(v, true, true)
                 DeleteObject(v)
@@ -393,7 +392,7 @@ end
 
 function OpenOutfitRoom(outfitRoom)
     local isAllowed = isPlayerAllowedForOutfitRoom(outfitRoom)
-    if isAllowed then        
+    if isAllowed then
         TriggerEvent('qb-clothing:client:openOutfitMenu')
     end
 end
@@ -408,7 +407,7 @@ function getPlayerJobOutfits(clothingRoom)
     local jobName = clothingRoom.isGang and PlayerGang.name or PlayerJob.name
 
     for i = 1, #Config.Outfits[jobName][gender], 1 do
-        for k,v in pairs(Config.Outfits[jobName][gender][i].grades) do
+        for _, v in pairs(Config.Outfits[jobName][gender][i].grades) do
             if v == gradeLevel then
                 outfits[#outfits+1] = Config.Outfits[jobName][gender][i]
             end
@@ -420,7 +419,7 @@ end
 
 function SetupStoreZones()
     local zones = {}
-    for k, v in pairs(Config.Stores) do
+    for _, v in pairs(Config.Stores) do
         zones[#zones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
             name = v.shopType,
             minZ = v.coords.z - 1.5,
@@ -433,7 +432,7 @@ function SetupStoreZones()
         name = "clothingCombo",
         debugPoly = Config.Debug
     })
-    clothingCombo:onPlayerInOut(function(isPointInside, point, zone)
+    clothingCombo:onPlayerInOut(function(isPointInside, _, zone)
         if isPointInside then
             inZone = true
             zoneName = zone.name
@@ -468,7 +467,7 @@ function SetupClothingRoomZones()
         name = "clothingRoomsCombo",
         debugPoly = Config.Debug
     })
-    clothingRoomsCombo:onPlayerInOut(function(isPointInside, point, zone)
+    clothingRoomsCombo:onPlayerInOut(function(isPointInside, _, zone)
         if isPointInside then
             zoneName = zone.name
             local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zone.name, 15))]
@@ -499,7 +498,7 @@ function SetupPlayerOutfitRoomZones()
         name = "playerOutfitRoomsCombo",
         debugPoly = Config.Debug
     })
-    playerOutfitRoomsCombo:onPlayerInOut(function(isPointInside, point, zone)
+    playerOutfitRoomsCombo:onPlayerInOut(function(isPointInside, _, zone)
         if isPointInside then
             zoneName = zone.name
             local outfitRoom = Config.PlayerOutfitRooms[tonumber(string.sub(zone.name, 19))]
@@ -526,7 +525,7 @@ function SetupTargets()
         local opts = {}
         if v.shopType == 'barber' then
             opts = {
-                action = function(entity)
+                action = function(_)
                     OpenBarberShop()
                 end,
                 icon = "fas fa-scissors",
@@ -534,7 +533,7 @@ function SetupTargets()
             }
         elseif v.shopType == 'clothing' then
             opts = {
-                action = function(entity)
+                action = function(_)
                     TriggerEvent("fivem-appearance:client:openClothingShopMenu")
                 end,
                 icon = "fas fa-tshirt",
@@ -542,7 +541,7 @@ function SetupTargets()
             }
         elseif v.shopType == 'tattoo' then
             opts = {
-                action = function(entity)
+                action = function(_)
                     OpenTattooShop()
                 end,
                 icon = "fas fa-pen",
@@ -550,7 +549,7 @@ function SetupTargets()
             }
         elseif v.shopType == 'surgeon' then
             opts = {
-                action = function(entity)
+                action = function(_)
                     OpenSurgeonShop()
                 end,
                 icon = "fas fa-scalpel",
@@ -576,8 +575,7 @@ function SetupTargets()
     end
 
     for k, v in pairs(Config.ClothingRooms) do
-        local action = nil
-        action = function(entity)
+        local action = function(_)
             local outfits = getPlayerJobOutfits(v)
             TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', outfits)
         end
@@ -611,12 +609,12 @@ function SetupTargets()
             options = {
                 {
                     type = "client",
-                    action = function(entity)
+                    action = function(_)
                         OpenOutfitRoom(v)
                     end,
                     icon = "fas fa-sign-in-alt",
                     label = "Outfits",
-                    canInteract = function(entity)
+                    canInteract = function(_)
                         return isPlayerAllowedForOutfitRoom(v)
                     end
                 },
@@ -660,8 +658,6 @@ function ZonesLoop()
                     OpenSurgeonShop()
                 end
             end
-        else
-            sleep = 1000
         end
         Wait(sleep)
     end

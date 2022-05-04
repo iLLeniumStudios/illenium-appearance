@@ -27,10 +27,8 @@ RegisterNetEvent('fivem-appearance:client:migration:load-qb-clothing-clothes', f
 
     -- Face
     if not data["facemix"] or not data["face2"] then
-        data["facemix"] = skinData["facemix"]
         data["facemix"].shapeMix = data["facemix"].defaultShapeMix
         data["facemix"].skinMix = data["facemix"].defaultSkinMix
-        data["face2"] = skinData["face2"]
     end
 
     SetPedHeadBlendData(ped, data["face"].item, data["face2"].item, nil, data["face"].texture, data["face2"].texture, nil, data["facemix"].shapeMix, data["facemix"].skinMix, nil, true)
@@ -140,14 +138,10 @@ RegisterNetEvent('fivem-appearance:client:migration:load-qb-clothing-clothes', f
 
     if data["eye_color"].item ~= -1 and data["eye_color"].item ~= 0 then
         SetPedEyeColor(ped, data['eye_color'].item)
-    else
-
     end
 
     if data["moles"].item ~= -1 and data["moles"].item ~= 0 then
         SetPedHeadOverlay(ped, 9, data['moles'].item, (data['moles'].texture / 10))
-    else
-
     end
 
     SetPedFaceFeature(ped, 0, (data['nose_0'].item / 10))

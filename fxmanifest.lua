@@ -8,23 +8,23 @@ version '1.2.2'
 
 client_scripts {
   'game/build/client.js',
-  'blips.lua',
-  'client.lua',
-  'backward-events.lua',
+  'client/blips.lua',
+  'client/client.lua',
+  'client/backward-events.lua',
   '@PolyZone/client.lua',
 	'@PolyZone/BoxZone.lua',
 	'@PolyZone/ComboZone.lua',
-  'migrate/client.lua'
+  'migrate/client/client.lua'
 }
 
 server_scripts {
-  'server.lua',
+  'server/server.lua',
   '@oxmysql/lib/MySQL.lua',
-  'migrate/server.lua',
+  'migrate/server/server.lua',
 }
 
 shared_scripts {
-  'config.lua'
+  'shared/config.lua'
 }
 
 files {

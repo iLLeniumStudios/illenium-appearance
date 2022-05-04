@@ -129,11 +129,11 @@ RegisterNetEvent("fivem-appearance:server:resetOutfitCache", function()
 end)
 
 if Config.EnablePedMenu then
-    QBCore.Commands.Add('pedmenu', 'Open Ped Menu', {}, false, function(source, args)
+    QBCore.Commands.Add('pedmenu', 'Open Ped Menu', {}, false, function(source, _)
         TriggerClientEvent("fivem-appearance:client:openClothingShopMenu", source, true)
     end, Config.PedMenuGroup)
 end
 
-QBCore.Commands.Add('reloadskin', 'Reloads your character', {}, false, function(source, args)
+QBCore.Commands.Add('reloadskin', 'Reloads your character', {}, false, function(source, _)
     TriggerClientEvent("fivem-appearance:client:reloadSkin", source)
 end)
