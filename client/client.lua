@@ -366,7 +366,7 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
         end
         exports['fivem-appearance']:setPlayerAppearance(appearance)
 
-        for _k, v in pairs(GetGamePool('CObject')) do
+        for _, v in pairs(GetGamePool('CObject')) do
             if IsEntityAttachedToEntity(PlayerPedId(), v) then
                 SetEntityAsMissionEntity(v, true, true)
                 DeleteObject(v)
