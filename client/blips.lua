@@ -1,5 +1,5 @@
 CreateThread(function()
-    for k, v in pairs (Config.Stores) do
+    for k, _ in pairs (Config.Stores) do
         local blipConfig = Config.Blips[Config.Stores[k].shopType]
         if (blipConfig.Show and Config.Stores[k].showBlip == nil) or Config.Stores[k].showBlip then
             local blip = AddBlipForCoord(Config.Stores[k].coords)

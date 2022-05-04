@@ -1,6 +1,5 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local continue = false
-local done = false
 
 local function MigrateFivemAppearance(source)
     local allPlayers = MySQL.Sync.fetchAll('SELECT * FROM players')
@@ -26,7 +25,6 @@ local function MigrateFivemAppearance(source)
 end
 
 local function MigrateQBClothing(source)
-    local playerSkins = {}
     local allPlayerSkins = MySQL.Sync.fetchAll('SELECT * FROM playerskins')
     local migrated = 0
     for i=1, #allPlayerSkins, 1 do
