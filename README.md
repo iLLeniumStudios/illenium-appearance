@@ -1,5 +1,7 @@
 # fivem-appearance
 
+[![Lint](https://github.com/iLLeniumStudios/fivem-appearance/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/iLLeniumStudios/fivem-appearance/actions/workflows/lint.yml)
+
 A replacement for qb-clothing and other clothing resources for qb-core
 
 <img src="https://i.imgur.com/ltLSMmh.png" alt="fivem-appearance with Tattoos" />
