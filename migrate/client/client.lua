@@ -27,8 +27,8 @@ RegisterNetEvent('fivem-appearance:client:migration:load-qb-clothing-clothes', f
 
     -- Face
     if not data["facemix"] or not data["face2"] then
-        data["facemix"].shapeMix = data["facemix"].defaultShapeMix
-        data["facemix"].skinMix = data["facemix"].defaultSkinMix
+        data["facemix"] = {}
+        data["face2"] = {}
     end
 
     SetPedHeadBlendData(ped, data["face"].item, data["face2"].item, nil, data["face"].texture, data["face2"].texture, nil, data["facemix"].shapeMix, data["facemix"].skinMix, nil, true)
