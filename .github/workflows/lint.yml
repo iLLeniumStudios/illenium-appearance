@@ -8,15 +8,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Lint
-        uses: iLLeniumStudios/fivem-lua-lint-action@v1.0.7
+        uses: iLLeniumStudios/fivem-lua-lint-action@v2
         with:
           capture: "junit.xml"
           args: "-t --formatter JUnit"
           extra_libs: mysql+polyzone
       - name: Generate Lint Report
         if: always()
-        uses: mikepenz/action-junit-report@v3
+        uses: EnricoMi/publish-unit-test-result-action@v1
         with:
-          report_paths: "**/junit.xml"
+          files: "**/junit.xml"
           check_name: Linting Report
-          fail_on_failure: false
+          comment_mode: update last
+          fail_on: nothing
