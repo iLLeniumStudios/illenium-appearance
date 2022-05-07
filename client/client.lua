@@ -43,7 +43,6 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
                 TriggerEvent('qb-clothes:client:CreateFirstCharacter')
             end
         end
-
     end)
 end)
 
