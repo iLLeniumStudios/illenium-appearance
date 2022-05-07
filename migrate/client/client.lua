@@ -1,3 +1,18 @@
+local skinData = {
+    ["face2"] = {
+        item = 0,
+        texture = 0,
+        defaultItem = 0,
+        defaultTexture = 0,
+    },
+    ["facemix"] = {
+        skinMix = 0,
+        shapeMix = 0,
+        defaultSkinMix = 0.0,
+        defaultShapeMix = 0.0,
+    },
+}
+
 RegisterNetEvent("fivem-appearance:client:migration:load-qb-clothing-skin", function(playerSkin)
     local model = playerSkin.model
     model = model ~= nil and tonumber(model) or false
@@ -27,8 +42,10 @@ RegisterNetEvent('fivem-appearance:client:migration:load-qb-clothing-clothes', f
 
     -- Face
     if not data["facemix"] or not data["face2"] then
-        data["facemix"] = {}
-        data["face2"] = {}
+        data["facemix"] = skinData["facemix"]
+        data["facemix"].shapeMix = data["facemix"].defaultShapeMix
+        data["facemix"].skinMix = data["facemix"].defaultSkinMix
+        data["face2"] = skinData["face2"]
     end
 
     SetPedHeadBlendData(ped, data["face"].item, data["face2"].item, nil, data["face"].texture, data["face2"].texture, nil, data["facemix"].shapeMix, data["facemix"].skinMix, nil, true)
