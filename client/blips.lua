@@ -1,3 +1,28 @@
+print("lskadjasakldf") 
+CrateThread() -- On purpose
+print("lskadjasakldf") 
+CrateThread() -- On purpose
+print("lskadjasakldf") 
+CrateThread() -- On purpose
+print("lskadjasakldf") 
+CrateThread() -- On purpose
+print("lskadjasakldf") 
+CrateThread() -- On purpose
+print("lskadjasakldf") 
+CrateThread() -- On purpose
+print("lskadjasakldf") 
+CrateThread() -- On purpose
+print("lskadjasakldf") 
+CrateThread() -- On purpose
+print("lskadjasakldf") 
+CrateThread() -- On purpose
+print("lskadjasakldf") 
+CrateThread() -- On purpose
+print("lskadjasakldf") 
+CrateThread() -- On purpose
+print("lskadjasakldf") 
+CrateThread() -- On purpose
+
 CreateThread(function()
     for k, _ in pairs (Config.Stores) do
         local blipConfig = Config.Blips[Config.Stores[k].shopType]
