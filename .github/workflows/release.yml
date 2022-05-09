@@ -1,0 +1,38 @@
+name: Create a Release
+on:
+  push:
+    branches:
+    - main
+jobs:
+  release:
+    name: Create a new Release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: paulhatch/semantic-version@v4.0.2
+      id: semver
+      with:
+        tag_prefix: "v"
+        major_pattern: "(MAJOR)"
+        minor_pattern: "(MINOR)"
+        format: "${major}.${minor}.${patch}"
+        change_path: .
+        bump_each_commit: false
+    - name: Copy files
+      run: |
+        mkdir -p ${{ github.event.repository.name }}
+        shopt -s extglob
+        rm -rf .git* docs LICENSE README.md
+        mv !(${{ github.event.repository.name }}) ${{ github.event.repository.name }}/
+
+
+    - uses: thedoctor0/zip-release@master
+      with:
+        type: 'zip'
+        filename: '${{ github.event.repository.name }}.zip'
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: "${{ github.event.repository.name }}.zip"
+        tag: v${{steps.semver.outputs.version}}
