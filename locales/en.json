@@ -81,12 +81,13 @@
       "style": "Style",
       "color": "Color",
       "highlight": "Highlight",
-      "texture": "Texture"
+      "texture": "Texture",
+      "fade": "Fade"
     },
     "opacity": "Opacity",
     "style": "Style",
     "color": "Color",
-    "secondColor": "Base color",
+    "secondColor": "Secondary Color",
     "blemishes": "Blemishes",
     "beard": "Beard",
     "eyebrows": "Eyebrows",
@@ -125,7 +126,7 @@
     "ear": "Ear",
     "watches": "Watches",
     "bracelets": "Bracelets"
-  }, 
+  },
   "tattoos": {
     "title": "Tattoos",
     "items": {
@@ -136,7 +137,7 @@
       "ZONE_LEFT_LEG": "Left leg",
       "ZONE_RIGHT_LEG": "Right leg"
     },
-    "apply": "Apply", 
+    "apply": "Apply",
     "delete": "Delete"
   }
 }

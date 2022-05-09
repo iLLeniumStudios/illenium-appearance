@@ -1,13 +1,8 @@
 fx_version "cerulean"
 game { "gta5" }
 
-author 'snakewiz'
-description 'A flexible player customization script for FiveM.'
-repository 'https://github.com/pedr0fontoura/fivem-appearance'
-version '1.2.2'
-
 client_scripts {
-  'game/build/client.js',
+  'game/dist/index.js',
   'client/blips.lua',
   'client/client.lua',
   'client/backward-events.lua',
@@ -28,14 +23,14 @@ shared_scripts {
 }
 
 files {
-  'web/build/index.html',
-  'web/build/static/js/*.js',
+  'web/dist/index.html',
+  'web/dist/assets/*.js',
   'locales/*.json',
   'peds.json',
   'tattoos.json',
 }
 
-ui_page 'web/build/index.html'
+ui_page 'web/dist/index.html'
 
 provide 'qb-clothing'
 

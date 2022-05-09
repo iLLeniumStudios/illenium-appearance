@@ -80,7 +80,8 @@
       "title": "Cabelo",
       "style": "Estilo",
       "color": "Cor",
-      "highlight": "Reflexo"
+      "highlight": "Reflexo", 
+      "fade": "Desvaneça"
     },
     "opacity": "Opacidade",
     "style": "Estilo",
