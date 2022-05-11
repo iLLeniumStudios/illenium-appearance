@@ -27,7 +27,6 @@ Discord: https://discord.gg/ZVJEkjUTkx
 - Ped Menu command (/pedmenu) (Configurable)
 - Reload Skin command (/reloadskin)
 - Improved code quality
-- No additional SQL needed. Uses the default `qb-clothing` schema
 - Plastic Surgeons
 - qb-target Support
 - Skin migration support (qb-clothing / old fivem-appearance)
@@ -46,6 +45,8 @@ https://streamable.com/qev2h7
 - Delete / stop any tattoo shop resources e.g., `qb-tattooshop` from your resources folder
 - Put `setr fivem-appearance:locale "en"` in your server.cfg
 - Put `ensure fivem-appearance` in your server.cfg
+- Delete the table `player_outfits` from your database
+- Apply the SQL file located [here](sql/player_outfits.sql) to your database to have the new `player_outfits` table created 
 - If you want to configure qb-multicharacter, follow the corresponding guide for your version [here](docs/multicharacter-setup.md)
 - Restart your server
 - Follow the respective guide below based on your older version of clothing resource (qb-clothing / fivem-appearance)
