@@ -134,7 +134,6 @@ RegisterNetEvent('qb-clothing:client:loadOutfit', function(oData)
 end)
 
 RegisterNetEvent("qb-multicharacter:client:chooseChar", function()
-    print("Event called")
     local ped = PlayerPedId()
     exports['fivem-appearance']:setPedTattoos(ped, {})
     ClearPedDecorations(ped);
