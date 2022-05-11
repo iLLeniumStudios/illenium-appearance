@@ -347,7 +347,7 @@ RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
         while not appearanceDB do
             Wait(100)
         end
-        local playerPed = PlayerPedId()
+        playerPed = PlayerPedId()
         exports['fivem-appearance']:setPedComponents(playerPed, data.components)
         exports['fivem-appearance']:setPedProps(playerPed, data.props)
         exports['fivem-appearance']:setPedHair(playerPed, appearanceDB.hair)
