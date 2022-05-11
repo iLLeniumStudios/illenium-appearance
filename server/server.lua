@@ -129,8 +129,20 @@ RegisterNetEvent("fivem-appearance:server:resetOutfitCache", function()
 end)
 
 if Config.EnablePedMenu then
-    QBCore.Commands.Add('pedmenu', 'Open Ped Menu', {}, false, function(source, _)
-        TriggerClientEvent("fivem-appearance:client:openClothingShopMenu", source, true)
+    QBCore.Commands.Add('pedmenu', 'Open Ped Menu', { { name = 'id', help = '[Optional] ID of player (Gives you the ped menu if not provided)' } }, false, function(source, args)
+        local src = source
+        local playerId = tonumber(args[1])
+        if playerId then
+            local Player = QBCore.Functions.GetPlayer(playerId)
+            if Player then
+                src = playerId
+            else
+                TriggerClientEvent('QBCore:Notify', src, "Player not online", 'error')
+                return
+            end
+        end
+
+        TriggerClientEvent("fivem-appearance:client:openClothingShopMenu", src, true)
     end, Config.PedMenuGroup)
 end
 
