@@ -21,15 +21,24 @@ local function getOutfitsForPlayer(citizenid)
     outfitCache[citizenid] = {}
     local result = MySQL.Sync.fetchAll('SELECT * FROM player_outfits WHERE citizenid = ?', { citizenid })
     for i=1, #result, 1 do
-        outfitCache[citizenid][#outfitCache[citizenid]+1] = {id = result[i].id, outfitname = result[i].outfitname, model = result[i].model, skin = json.decode(result[i].skin), outfitId = result[i].outfitId}
+        outfitCache[citizenid][#outfitCache[citizenid]+1] = {id = result[i].id, outfitname = result[i].outfitname, model = result[i].model, components = json.decode(result[i].components), props = json.decode(result[i].props)}
 	end
 end
 
 -- Callback(s)
 
-QBCore.Functions.CreateCallback('fivem-appearance:server:getAppearance', function(source, cb)
+QBCore.Functions.CreateCallback('fivem-appearance:server:getAppearance', function(source, cb, model)
 	local Player = QBCore.Functions.GetPlayer(source)
-	local result = MySQL.Sync.fetchAll('SELECT skin FROM playerskins WHERE citizenid = ? AND active = ?', {Player.PlayerData.citizenid, 1})
+    local query = 'SELECT skin FROM playerskins WHERE citizenid = ?'
+    local queryArgs = {Player.PlayerData.citizenid}
+    if model ~= nil then
+        query = query .. ' AND model = ?'
+        queryArgs[#queryArgs+1] = model
+    else
+        query = query .. ' AND active = ?'
+        queryArgs[#queryArgs+1] = 1
+    end
+	local result = MySQL.Sync.fetchAll(query, queryArgs)
     if result[1] ~= nil then
         cb(json.decode(result[1].skin))
     else
@@ -63,8 +72,11 @@ end)
 RegisterServerEvent("fivem-appearance:server:saveAppearance", function(appearance)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
+    print(appearance.model)
     if appearance ~= nil then
-        MySQL.Async.execute('DELETE FROM playerskins WHERE citizenid = ?', { Player.PlayerData.citizenid }, function()
+        local skinsInactive = MySQL.update.await("UPDATE playerskins SET active = 0 WHERE citizenid = ?", { Player.PlayerData.citizenid }) -- Make all the skins inactive
+        print(skinsInactive)
+        MySQL.Async.execute('DELETE FROM playerskins WHERE citizenid = ? AND model = ?', { Player.PlayerData.citizenid, appearance.model }, function()
             MySQL.Async.insert('INSERT INTO playerskins (citizenid, model, skin, active) VALUES (?, ?, ?, ?)', {
                 Player.PlayerData.citizenid,
                 appearance.model,
@@ -86,22 +98,21 @@ RegisterServerEvent("fivem-appearance:server:chargeCustomer", function(shopType)
     end
 end)
 
-RegisterNetEvent('fivem-appearance:server:saveOutfit', function(name, appearance)
+RegisterNetEvent('fivem-appearance:server:saveOutfit', function(name, model, components, props)
     local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
     if outfitCache[Player.PlayerData.citizenid] == nil then
         getOutfitsForPlayer(Player.PlayerData.citizenid)
     end
-    if appearance ~= nil then
-        local outfitId = "outfit-" .. math.random(1, 10) .. "-" .. math.random(1111, 9999)
-        MySQL.Async.insert('INSERT INTO player_outfits (citizenid, outfitname, model, skin, outfitId) VALUES (?, ?, ?, ?, ?)', {
+    if model and components and props then
+        MySQL.Async.insert('INSERT INTO player_outfits (citizenid, outfitname, model, components, props) VALUES (?, ?, ?, ?, ?)', {
             Player.PlayerData.citizenid,
             name,
-            appearance.model,
-            json.encode(appearance),
-            outfitId,
+            model,
+            json.encode(components),
+            json.encode(props),
         }, function(id)
-            outfitCache[Player.PlayerData.citizenid][#outfitCache[Player.PlayerData.citizenid]+1] = {id = id, outfitname = name, model = appearance.model, skin = appearance, outfitId = outfitId}
+            outfitCache[Player.PlayerData.citizenid][#outfitCache[Player.PlayerData.citizenid]+1] = {id = id, outfitname = name, model = model, components = components, props = props}
             TriggerClientEvent('QBCore:Notify', src, 'Outfit ' .. name .. ' has been saved', 'success')
         end)
     end
