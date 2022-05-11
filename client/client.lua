@@ -71,6 +71,10 @@ RegisterNetEvent('qb-clothes:client:CreateFirstCharacter', function()
             skin = "mp_f_freemode_01"
         end
         exports['fivem-appearance']:setPlayerModel(skin)
+        -- Fix for tattoo's appearing when creating a new character
+        local ped = PlayerPedId()
+        exports['fivem-appearance']:setPedTattoos(ped, {})
+        ClearPedDecorations(ped)
         QBCore.Functions.TriggerCallback("QBCore:HasPermission", function(permission)
             local config = getConfigForPermission(permission)
             exports['fivem-appearance']:startPlayerCustomization(function(appearance)

@@ -136,7 +136,7 @@ end)
 RegisterNetEvent("qb-multicharacter:client:chooseChar", function()
     local ped = PlayerPedId()
     exports['fivem-appearance']:setPedTattoos(ped, {})
-    ClearPedDecorations(ped);
-    
+    ClearPedDecorations(ped)
+
     TriggerServerEvent("fivem-appearance:server:resetOutfitCache")
 end)
