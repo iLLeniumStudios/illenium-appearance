@@ -178,12 +178,27 @@ RegisterNetEvent('fivem-appearance:client:saveOutfit', function()
 
     if keyboard ~= nil then
         Wait(500)
-        local playerPed = PlayerPedId()
-        local pedModel = exports['fivem-appearance']:getPedModel(playerPed)
-        local pedComponents = exports['fivem-appearance']:getPedComponents(playerPed)
-        local pedProps = exports['fivem-appearance']:getPedProps(playerPed)
+        QBCore.Functions.TriggerCallback("fivem-appearance:server:getOutfits", function(outfits)
+            local outfitExists = false
+            for i = 1, #outfits, 1 do
+                if outfits[i].outfitname == keyboard.input then
+                    outfitExists = true
+                    break
+                end
+            end
 
-        TriggerServerEvent('fivem-appearance:server:saveOutfit', keyboard.input, pedModel, pedComponents, pedProps)
+            if outfitExists then
+                QBCore.Functions.Notify("Outfit with this name already exists.", "error")
+                return
+            end
+
+            local playerPed = PlayerPedId()
+            local pedModel = exports['fivem-appearance']:getPedModel(playerPed)
+            local pedComponents = exports['fivem-appearance']:getPedComponents(playerPed)
+            local pedProps = exports['fivem-appearance']:getPedProps(playerPed)
+
+            TriggerServerEvent('fivem-appearance:server:saveOutfit', keyboard.input, pedModel, pedComponents, pedProps)
+        end)
     end
 end)
 
