@@ -178,8 +178,12 @@ RegisterNetEvent('fivem-appearance:client:saveOutfit', function()
 
     if keyboard ~= nil then
         Wait(500)
-        local appearance = exports['fivem-appearance']:getPedAppearance(PlayerPedId())
-        TriggerServerEvent('fivem-appearance:server:saveOutfit', keyboard.input, appearance)
+        local playerPed = PlayerPedId()
+        local pedModel = exports['fivem-appearance']:getPedModel(playerPed)
+        local pedComponents = exports['fivem-appearance']:getPedComponents(playerPed)
+        local pedProps = exports['fivem-appearance']:getPedProps(playerPed)
+
+        TriggerServerEvent('fivem-appearance:server:saveOutfit', keyboard.input, pedModel, pedComponents, pedProps)
     end
 end)
 
@@ -296,7 +300,6 @@ end)
 
 RegisterNetEvent("fivem-appearance:client:changeOutfitMenu", function(data)
     QBCore.Functions.TriggerCallback('fivem-appearance:server:getOutfits', function(result)
-        local tattoos = exports["fivem-appearance"]:getPedTattoos()
         local outfitMenu = {{
             header = '< Go Back',
             params = {
@@ -305,12 +308,16 @@ RegisterNetEvent("fivem-appearance:client:changeOutfitMenu", function(data)
             }
         }}
         for i = 1, #result, 1 do
-            result[i].skin.tattoos = tattoos
             outfitMenu[#outfitMenu + 1] = {
                 header = result[i].outfitname,
+                txt = result[i].model,
                 params = {
                     event = 'fivem-appearance:client:changeOutfit',
-                    args = result[i].skin
+                    args = {
+                        model = result[i].model,
+                        components = result[i].components,
+                        props = result[i].props,
+                    }
                 }
             }
         end
@@ -318,9 +325,36 @@ RegisterNetEvent("fivem-appearance:client:changeOutfitMenu", function(data)
     end)
 end)
 
-RegisterNetEvent("fivem-appearance:client:changeOutfit", function(appearance)
-    exports['fivem-appearance']:setPlayerAppearance(appearance)
-    TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
+RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
+    local playerPed = PlayerPedId()
+    local pedModel = exports['fivem-appearance']:getPedModel(playerPed)
+    local failed = false
+    local appearanceDB = nil
+    if pedModel ~= data.model then
+        QBCore.Functions.TriggerCallback("fivem-appearance:server:getAppearance", function(appearance)
+            if appearance then
+                exports['fivem-appearance']:setPlayerAppearance(appearance)
+                appearanceDB = appearance
+            else
+                QBCore.Functions.Notify("Something went wrong. The outfit that you're trying to change to, does not have a base appearance.", "error")
+                failed = true
+            end
+        end, data.model)
+    else
+        appearanceDB = exports['fivem-appearance']:getPedAppearance(playerPed)
+    end
+    if not failed then
+        while not appearanceDB do
+            Wait(100)
+        end
+        playerPed = PlayerPedId()
+        exports['fivem-appearance']:setPedComponents(playerPed, data.components)
+        exports['fivem-appearance']:setPedProps(playerPed, data.props)
+        exports['fivem-appearance']:setPedHair(playerPed, appearanceDB.hair)
+
+        local appearance = exports['fivem-appearance']:getPedAppearance(playerPed)
+        TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
+    end
 end)
 
 RegisterNetEvent("fivem-appearance:client:deleteOutfitMenu", function(data)
