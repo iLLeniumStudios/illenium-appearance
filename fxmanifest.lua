@@ -28,6 +28,7 @@ files {
   'locales/*.json',
   'peds.json',
   'tattoos.json',
+  'blacklist.json',
 }
 
 ui_page 'web/dist/index.html'
