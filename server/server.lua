@@ -72,10 +72,8 @@ end)
 RegisterServerEvent("fivem-appearance:server:saveAppearance", function(appearance)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    print(appearance.model)
     if appearance ~= nil then
-        local skinsInactive = MySQL.update.await("UPDATE playerskins SET active = 0 WHERE citizenid = ?", { Player.PlayerData.citizenid }) -- Make all the skins inactive
-        print(skinsInactive)
+        MySQL.update.await("UPDATE playerskins SET active = 0 WHERE citizenid = ?", { Player.PlayerData.citizenid }) -- Make all the skins inactive
         MySQL.Async.execute('DELETE FROM playerskins WHERE citizenid = ? AND model = ?', { Player.PlayerData.citizenid, appearance.model }, function()
             MySQL.Async.insert('INSERT INTO playerskins (citizenid, model, skin, active) VALUES (?, ?, ?, ?)', {
                 Player.PlayerData.citizenid,
