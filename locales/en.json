@@ -138,6 +138,7 @@
       "ZONE_RIGHT_LEG": "Right leg"
     },
     "apply": "Apply",
-    "delete": "Delete"
+    "delete": "Remove",
+    "deleteAll": "Remove all Tattoos"
   }
 }
