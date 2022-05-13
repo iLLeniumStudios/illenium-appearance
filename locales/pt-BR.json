@@ -81,11 +81,13 @@
       "style": "Estilo",
       "color": "Cor",
       "highlight": "Reflexo", 
-      "fade": "Desvaneça"
+      "texture": "Estilo",
+      "fade": "Degradê"
     },
     "opacity": "Opacidade",
     "style": "Estilo",
     "color": "Cor",
+    "secondColor": "Cor Secundária",
     "blemishes": "Manchas",
     "beard": "Barba",
     "eyebrows": "Sobrancelhas",
@@ -110,8 +112,8 @@
     "bags": "Mochilas e paraquedas",
     "shoes": "Sapatos",
     "scarfAndChains": "Lenços e correntes",
-    "shirt": "Camissa",
-    "bodyArmor": "Colete balístico",
+    "shirt": "Camisa",
+    "bodyArmor": "Colete",
     "decals": "Decalques",
     "jackets": "Jaquetas"
   },
@@ -136,6 +138,7 @@
       "ZONE_RIGHT_LEG": "Perna direita"
     }, 
     "apply": "Aplicar",
-    "delete": "Apagar"
+    "delete": "Apagar",
+    "deleteAll": "Apagar tudo"
   }
 }
