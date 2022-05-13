@@ -81,7 +81,8 @@
       "style": "Estilo",
       "color": "Color",
       "highlight": "Resalte",
-      "texture": "Color"
+      "texture": "Color",
+      "fade": "marchitarse"
     },
     "opacity": "Opacidad",
     "style": "Estilo",
@@ -137,6 +138,7 @@
       "ZONE_RIGHT_LEG": "Pierna derecha"
     },
     "apply": "Aplicar",
-    "delete": "Borrar"
+    "delete": "Borrar",
+    "deleteAll": "Borrar todo"
   }
 }
