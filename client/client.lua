@@ -409,25 +409,11 @@ RegisterNetEvent('fivem-appearance:client:openJobOutfitsMenu', function(outfitsT
 end)
 
 RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
-    local playerPed = PlayerPedId()
-    local maxhealth = GetEntityMaxHealth(playerPed)
-    local health = GetEntityHealth(playerPed)
     QBCore.Functions.TriggerCallback('fivem-appearance:server:getAppearance', function(appearance)
         if not appearance then
             return
         end
         exports['fivem-appearance']:setPlayerAppearance(appearance)
-
-        for _, v in pairs(GetGamePool('CObject')) do
-            if IsEntityAttachedToEntity(PlayerPedId(), v) then
-                SetEntityAsMissionEntity(v, true, true)
-                DeleteObject(v)
-                DeleteEntity(v)
-            end
-            SetPedMaxHealth(PlayerId(), maxhealth)
-            Citizen.Wait(1000) -- Safety Delay
-            SetEntityHealth(PlayerPedId(), health)
-        end
     end)
 end)
 
