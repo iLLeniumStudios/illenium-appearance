@@ -635,6 +635,33 @@ function SetupTargets()
             },
             distance = 3
         })
+
+        if Config.ped == true then
+            local model
+
+            --print(dump(v))
+
+            if v.shopType == "clothing" then 
+                model = 'a_f_y_hipster_02'
+                --print('1') 
+            elseif v.shopType == "barber" then
+                model = 'a_f_o_soucent_02'
+                --print('2') 
+            elseif v.shopType == "tatto" then
+                model = 'u_m_y_tattoo_01'
+                --print('3') 
+            elseif v.shopType == "surgeon" then
+                model = 's_m_m_doctor_01'
+                --print('4') 
+            end
+            
+            loadModel(model)
+
+            local clothped = CreatePed(4, GetHashKey(model), v.coords.x, v.coords.y, v.coords.z, v.coords[4], false, false)
+            SetEntityAsMissionEntity(clothped, 1, 1)
+            FreezeEntityPosition(clothped, true)
+            --print('5')
+        end
     end
 
     for k, v in pairs(Config.PlayerOutfitRooms) do
