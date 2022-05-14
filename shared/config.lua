@@ -12,6 +12,8 @@ Config.UseTarget = GetConvar('UseTarget', 'false') == 'true'
 Config.EnablePedMenu = true
 Config.PedMenuGroup = 'admin'
 
+Config.AlwaysKeepProps = false
+
 Config.Blips = {
     ['clothing'] = {
         Show = true,
