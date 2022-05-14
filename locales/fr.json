@@ -81,7 +81,8 @@
       "style": "Style",
       "color": "Couleur",
       "highlight": "Highlight",
-      "texture": "Texture"
+      "texture": "Texture",
+      "fade": "Fade"
     },
     "opacity": "Opacité",
     "style": "Style",
@@ -137,6 +138,7 @@
       "ZONE_RIGHT_LEG": "Jambe droite"
     },
     "apply": "Appliquer", 
-    "delete": "Supprimer"
+    "delete": "Supprimer",
+    "deleteAll": "Supprimer tous les tatouages"
   }
 }
