@@ -9,6 +9,7 @@ version '3.0.2'
 client_scripts {
   'game/dist/index.js',
   'client/blips.lua',
+  'client/props.lua',
   'client/client.lua',
   'client/backward-events.lua',
   '@PolyZone/client.lua',
