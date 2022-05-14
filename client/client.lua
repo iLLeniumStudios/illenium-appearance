@@ -610,6 +610,22 @@ function SetupTargets()
             },
             distance = 3
         })
+
+        if Config.ped = true then
+            local model
+
+            if v.ShopType = clothing then 
+                model = 'a_f_y_hipster_02' 
+            else if v.ShopType = barber then
+                model = 'a_f_o_soucent_02' 
+            else if v.ShopType = surgon then
+                model = 's_m_m_doctor_01'
+            end
+    
+            local clothped = CreatePed(4, GetHashKey(model), v.coords.x, v.coords.y, v.coords.z, v.coords.h, false, false)
+            SetEntityAsMissionEntity(clothped, 1, 1)
+            FreezeEntityPosition(clothped, true)
+        end
     end
 
     for k, v in pairs(Config.ClothingRooms) do
