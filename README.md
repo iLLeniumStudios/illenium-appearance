@@ -33,7 +33,7 @@ Discord: https://discord.gg/ZVJEkjUTkx
 - Player specific outfit locations (Restricted via CitizenID)
 - Makeup Secondary Color
 - QBCore Theme
-- Clothing Blacklist support
+- Component & Props Blacklist support
 
 ## New Preview (with Tattoos)
 
@@ -99,62 +99,80 @@ Here is how the JSON file would look like, for such configuration:
 ```json
 {
   "male": {
-    "masks": [
-      {
-        "drawable": 10
-      },
-      {
-        "drawable": 11
-      },
-      {
-        "drawable": 12
-      },
-      {
-        "drawable": 13
-      },
-      {
-        "drawable": 14,
-        "textures": [5, 7, 10, 11, 12, 13]
-      }
-    ],
-    "upperBody": [],
-    "lowerBody": [],
-    "bags": [],
-    "shoes": [],
-    "scarfAndChains": [],
-    "shirts": [],
-    "bodyArmor": [],
-    "decals": [],
-    "jackets": [
-      {
-        "drawable": 10
-      },
-      {
-        "drawable": 11,
-        "textures": [1, 2, 3]
-      },
-      {
-        "drawable": 12
-      },
-      {
-        "drawable": 13
-      },
-      {
-        "drawable": 18
-      }
-    ]
+    "components": {
+      "masks": [
+        {
+          "drawable": 10
+        },
+        {
+          "drawable": 11
+        },
+        {
+          "drawable": 12
+        },
+        {
+          "drawable": 13
+        },
+        {
+          "drawable": 14,
+          "textures": [ 5, 7, 10, 11, 12, 13 ]
+        }
+      ],
+      "upperBody": [],
+      "lowerBody": [],
+      "bags": [],
+      "shoes": [],
+      "scarfAndChains": [],
+      "shirts": [],
+      "bodyArmor": [],
+      "decals": [],
+      "jackets": [
+        {
+          "drawable": 10
+        },
+        {
+          "drawable": 11,
+          "textures": [ 1, 2, 3 ]
+        },
+        {
+          "drawable": 12
+        },
+        {
+          "drawable": 13
+        },
+        {
+          "drawable": 18
+        }
+      ]
+    },
+    "props": {
+      "hats": [],
+      "glasses": [],
+      "ear": [],
+      "watches": [],
+      "bracelets": []
+    }
   },
   "female": {
-    "masks": [],
-    "upperBody": [],
-    "lowerBody": [],
-    "bags": [],
-    "shoes": [],
-    "scarfAndChains": [],
-    "shirts": [],
-    "bodyArmor": [],
-    "decals": [],
-    "jackets": []
+    "components": {
+      "masks": [],
+      "upperBody": [],
+      "lowerBody": [],
+      "bags": [],
+      "shoes": [],
+      "scarfAndChains": [],
+      "shirts": [],
+      "bodyArmor": [],
+      "decals": [],
+      "jackets": []
+    },
+    "props": {
+      "hats": [],
+      "glasses": [],
+      "ear": [],
+      "watches": [],
+      "bracelets": []
+    }
   }
 }
 ```

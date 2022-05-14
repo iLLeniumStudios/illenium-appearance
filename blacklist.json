@@ -1,26 +1,44 @@
 {
   "male": {
-    "masks": [],
-    "upperBody": [],
-    "lowerBody": [],
-    "bags": [],
-    "shoes": [],
-    "scarfAndChains": [],
-    "shirts": [],
-    "bodyArmor": [],
-    "decals": [],
-    "jackets": []
+    "components": {
+      "masks": [],
+      "upperBody": [],
+      "lowerBody": [],
+      "bags": [],
+      "shoes": [],
+      "scarfAndChains": [],
+      "shirts": [],
+      "bodyArmor": [],
+      "decals": [],
+      "jackets": []
+    },
+    "props": {
+      "hats": [],
+      "glasses": [],
+      "ear": [],
+      "watches": [],
+      "bracelets": []
+    }
   },
   "female": {
-    "masks": [],
-    "upperBody": [],
-    "lowerBody": [],
-    "bags": [],
-    "shoes": [],
-    "scarfAndChains": [],
-    "shirts": [],
-    "bodyArmor": [],
-    "decals": [],
-    "jackets": []
+    "components": {
+      "masks": [],
+      "upperBody": [],
+      "lowerBody": [],
+      "bags": [],
+      "shoes": [],
+      "scarfAndChains": [],
+      "shirts": [],
+      "bodyArmor": [],
+      "decals": [],
+      "jackets": []
+    },
+    "props": {
+      "hats": [],
+      "glasses": [],
+      "ear": [],
+      "watches": [],
+      "bracelets": []
+    }
   }
 }
