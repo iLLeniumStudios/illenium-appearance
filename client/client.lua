@@ -12,17 +12,21 @@ AddEventHandler('onResourceStart', function(resource)
         PlayerData = QBCore.Functions.GetPlayerData()
         PlayerJob = PlayerData.job
         PlayerGang = PlayerData.gang
+        TriggerEvent("updateJob", PlayerJob.name)
+        TriggerEvent("updateGang", PlayerGang.name)
     end
 end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerData.job = JobInfo
     PlayerJob = JobInfo
+    TriggerEvent("updateJob", PlayerJob.name)
 end)
 
 RegisterNetEvent('QBCore:Client:OnGangUpdate', function(GangInfo)
     PlayerData.gang = GangInfo
     PlayerGang = GangInfo
+    TriggerEvent("updateGang", PlayerGang.name)
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
