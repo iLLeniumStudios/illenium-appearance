@@ -34,6 +34,7 @@ Discord: https://discord.gg/ZVJEkjUTkx
 - Makeup Secondary Color
 - QBCore Theme
 - Component & Props Blacklist support
+- Limit Components & Props to certain Jobs / Gangs
 
 ## New Preview (with Tattoos)
 
@@ -83,7 +84,7 @@ Migration demo: https://streamable.com/ydxoqb
 - Restart the server
 
 
-## Blacklisting Clothes
+## Blacklisting Clothes and / or Limiting them to Jobs / Gangs
 
 You can now blacklist different clothes by adding them in a specific format to `blacklist.json`. The default file contains all the component names that you can choose to blacklist. For example if you want to blacklist following items:
 
@@ -92,6 +93,8 @@ Jackets: 10, 12, 13, 18 (All Textures)
 Jackets: 11 (Texture: 1, 2, 3)
 Masks: 10, 11, 12, 13 (All Textures)
 Masks: 14 (Texture: 5, 7, 10, 12, 13)
+Jackets: 25, 30, 35 (Accessible only by "police" job)
+Hats: 41, 42, 45 (Accessible only by "ballas" gang)
 ```
 
 Here is how the JSON file would look like, for such configuration:
@@ -102,19 +105,10 @@ Here is how the JSON file would look like, for such configuration:
     "components": {
       "masks": [
         {
-          "drawable": 10
+          "drawables": [ 10, 11, 12, 13 ]
         },
         {
-          "drawable": 11
-        },
-        {
-          "drawable": 12
-        },
-        {
-          "drawable": 13
-        },
-        {
-          "drawable": 14,
+          "drawables": [14],
           "textures": [ 5, 7, 10, 11, 12, 13 ]
         }
       ],
@@ -128,25 +122,25 @@ Here is how the JSON file would look like, for such configuration:
       "decals": [],
       "jackets": [
         {
-          "drawable": 10
-        },
-        {
-          "drawable": 11,
+          "drawables":  [ 11 ],
           "textures": [ 1, 2, 3 ]
         },
         {
-          "drawable": 12
+          "drawables": [ 10, 12, 13, 18 ]
         },
         {
-          "drawable": 13
-        },
-        {
-          "drawable": 18
+          "drawables": [ 25, 30, 35 ],
+          "jobs": [ "police" ]
         }
       ]
     },
     "props": {
-      "hats": [],
+      "hats": [
+        {
+          "drawables": [ 41, 42, 45 ],
+          "gangs": [ "ballas" ]
+        }
+      ],
       "glasses": [],
       "ear": [],
       "watches": [],
