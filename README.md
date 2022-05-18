@@ -35,6 +35,7 @@ Discord: https://discord.gg/ZVJEkjUTkx
 - QBCore Theme
 - Component & Props Blacklist support
 - Limit Components & Props to certain Jobs / Gangs
+- Persist Job / Gang Clothes on reconnects / logout
 
 ## New Preview (with Tattoos)
 
