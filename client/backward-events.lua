@@ -131,6 +131,19 @@ RegisterNetEvent('qb-clothing:client:loadOutfit', function(oData)
             ClearPedProp(ped, 2)
         end
     end
+
+    local length = 0
+    for _ in pairs(data) do
+        length = length + 1
+    end
+
+    if Config.PersistUniforms and length > 1 then
+        TriggerServerEvent("fivem-appearance:server:syncUniform", {
+            jobName = oData.jobName,
+            gender = oData.gender,
+            label = oData.outfitLabel
+        })
+    end
 end)
 
 RegisterNetEvent("qb-multicharacter:client:chooseChar", function()

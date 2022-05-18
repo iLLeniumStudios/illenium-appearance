@@ -29,6 +29,32 @@ RegisterNetEvent('QBCore:Client:OnGangUpdate', function(GangInfo)
     TriggerEvent("updateGang", PlayerGang.name)
 end)
 
+local function LoadPlayerUniform()
+    QBCore.Functions.TriggerCallback("fivem-appearance:server:getUniform", function(uniformData)
+        if not uniformData then
+            return
+        end
+        local outfits = Config.Outfits[uniformData.jobName][uniformData.gender]
+        local uniform = nil
+        for i = 1, #outfits, 1 do
+            if outfits[i].outfitLabel == uniformData.label then
+                uniform = outfits[i]
+                break
+            end
+        end
+
+        if not uniform then
+            TriggerServerEvent("fivem-appearance:server:syncUniform", nil) -- Uniform doesn't exist anymore
+            return
+        end
+
+        uniform.jobName = uniformData.jobName
+        uniform.gender = uniformData.gender
+
+        TriggerEvent("qb-clothing:client:loadOutfit", uniform)
+    end)
+end
+
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerJob = PlayerData.job
@@ -39,6 +65,9 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
             return
         end
         exports['fivem-appearance']:setPlayerAppearance(appearance)
+        if Config.PersistUniforms then
+            LoadPlayerUniform()
+        end
 
         if Config.Debug then -- This will detect if the player model is set as "player_zero" aka michael. Will then set the character as a freemode ped based on gender.
             Wait(5000)
@@ -337,9 +366,10 @@ RegisterNetEvent("fivem-appearance:client:changeOutfitMenu", function(data)
                 params = {
                     event = 'fivem-appearance:client:changeOutfit',
                     args = {
+                        outfitName = result[i].outfitname,
                         model = result[i].model,
                         components = result[i].components,
-                        props = result[i].props,
+                        props = result[i].props
                     }
                 }
             }
@@ -359,7 +389,9 @@ RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
                 exports['fivem-appearance']:setPlayerAppearance(appearance)
                 appearanceDB = appearance
             else
-                QBCore.Functions.Notify("Something went wrong. The outfit that you're trying to change to, does not have a base appearance.", "error")
+                QBCore.Functions.Notify(
+                    "Something went wrong. The outfit that you're trying to change to, does not have a base appearance.",
+                    "error")
                 failed = true
             end
         end, data.model)
@@ -418,6 +450,9 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
             return
         end
         exports['fivem-appearance']:setPlayerAppearance(appearance)
+        if Config.PersistUniforms then
+            TriggerServerEvent("fivem-appearance:server:syncUniform", nil)
+        end
     end)
 end)
 
@@ -451,7 +486,9 @@ function getPlayerJobOutfits(clothingRoom)
     for i = 1, #Config.Outfits[jobName][gender], 1 do
         for _, v in pairs(Config.Outfits[jobName][gender][i].grades) do
             if v == gradeLevel then
-                outfits[#outfits+1] = Config.Outfits[jobName][gender][i]
+                outfits[#outfits + 1] = Config.Outfits[jobName][gender][i]
+                outfits[#outfits].gender = gender
+                outfits[#outfits].jobName = jobName
             end
         end
     end
@@ -571,7 +608,7 @@ function SetupTargets()
                     OpenBarberShop()
                 end,
                 icon = "fas fa-scissors",
-                label = "Barber",
+                label = "Barber"
             }
         elseif v.shopType == 'clothing' then
             opts = {
@@ -579,7 +616,7 @@ function SetupTargets()
                     TriggerEvent("fivem-appearance:client:openClothingShopMenu")
                 end,
                 icon = "fas fa-tshirt",
-                label = "Clothing Store",
+                label = "Clothing Store"
             }
         elseif v.shopType == 'tattoo' then
             opts = {
@@ -587,7 +624,7 @@ function SetupTargets()
                     OpenTattooShop()
                 end,
                 icon = "fas fa-pen",
-                label = "Tattoos",
+                label = "Tattoos"
             }
         elseif v.shopType == 'surgeon' then
             opts = {
@@ -601,17 +638,15 @@ function SetupTargets()
         exports['qb-target']:AddBoxZone(v.shopType .. k, v.coords, v.length, v.width, {
             name = v.shopType .. k,
             debugPoly = Config.Debug,
-            minZ = v.coords.z-1,
-            maxZ = v.coords.z+1,
+            minZ = v.coords.z - 1,
+            maxZ = v.coords.z + 1
         }, {
-            options = {
-                {
-                    type = "client",
-                    action = opts.action,
-                    icon = opts.icon,
-                    label = opts.label,
-                },
-            },
+            options = {{
+                type = "client",
+                action = opts.action,
+                icon = opts.icon,
+                label = opts.label
+            }},
             distance = 3
         })
     end
@@ -626,17 +661,15 @@ function SetupTargets()
             name = 'clothing_' .. v.requiredJob .. k,
             debugPoly = Config.Debug,
             minZ = v.coords.z - 2,
-            maxZ = v.coords.z + 2,
+            maxZ = v.coords.z + 2
         }, {
-            options = {
-                {
-                    type = "client",
-                    action = action,
-                    icon = "fas fa-sign-in-alt",
-                    label = "Clothing",
-                    job = v.requiredJob
-                },
-            },
+            options = {{
+                type = "client",
+                action = action,
+                icon = "fas fa-sign-in-alt",
+                label = "Clothing",
+                job = v.requiredJob
+            }},
             distance = 3
         })
     end
@@ -646,21 +679,19 @@ function SetupTargets()
             name = 'playeroutfitroom_' .. k,
             debugPoly = Config.Debug,
             minZ = v.coords.z - 2,
-            maxZ = v.coords.z + 2,
+            maxZ = v.coords.z + 2
         }, {
-            options = {
-                {
-                    type = "client",
-                    action = function(_)
-                        OpenOutfitRoom(v)
-                    end,
-                    icon = "fas fa-sign-in-alt",
-                    label = "Outfits",
-                    canInteract = function(_)
-                        return isPlayerAllowedForOutfitRoom(v)
-                    end
-                },
-            },
+            options = {{
+                type = "client",
+                action = function(_)
+                    OpenOutfitRoom(v)
+                end,
+                icon = "fas fa-sign-in-alt",
+                label = "Outfits",
+                canInteract = function(_)
+                    return isPlayerAllowedForOutfitRoom(v)
+                end
+            }},
             distance = 3
         })
     end
