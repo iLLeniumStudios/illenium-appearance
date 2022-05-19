@@ -522,6 +522,10 @@ local function getPlayerJobOutfits(clothingRoom)
     return outfits
 end
 
+local function CheckDuty()
+    return not Config.OnDutyOnlyClothingRooms or (Config.OnDutyOnlyClothingRooms and PlayerJob.onduty)
+end
+
 local function SetupStoreZones()
     local zones = {}
     for _, v in pairs(Config.Stores) do
@@ -577,9 +581,11 @@ local function SetupClothingRoomZones()
             zoneName = zone.name
             local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zone.name, 15))]
             local jobName = clothingRoom.isGang and PlayerGang.name or PlayerJob.name
-            if (jobName == clothingRoom.requiredJob) then
-                inZone = true
-                exports['qb-core']:DrawText('[E] Clothing Room')
+            if jobName == clothingRoom.requiredJob then
+                if CheckDuty() then
+                    inZone = true
+                    exports['qb-core']:DrawText('[E] Clothing Room')
+                end
             end
         else
             inZone = false
@@ -694,12 +700,7 @@ local function SetupTargets()
                 action = action,
                 icon = "fas fa-sign-in-alt",
                 label = "Clothing",
-                canIntract = function()
-                    if not Config.OnDutyOnlyClothingRooms then
-                        return true
-                    end
-                    return PlayerJob.onduty
-                end,
+                canIntract = CheckDuty,
                 job = v.requiredJob
             }},
             distance = 3
