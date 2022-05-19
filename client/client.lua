@@ -7,6 +7,20 @@ local PlayerData = {}
 local PlayerJob = {}
 local PlayerGang = {}
 
+local function RemoveTargets()
+    for k, v in pairs(Config.Stores) do
+        exports['qb-target']:RemoveZone(v.shopType .. k)
+    end
+
+    for k, v in pairs(Config.ClothingRooms) do
+        exports['qb-target']:RemoveZone('clothing_' .. v.requiredJob .. k)
+    end
+
+    for k, v in pairs(Config.PlayerOutfitRooms) do
+        exports['qb-target']:RemoveZone('playeroutfitroom_' .. k)
+    end
+end
+
 AddEventHandler('onResourceStart', function(resource)
     if resource == GetCurrentResourceName() then
         PlayerData = QBCore.Functions.GetPlayerData()
@@ -14,6 +28,14 @@ AddEventHandler('onResourceStart', function(resource)
         PlayerGang = PlayerData.gang
         TriggerEvent("updateJob", PlayerJob.name)
         TriggerEvent("updateGang", PlayerGang.name)
+    end
+end)
+
+AddEventHandler('onResourceStop', function(resource)
+    if resource == GetCurrentResourceName() and GetResourceState("qb-target") == "started" then
+        if Config.UseTarget then
+            RemoveTargets()
+        end
     end
 end)
 
@@ -27,6 +49,10 @@ RegisterNetEvent('QBCore:Client:OnGangUpdate', function(GangInfo)
     PlayerData.gang = GangInfo
     PlayerGang = GangInfo
     TriggerEvent("updateGang", PlayerGang.name)
+end)
+
+RegisterNetEvent('QBCore:Client:SetDuty', function(duty)
+    PlayerJob.onduty = duty
 end)
 
 local function LoadPlayerUniform()
@@ -456,7 +482,7 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
     end)
 end)
 
-function isPlayerAllowedForOutfitRoom(outfitRoom)
+local function isPlayerAllowedForOutfitRoom(outfitRoom)
     local isAllowed = false
     for i = 1, #outfitRoom.citizenIDs, 1 do
         if outfitRoom.citizenIDs[i] == PlayerData.citizenid then
@@ -467,14 +493,14 @@ function isPlayerAllowedForOutfitRoom(outfitRoom)
     return isAllowed
 end
 
-function OpenOutfitRoom(outfitRoom)
+local function OpenOutfitRoom(outfitRoom)
     local isAllowed = isPlayerAllowedForOutfitRoom(outfitRoom)
     if isAllowed then
         TriggerEvent('qb-clothing:client:openOutfitMenu')
     end
 end
 
-function getPlayerJobOutfits(clothingRoom)
+local function getPlayerJobOutfits(clothingRoom)
     local outfits = {}
     local gender = "male"
     if PlayerData.charinfo.gender == 1 then
@@ -496,7 +522,7 @@ function getPlayerJobOutfits(clothingRoom)
     return outfits
 end
 
-function SetupStoreZones()
+local function SetupStoreZones()
     local zones = {}
     for _, v in pairs(Config.Stores) do
         zones[#zones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
@@ -531,7 +557,7 @@ function SetupStoreZones()
     end)
 end
 
-function SetupClothingRoomZones()
+local function SetupClothingRoomZones()
     local roomZones = {}
     for k, v in pairs(Config.ClothingRooms) do
         roomZones[#roomZones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
@@ -562,7 +588,7 @@ function SetupClothingRoomZones()
     end)
 end
 
-function SetupPlayerOutfitRoomZones()
+local function SetupPlayerOutfitRoomZones()
     local roomZones = {}
     for k, v in pairs(Config.PlayerOutfitRooms) do
         roomZones[#roomZones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
@@ -593,13 +619,13 @@ function SetupPlayerOutfitRoomZones()
     end)
 end
 
-function SetupZones()
+local function SetupZones()
     SetupStoreZones()
     SetupClothingRoomZones()
     SetupPlayerOutfitRoomZones()
 end
 
-function SetupTargets()
+local function SetupTargets()
     for k, v in pairs(Config.Stores) do
         local opts = {}
         if v.shopType == 'barber' then
@@ -668,6 +694,12 @@ function SetupTargets()
                 action = action,
                 icon = "fas fa-sign-in-alt",
                 label = "Clothing",
+                canIntract = function()
+                    if not Config.OnDutyOnlyClothingRooms then
+                        return true
+                    end
+                    return PlayerJob.onduty
+                end,
                 job = v.requiredJob
             }},
             distance = 3
@@ -697,7 +729,7 @@ function SetupTargets()
     end
 end
 
-function ZonesLoop()
+local function ZonesLoop()
     Wait(1000)
     while true do
         local sleep = 1000
