@@ -16,7 +16,7 @@ Config.AlwaysKeepProps = false
 
 Config.PersistUniforms = false -- Keeps Job / Gang Outfits on player reconnects / logout
 
-Config.OnDutyOnlyClothingRooms = false -- Enable to make the clothing rooms accessible to players who are On Duty
+Config.OnDutyOnlyClothingRooms = false -- Set to `true` to make the clothing rooms accessible only to players who are On Duty
 
 Config.Blips = {
     ['clothing'] = {

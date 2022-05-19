@@ -636,7 +636,7 @@ local function SetupTargets()
         local opts = {}
         if v.shopType == 'barber' then
             opts = {
-                action = function(_)
+                action = function()
                     OpenBarberShop()
                 end,
                 icon = "fas fa-scissors",
@@ -644,7 +644,7 @@ local function SetupTargets()
             }
         elseif v.shopType == 'clothing' then
             opts = {
-                action = function(_)
+                action = function()
                     TriggerEvent("fivem-appearance:client:openClothingShopMenu")
                 end,
                 icon = "fas fa-tshirt",
@@ -652,7 +652,7 @@ local function SetupTargets()
             }
         elseif v.shopType == 'tattoo' then
             opts = {
-                action = function(_)
+                action = function()
                     OpenTattooShop()
                 end,
                 icon = "fas fa-pen",
@@ -660,7 +660,7 @@ local function SetupTargets()
             }
         elseif v.shopType == 'surgeon' then
             opts = {
-                action = function(_)
+                action = function()
                     OpenSurgeonShop()
                 end,
                 icon = "fas fa-scalpel",
@@ -684,7 +684,7 @@ local function SetupTargets()
     end
 
     for k, v in pairs(Config.ClothingRooms) do
-        local action = function(_)
+        local action = function()
             local outfits = getPlayerJobOutfits(v)
             TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', outfits)
         end
@@ -700,7 +700,7 @@ local function SetupTargets()
                 action = action,
                 icon = "fas fa-sign-in-alt",
                 label = "Clothing",
-                canIntract = CheckDuty,
+                canInteract = CheckDuty,
                 job = v.requiredJob
             }},
             distance = 3
@@ -716,12 +716,12 @@ local function SetupTargets()
         }, {
             options = {{
                 type = "client",
-                action = function(_)
+                action = function()
                     OpenOutfitRoom(v)
                 end,
                 icon = "fas fa-sign-in-alt",
                 label = "Outfits",
-                canInteract = function(_)
+                canInteract = function()
                     return isPlayerAllowedForOutfitRoom(v)
                 end
             }},
