@@ -16,7 +16,7 @@ local function RemoveTargets()
         exports['qb-target']:RemoveZone('clothing_' .. v.requiredJob .. k)
     end
 
-    for k, v in pairs(Config.PlayerOutfitRooms) do
+    for k in pairs(Config.PlayerOutfitRooms) do
         exports['qb-target']:RemoveZone('playeroutfitroom_' .. k)
     end
 end
