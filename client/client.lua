@@ -7,17 +7,18 @@ local PlayerData = {}
 local PlayerJob = {}
 local PlayerGang = {}
 
-local function RemoveTargets()
-    for k, v in pairs(Config.Stores) do
-        exports['qb-target']:RemoveZone(v.shopType .. k)
-    end
+local TargetPeds = {
+    Store = {},
+    ClothingRoom = {},
+    PlayerOutfitRoom = {}
+}
 
-    for k, v in pairs(Config.ClothingRooms) do
-        exports['qb-target']:RemoveZone('clothing_' .. v.requiredJob .. k)
-    end
-
-    for k in pairs(Config.PlayerOutfitRooms) do
-        exports['qb-target']:RemoveZone('playeroutfitroom_' .. k)
+local function RemoveTargetPeds()
+    for k, _ in pairs(TargetPeds) do
+        local peds = TargetPeds[k]
+        for i = 1, #peds, 1 do
+            DeletePed(peds[i])
+        end
     end
 end
 
@@ -34,7 +35,7 @@ end)
 AddEventHandler('onResourceStop', function(resource)
     if resource == GetCurrentResourceName() and GetResourceState("qb-target") == "started" then
         if Config.UseTarget then
-            RemoveTargets()
+            RemoveTargetPeds()
         end
     end
 end)
@@ -533,7 +534,7 @@ local function SetupStoreZones()
             name = v.shopType,
             minZ = v.coords.z - 1.5,
             maxZ = v.coords.z + 1.5,
-            debugPoly = false
+            heading = v.coords.w
         })
     end
 
@@ -568,7 +569,7 @@ local function SetupClothingRoomZones()
             name = 'ClothingRooms_' .. k,
             minZ = v.coords.z - 1.5,
             maxZ = v.coords.z + 1,
-            debugPoly = false
+            heading = v.coords.w
         })
     end
 
@@ -601,7 +602,6 @@ local function SetupPlayerOutfitRoomZones()
             name = 'PlayerOutfitRooms_' .. k,
             minZ = v.coords.z - 1.5,
             maxZ = v.coords.z + 1,
-            debugPoly = false
         })
     end
 
@@ -631,75 +631,67 @@ local function SetupZones()
     SetupPlayerOutfitRoomZones()
 end
 
+local function EnsurePedModel(pedModel)
+    RequestModel(pedModel)
+    while not HasModelLoaded(pedModel) do
+        Wait(10)
+    end
+end
+
+local function CreatePedAtCoords(pedModel, coords, scenario)
+    pedModel = type(pedModel) == "string" and GetHashKey(pedModel) or pedModel
+    EnsurePedModel(pedModel)
+    local ped = CreatePed(0, pedModel, coords.x, coords.y, coords.z, coords.w, true, false)
+    TaskStartScenarioInPlace(ped, scenario, true)
+    FreezeEntityPosition(ped, true)
+    SetEntityVisible(ped, true)
+    SetBlockingOfNonTemporaryEvents(ped, true)
+    return ped
+end
+
 local function SetupTargets()
     for k, v in pairs(Config.Stores) do
-        local opts = {}
+        local pedConfig = Config.Peds[v.shopType]
+        local action
+
         if v.shopType == 'barber' then
-            opts = {
-                action = function()
-                    OpenBarberShop()
-                end,
-                icon = "fas fa-scissors",
-                label = "Barber"
-            }
+            action = OpenBarberShop
         elseif v.shopType == 'clothing' then
-            opts = {
-                action = function()
-                    TriggerEvent("fivem-appearance:client:openClothingShopMenu")
-                end,
-                icon = "fas fa-tshirt",
-                label = "Clothing Store"
-            }
+            action = function()
+                TriggerEvent("fivem-appearance:client:openClothingShopMenu")
+            end
         elseif v.shopType == 'tattoo' then
-            opts = {
-                action = function()
-                    OpenTattooShop()
-                end,
-                icon = "fas fa-pen",
-                label = "Tattoos"
-            }
+            action = OpenTattooShop
         elseif v.shopType == 'surgeon' then
-            opts = {
-                action = function()
-                    OpenSurgeonShop()
-                end,
-                icon = "fas fa-scalpel",
-                label = "Plastic Surgeon"
-            }
+            action = OpenSurgeonShop
         end
-        exports['qb-target']:AddBoxZone(v.shopType .. k, v.coords, v.length, v.width, {
-            name = v.shopType .. k,
-            debugPoly = Config.Debug,
-            minZ = v.coords.z - 1,
-            maxZ = v.coords.z + 1
-        }, {
+
+        TargetPeds.Store[k] = CreatePedAtCoords(pedConfig.model, v.coords, pedConfig.scenario)
+        exports['qb-target']:AddTargetEntity(TargetPeds.Store[k], {
             options = {{
                 type = "client",
-                action = opts.action,
-                icon = opts.icon,
-                label = opts.label
+                action = action,
+                icon = pedConfig.targetIcon,
+                label = pedConfig.targetLabel
             }},
             distance = 3
         })
     end
 
     for k, v in pairs(Config.ClothingRooms) do
+        local pedConfig = Config.Peds["clothingroom"]
         local action = function()
             local outfits = getPlayerJobOutfits(v)
             TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', outfits)
         end
 
-        exports['qb-target']:AddBoxZone('clothing_' .. v.requiredJob .. k, v.coords, v.length, v.width, {
-            name = 'clothing_' .. v.requiredJob .. k,
-            debugPoly = Config.Debug,
-            minZ = v.coords.z - 2,
-            maxZ = v.coords.z + 2
-        }, {
+        TargetPeds.ClothingRoom[k] = CreatePedAtCoords(pedConfig.model, v.coords, pedConfig.scenario)
+        exports['qb-target']:AddTargetEntity(TargetPeds.ClothingRoom[k], {
             options = {{
                 type = "client",
                 action = action,
-                icon = "fas fa-sign-in-alt",
-                label = "Clothing",
+                icon = pedConfig.targetIcon,
+                label = pedConfig.targetLabel,
                 canInteract = CheckDuty,
                 job = v.requiredJob
             }},
@@ -708,19 +700,17 @@ local function SetupTargets()
     end
 
     for k, v in pairs(Config.PlayerOutfitRooms) do
-        exports['qb-target']:AddBoxZone('playeroutfitroom_' .. k, v.coords, v.length, v.width, {
-            name = 'playeroutfitroom_' .. k,
-            debugPoly = Config.Debug,
-            minZ = v.coords.z - 2,
-            maxZ = v.coords.z + 2
-        }, {
+        local pedConfig = Config.Peds["playeroutfitroom"]
+
+        TargetPeds.PlayerOutfitRoom[k] = CreatePedAtCoords(pedConfig.model, v.coords, pedConfig.scenario)
+        exports['qb-target']:AddTargetEntity(TargetPeds.ClothingRoom[k], {
             options = {{
                 type = "client",
                 action = function()
                     OpenOutfitRoom(v)
                 end,
-                icon = "fas fa-sign-in-alt",
-                label = "Outfits",
+                icon = pedConfig.targetIcon,
+                label = pedConfig.targetLabel,
                 canInteract = function()
                     return isPlayerAllowedForOutfitRoom(v)
                 end
