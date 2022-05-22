@@ -51,37 +51,37 @@ Config.Blips = {
 
 Config.Peds = {
     ["clothing"] = {
-        model = "mp_m_shopkeep_01",
+        model = "s_f_m_shop_high",
         scenario = "WORLD_HUMAN_STAND_MOBILE",
         targetIcon = "fas fa-tshirt",
         targetLabel = "Open Clothing Store"
     },
     ["barber"] = {
-        model = "mp_m_shopkeep_01",
+        model = "s_m_m_hairdress_01",
         scenario = "WORLD_HUMAN_STAND_MOBILE",
         targetIcon = "fas fa-scissors",
         targetLabel = "Open Barber Shop"
     },
     ["tattoo"] = {
-        model = "mp_m_shopkeep_01",
+        model = "u_m_y_tattoo_01",
         scenario = "WORLD_HUMAN_STAND_MOBILE",
         targetIcon = "fas fa-pen",
         targetLabel = "Open Tattoo Shop"
     },
     ["surgeon"] = {
-        model = "mp_m_shopkeep_01",
+        model = "s_m_m_doctor_01",
         scenario = "WORLD_HUMAN_STAND_MOBILE",
         targetIcon = "fas fa-scalpel",
         targetLabel = "Open Surgeon"
     },
     ["clothingroom"] = {
-        model = "mp_m_shopkeep_01",
+        model = "mp_g_m_pros_01",
         scenario = "WORLD_HUMAN_STAND_MOBILE",
         targetIcon = "fas fa-sign-in-alt",
         targetLabel = "Open Job / Gang Clothes Menu"
     },
     ["playeroutfitroom"] = {
-        model = "mp_m_shopkeep_01",
+        model = "mp_g_m_pros_01",
         scenario = "WORLD_HUMAN_STAND_MOBILE",
         targetIcon = "fas fa-sign-in-alt",
         targetLabel = "Open Outfits Menu"
