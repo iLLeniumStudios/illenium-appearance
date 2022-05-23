@@ -726,31 +726,21 @@ local function ZonesLoop()
         local sleep = 1000
         if inZone then
             sleep = 5
-            if string.find(zoneName, 'ClothingRooms_') then
-                if IsControlJustReleased(0, 38) then
+            if IsControlJustReleased(0, 38) then
+                if string.find(zoneName, 'ClothingRooms_') then
                     local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zoneName, 15))]
                     local outfits = getPlayerJobOutfits(clothingRoom)
                     TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', outfits)
-                end
-            elseif string.find(zoneName, 'PlayerOutfitRooms_') then
-                if IsControlJustReleased(0, 38) then
+                elseif string.find(zoneName, 'PlayerOutfitRooms_') then
                     local outfitRoom = Config.PlayerOutfitRooms[tonumber(string.sub(zoneName, 19))]
                     OpenOutfitRoom(outfitRoom)
-                end
-            elseif zoneName == 'clothing' then
-                if IsControlJustReleased(0, 38) then
+                elseif zoneName == 'clothing' then
                     TriggerEvent("fivem-appearance:client:openClothingShopMenu")
-                end
-            elseif zoneName == 'barber' then
-                if IsControlJustReleased(0, 38) then
+                elseif zoneName == 'barber' then
                     OpenBarberShop()
-                end
-            elseif zoneName == 'tattoo' then
-                if IsControlJustReleased(0, 38) then
+                elseif zoneName == 'tattoo' then
                     OpenTattooShop()
-                end
-            elseif zoneName == 'surgeon' then
-                if IsControlJustReleased(0, 38) then
+                elseif zoneName == 'surgeon' then
                     OpenSurgeonShop()
                 end
             end
