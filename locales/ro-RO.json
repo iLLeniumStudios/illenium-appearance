@@ -28,6 +28,12 @@
       "firstOption": "Tata",
       "secondOption": "Mama",
       "mix": "Mix"
+    },
+    "race": {
+      "title": "Rasă",
+      "shape": "Fata",
+      "skin": "Pielea",
+      "mix": "Mix"
     }
   },
   "faceFeatures": {

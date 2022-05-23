@@ -28,6 +28,12 @@
       "firstOption": "Padre",
       "secondOption": "Madre",
       "mix": "Mezcla"
+    },
+    "race": {
+      "title": "Raza",
+      "shape": "Rostro",
+      "skin": "Piel",
+      "mix": "Mezcla"
     }
   },
   "faceFeatures": {
