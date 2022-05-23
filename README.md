@@ -36,6 +36,7 @@ Discord: https://discord.gg/ZVJEkjUTkx
 - Component & Props Blacklist support
 - Limit Components & Props to certain Jobs / Gangs
 - Persist Job / Gang Clothes on reconnects / logout
+- Themes Support
 
 ## New Preview (with Tattoos)
 
@@ -173,6 +174,41 @@ Here is how the JSON file would look like, for such configuration:
 ```
 
 You can separately blacklist male and female clothes. Just put them under the right section in the json and you should be good to go.
+
+## Theme configuration
+
+fivem-appearance comes with 2 themes, `default` and `qb-core` and `qb-core` is set as the default one.
+
+### Switch between themes
+
+Change `currentTheme` to the theme `id`. You can choose between `qb-core` and `default`.
+
+### Creating custom themes
+
+- Copy an existing theme based on which you want to create a new one
+- Change the `id` to something unique
+- Change the parameters of the theme accordingly
+
+### Theme parameters
+
+You can customize every theme using the parameters defined in `theme.json`. Following table explains a little bit about what each parameter can do
+
+| Parameter                  | Description                                                   |
+|----------------------------|---------------------------------------------------------------|
+| id                         | Unique ID for the theme                                       |
+| borderRadius               | How round do you want the corners of the elements to be       |
+| fontColor                  | Main color of the text                                        |
+| fontColorHover             | Color of the text on hover                                    |
+| fontColorSelected          | Color of the text when it is selected                         |
+| fontFamily                 | Font of the text                                              |
+| primaryBackground          | Main background color for the elements                        |
+| primaryBackgroundSelected  | Main background color for the elements when they are selected |
+| secondaryBackground        | Secondary background color                                    |
+| scaleOnHover               | Increase the size of the elements on hover                    |
+| sectionFontWeight          | Font weight for the section headings text                     |
+| smoothBackgroundTransition | Enable to fade in to the background color during hover        |
+
+*Note:* After creating the custom theme, make sure to change `currentTheme` to the `id` of the new theme. You can ofcourse modify the existing themes as well if you want, but it is recommended to create your own so that you can switch between the defaults and the custom one whenever needed.
 
 ## Credits
 - Original Script: https://github.com/pedr0fontoura/fivem-appearance
