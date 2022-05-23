@@ -9,6 +9,10 @@ Config.SurgeonCost = 100
 
 Config.UseTarget = GetConvar("UseTarget", "false") == "true"
 
+Config.EnablePedsForShops = true
+Config.EnablePedsForClothingRooms = true
+Config.EnablePedsForPlayerOutfitRooms = true
+
 Config.EnablePedMenu = true
 Config.PedMenuGroup = "admin"
 
@@ -49,42 +53,48 @@ Config.Blips = {
     }
 }
 
-Config.Peds = {
+Config.TargetConfig = {
     ["clothing"] = {
         model = "s_f_m_shop_high",
         scenario = "WORLD_HUMAN_STAND_MOBILE",
-        targetIcon = "fas fa-tshirt",
-        targetLabel = "Open Clothing Store"
+        icon = "fas fa-tshirt",
+        label = "Open Clothing Store",
+        distance = 3
     },
     ["barber"] = {
         model = "s_m_m_hairdress_01",
         scenario = "WORLD_HUMAN_STAND_MOBILE",
-        targetIcon = "fas fa-scissors",
-        targetLabel = "Open Barber Shop"
+        icon = "fas fa-scissors",
+        label = "Open Barber Shop",
+        distance = 3
     },
     ["tattoo"] = {
         model = "u_m_y_tattoo_01",
         scenario = "WORLD_HUMAN_STAND_MOBILE",
-        targetIcon = "fas fa-pen",
-        targetLabel = "Open Tattoo Shop"
+        icon = "fas fa-pen",
+        label = "Open Tattoo Shop",
+        distance = 3
     },
     ["surgeon"] = {
         model = "s_m_m_doctor_01",
         scenario = "WORLD_HUMAN_STAND_MOBILE",
-        targetIcon = "fas fa-scalpel",
-        targetLabel = "Open Surgeon"
+        icon = "fas fa-scalpel",
+        label = "Open Surgeon",
+        distance = 3
     },
     ["clothingroom"] = {
         model = "mp_g_m_pros_01",
         scenario = "WORLD_HUMAN_STAND_MOBILE",
-        targetIcon = "fas fa-sign-in-alt",
-        targetLabel = "Open Job / Gang Clothes Menu"
+        icon = "fas fa-sign-in-alt",
+        label = "Open Job / Gang Clothes Menu",
+        distance = 3
     },
     ["playeroutfitroom"] = {
         model = "mp_g_m_pros_01",
         scenario = "WORLD_HUMAN_STAND_MOBILE",
-        targetIcon = "fas fa-sign-in-alt",
-        targetLabel = "Open Outfits Menu"
+        icon = "fas fa-sign-in-alt",
+        label = "Open Outfits Menu",
+        distance = 3
     },
 }
 
