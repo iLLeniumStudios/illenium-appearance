@@ -28,6 +28,12 @@
       "firstOption": "Pai",
       "secondOption": "Mãe",
       "mix": "Mistura"
+    },
+    "race": {
+      "title": "Raça",
+      "shape": "Face",
+      "skin": "Pele",
+      "mix": "Mistura"
     }
   },
   "faceFeatures": {
