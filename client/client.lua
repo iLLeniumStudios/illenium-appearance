@@ -641,10 +641,11 @@ end
 local function CreatePedAtCoords(pedModel, coords, scenario)
     pedModel = type(pedModel) == "string" and GetHashKey(pedModel) or pedModel
     EnsurePedModel(pedModel)
-    local ped = CreatePed(0, pedModel, coords.x, coords.y, coords.z, coords.w, false, false)
+    local ped = CreatePed(0, pedModel, coords.x, coords.y, coords.z - 0.98, coords.w, false, false)
     TaskStartScenarioInPlace(ped, scenario, true)
     FreezeEntityPosition(ped, true)
     SetEntityVisible(ped, true)
+    PlaceObjectOnGroundProperly(ped)
     SetBlockingOfNonTemporaryEvents(ped, true)
     return ped
 end
