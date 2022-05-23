@@ -35,6 +35,7 @@ files {
   'peds.json',
   'tattoos.json',
   'blacklist.json',
+  'theme.json'
 }
 
 ui_page 'web/dist/index.html'
