@@ -57,7 +57,7 @@ RegisterNetEvent("fivem-appearance:server:migrate-qb-clothing-skin", function(ci
     end)
 end)
 
-QBCore.Commands.Add('migrateskins', 'Migrate skins to fivem-appearance', {name='type', help='fivem-appearance / qb-clothing'}, false, function(source, args)
+QBCore.Commands.Add('migrateskins', 'Migrate skins to fivem-appearance', {{name='type', help='fivem-appearance / qb-clothing'}}, false, function(source, args)
     local type = tostring(args[1])
     if type == "fivem-appearance" then
         MigrateFivemAppearance(source)
