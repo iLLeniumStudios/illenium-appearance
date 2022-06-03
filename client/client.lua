@@ -668,6 +668,7 @@ local function CreatePedAtCoords(pedModel, coords, scenario)
     TaskStartScenarioInPlace(ped, scenario, true)
     FreezeEntityPosition(ped, true)
     SetEntityVisible(ped, true)
+    SetEntityInvincible(ped, true)
     PlaceObjectOnGroundProperly(ped)
     SetBlockingOfNonTemporaryEvents(ped, true)
     return ped
