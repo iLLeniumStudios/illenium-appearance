@@ -99,47 +99,47 @@ Config.TargetConfig = {
 }
 
 Config.Stores = {
-    [1] = {shopType = "clothing", coords = vector4(1693.2, 4828.11, 42.07, 188.66), width = 4, length = 4, showBlip = true}, -- showBlip overrides the blip visibilty configured above for the group
-    [2] = {shopType = "clothing", coords = vector4(-705.5, -149.22, 37.42, 122), width = 4, length = 4},
-    [3] = {shopType = "clothing", coords = vector4(-1192.61, -768.4, 17.32, 216.6), width = 4, length = 4},
-    [4] = {shopType = "clothing", coords = vector4(425.91, -801.03, 29.49, 177.79), width = 4, length = 4},
-    [5] = {shopType = "clothing", coords = vector4(-168.73, -301.41, 39.73, 238.67), width = 4, length = 4},
-    [6] = {shopType = "clothing", coords = vector4(75.39, -1398.28, 29.38, 6.73), width = 4, length = 4},
-    [7] = {shopType = "clothing", coords = vector4(-827.39, -1075.93, 11.33, 294.31), width = 4, length = 4},
-    [8] = {shopType = "clothing", coords = vector4(-1445.86, -240.78, 49.82, 36.17), width = 4, length = 4},
-    [9] = {shopType = "clothing", coords = vector4(9.22, 6515.74, 31.88, 131.27), width = 4, length = 4},
-    [10] = {shopType = "clothing", coords = vector4(615.35, 2762.72, 42.09, 170.51), width = 4, length = 4},
-    [11] = {shopType = "clothing", coords = vector4(1191.61, 2710.91, 38.22, 269.96), width = 4, length = 4},
-    [12] = {shopType = "clothing", coords = vector4(-3171.32, 1043.56, 20.86, 334.3), width = 4, length = 4},
-    [13] = {shopType = "clothing", coords = vector4(-1105.52, 2707.79, 19.11, 317.19), width = 4, length = 4},
-    [14] = {shopType = "clothing", coords = vector4(-1207.65, -1456.89, 4.37, 38.59), width = 4, length = 4},
-    [15] = {shopType = "clothing", coords = vector4(124.82, -224.36, 54.56, 335.41), width = 2, length = 2},
-    [16] = {shopType = "barber", coords = vector4(-814.22, -183.7, 37.57, 116.91), width = 2, length = 2},
-    [17] = {shopType = "barber", coords = vector4(136.78, -1708.4, 29.29, 144.19), width = 2, length = 2},
-    [18] = {shopType = "barber", coords = vector4(-1282.57, -1116.84, 6.99, 89.25), width = 2, length = 2},
-    [19] = {shopType = "barber", coords = vector4(1931.41, 3729.73, 32.84, 212.08), width = 2, length = 2},
-    [20] = {shopType = "barber", coords = vector4(1212.8, -472.9, 65.2, 60.94), width = 2, length = 2},
-    [21] = {shopType = "barber", coords = vector4(-32.9, -152.3, 56.1, 335.22), width = 2, length = 2},
-    [22] = {shopType = "barber", coords = vector4(-278.1, 6228.5, 30.7, 49.32), width = 2, length = 2},
-    [23] = {shopType = "tattoo", coords = vector4(1322.6, -1651.9, 51.2, 42.47), width = 2, length = 2},
-    [24] = {shopType = "tattoo", coords = vector4(-1154.01, -1425.31, 4.95, 23.21), width = 2, length = 2},
-    [25] = {shopType = "tattoo", coords = vector4(322.62, 180.34, 103.59, 156.2), width = 2, length = 2},
-    [26] = {shopType = "tattoo", coords = vector4(-3169.52, 1074.86, 20.83, 253.29), width = 2, length = 2},
-    [27] = {shopType = "tattoo", coords = vector4(1864.1, 3747.91, 33.03, 17.23), width = 2, length = 2},
-    [28] = {shopType = "tattoo", coords = vector4(-294.24, 6200.12, 31.49, 195.72), width = 2, length = 2},
-    [29] = {shopType = "surgeon", coords = vector4(298.78, -572.81, 43.26, 114.27), width = 2, length = 2},
+    {shopType = "clothing", coords = vector4(1693.2, 4828.11, 42.07, 188.66), width = 4, length = 4, showBlip = true}, -- showBlip overrides the blip visibilty configured above for the group
+    {shopType = "clothing", coords = vector4(-705.5, -149.22, 37.42, 122), width = 4, length = 4},
+    {shopType = "clothing", coords = vector4(-1192.61, -768.4, 17.32, 216.6), width = 4, length = 4},
+    {shopType = "clothing", coords = vector4(425.91, -801.03, 29.49, 177.79), width = 4, length = 4},
+    {shopType = "clothing", coords = vector4(-168.73, -301.41, 39.73, 238.67), width = 4, length = 4},
+    {shopType = "clothing", coords = vector4(75.39, -1398.28, 29.38, 6.73), width = 4, length = 4},
+    {shopType = "clothing", coords = vector4(-827.39, -1075.93, 11.33, 294.31), width = 4, length = 4},
+    {shopType = "clothing", coords = vector4(-1445.86, -240.78, 49.82, 36.17), width = 4, length = 4},
+    {shopType = "clothing", coords = vector4(9.22, 6515.74, 31.88, 131.27), width = 4, length = 4},
+    {shopType = "clothing", coords = vector4(615.35, 2762.72, 42.09, 170.51), width = 4, length = 4},
+    {shopType = "clothing", coords = vector4(1191.61, 2710.91, 38.22, 269.96), width = 4, length = 4},
+    {shopType = "clothing", coords = vector4(-3171.32, 1043.56, 20.86, 334.3), width = 4, length = 4},
+    {shopType = "clothing", coords = vector4(-1105.52, 2707.79, 19.11, 317.19), width = 4, length = 4},
+    {shopType = "clothing", coords = vector4(-1207.65, -1456.89, 4.37, 38.59), width = 4, length = 4},
+    {shopType = "clothing", coords = vector4(124.82, -224.36, 54.56, 335.41), width = 2, length = 2},
+    {shopType = "barber", coords = vector4(-814.22, -183.7, 37.57, 116.91), width = 2, length = 2},
+    {shopType = "barber", coords = vector4(136.78, -1708.4, 29.29, 144.19), width = 2, length = 2},
+    {shopType = "barber", coords = vector4(-1282.57, -1116.84, 6.99, 89.25), width = 2, length = 2},
+    {shopType = "barber", coords = vector4(1931.41, 3729.73, 32.84, 212.08), width = 2, length = 2},
+    {shopType = "barber", coords = vector4(1212.8, -472.9, 65.2, 60.94), width = 2, length = 2},
+    {shopType = "barber", coords = vector4(-32.9, -152.3, 56.1, 335.22), width = 2, length = 2},
+    {shopType = "barber", coords = vector4(-278.1, 6228.5, 30.7, 49.32), width = 2, length = 2},
+    {shopType = "tattoo", coords = vector4(1322.6, -1651.9, 51.2, 42.47), width = 2, length = 2},
+    {shopType = "tattoo", coords = vector4(-1154.01, -1425.31, 4.95, 23.21), width = 2, length = 2},
+    {shopType = "tattoo", coords = vector4(322.62, 180.34, 103.59, 156.2), width = 2, length = 2},
+    {shopType = "tattoo", coords = vector4(-3169.52, 1074.86, 20.83, 253.29), width = 2, length = 2},
+    {shopType = "tattoo", coords = vector4(1864.1, 3747.91, 33.03, 17.23), width = 2, length = 2},
+    {shopType = "tattoo", coords = vector4(-294.24, 6200.12, 31.49, 195.72), width = 2, length = 2},
+    {shopType = "surgeon", coords = vector4(298.78, -572.81, 43.26, 114.27), width = 2, length = 2},
 }
 
 Config.ClothingRooms = {
-    [1] = {requiredJob = "police", isGang = false, coords = vector4(462.85, -999.21, 30.69, 93.35), width = 3, length = 3},
-    [2] = {requiredJob = "police", isGang = false, coords = vector4(301.58, -598.82, 43.29, 79.61), width = 3, length = 3}, -- Right double door in Hospital Map that is on QBCore GitHub
+    {requiredJob = "police", isGang = false, coords = vector4(462.85, -999.21, 30.69, 93.35), width = 3, length = 3},
+    {requiredJob = "police", isGang = false, coords = vector4(301.58, -598.82, 43.29, 79.61), width = 3, length = 3}, -- Right double door in Hospital Map that is on QBCore GitHub
 }
 
 
 Config.PlayerOutfitRooms = {
     -- Sample outfit room config
 --[[
-    [1] = {
+    {
         coords = vector4(287.28, -573.41, 43.16, 79.61),
         width = 3,
         length = 3,
@@ -153,7 +153,7 @@ Config.PlayerOutfitRooms = {
 Config.Outfits = {
     ["police"] = {
         ["male"] = {
-            [1] = {
+            {
                 outfitLabel = "Short Sleeve",
                 outfitData = {
                     ["pants"] = {item = 24, texture = 0}, -- Pants
@@ -170,7 +170,7 @@ Config.Outfits = {
                 },
                 grades = {0, 1, 2, 3, 4},
             },
-            [2] = {
+            {
                 outfitLabel = "Trooper Tan",
                 outfitData = {
                     ["pants"] = {item = 24, texture = 0}, -- Pants
@@ -187,7 +187,7 @@ Config.Outfits = {
                 },
                 grades = {0, 1, 2, 3, 4},
             },
-            [3] = {
+            {
                 outfitLabel = "Long Sleeve",
                 outfitData = {
                     ["pants"] = {item = 24, texture = 0}, -- Pants
@@ -204,7 +204,7 @@ Config.Outfits = {
                 },
                 grades = {1, 2, 3, 4},
             },
-            [4] = {
+            {
                 outfitLabel = "Trooper Black",
                 outfitData = {
                     ["pants"] = {item = 24, texture = 0}, -- Pants
@@ -221,7 +221,7 @@ Config.Outfits = {
                 },
                 grades = {2, 3, 4},
             },
-            [5] = {
+            {
                 outfitLabel = "SWAT",
                 outfitData = {
                     ["pants"] = {item = 130, texture = 1}, -- Pants
@@ -239,7 +239,7 @@ Config.Outfits = {
             }
         },
         ["female"] = {
-            [1] = {
+            {
                 outfitLabel = "Short Sleeve",
                 outfitData = {
                     ["pants"] = {item = 133, texture = 0}, -- Pants
@@ -256,7 +256,7 @@ Config.Outfits = {
                 },
                 grades = {0, 1, 2, 3, 4},
             },
-            [2] = {
+            {
                 outfitLabel = "Trooper Tan",
                 outfitData = {
                     ["pants"] = {item = 133, texture = 0}, -- Pants
@@ -273,7 +273,7 @@ Config.Outfits = {
                 },
                 grades = {0, 1, 2, 3, 4},
             },
-            [3] = {
+            {
                 outfitLabel = "Long Sleeve",
                 outfitData = {
                     ["pants"] = {item = 133, texture = 0}, -- Pants
@@ -290,7 +290,7 @@ Config.Outfits = {
                 },
                 grades = {1, 2, 3, 4},
             },
-            [4] = {
+            {
                 outfitLabel = "Trooper Black",
                 outfitData = {
                     ["pants"] = {item = 133, texture = 0}, -- Pants
@@ -307,7 +307,7 @@ Config.Outfits = {
                 },
                 grades = {2, 3, 4},
             },
-            [5] = {
+            {
                 outfitLabel = "SWAT",
                 outfitData = {
                     ["pants"] = {item = 135, texture = 1}, -- Pants
@@ -328,7 +328,7 @@ Config.Outfits = {
     },
     ["realestate"] = {
         ["male"] = {
-            [1] = {
+            {
                 -- Outfits
                 outfitLabel = "Worker",
                 outfitData = {
@@ -348,7 +348,7 @@ Config.Outfits = {
             }
         },
         ["female"] = {
-            [1] = {
+            {
                 outfitLabel = "Worker",
                 outfitData = {
                     ["pants"]       = { item = 57, texture = 2},  -- Pants
@@ -369,7 +369,7 @@ Config.Outfits = {
     },
     ["ambulance"] = {
         ["male"] = {
-            [1] = {
+            {
                 outfitLabel = "T-Shirt",
                 outfitData = {
                     ["arms"] = {item = 85, texture = 0}, -- Arms
@@ -388,7 +388,7 @@ Config.Outfits = {
                 },
                 grades = {0, 1, 2, 3, 4},
             },
-            [2] = {
+            {
                 outfitLabel = "Polo",
                 outfitData = {
                     ["arms"] = {item = 90, texture = 0}, -- Arms
@@ -407,7 +407,7 @@ Config.Outfits = {
                 },
                 grades = {2, 3, 4},
             },
-            [3] = {
+            {
                 outfitLabel = "Doctor",
                 outfitData = {
                     ["arms"] = {item = 93, texture = 0}, -- Arms
@@ -428,7 +428,7 @@ Config.Outfits = {
             }
         },
         ["female"] = {
-            [1] = {
+            {
                 outfitLabel = "T-Shirt",
                 outfitData = {
                     ["arms"] = {item = 109, texture = 0}, -- Arms
@@ -447,7 +447,7 @@ Config.Outfits = {
                 },
                 grades = {0, 1, 2, 3, 4},
             },
-            [2] = {
+            {
                 outfitLabel = "Polo",
                 outfitData = {
                     ["arms"] = {item = 105, texture = 0}, -- Arms
@@ -466,7 +466,7 @@ Config.Outfits = {
                 },
                 grades = {2, 3, 4},
             },
-            [3] = {
+            {
                 outfitLabel = "Doctor",
                 outfitData = {
                     ["arms"] = {item = 105, texture = 0}, -- Arms
