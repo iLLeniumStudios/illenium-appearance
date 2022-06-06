@@ -3,8 +3,8 @@
 - Replace the `qb-multicharacter:server:getSkin` callback on Line: 171 of qb-multicharacter/server/main.lua with:
 
 ```lua
-QBCore.Functions.CreateCallback("qb-multicharacter:server:getSkin", function(source, cb, cid)
-    local result = MySQL.Sync.fetchAll('SELECT * FROM playerskins WHERE citizenid = ? AND active = ?', {cid, 1})
+QBCore.Functions.CreateCallback("qb-multicharacter:server:getSkin", function(_, cb, cid)
+    local result = MySQL.query.await('SELECT * FROM playerskins WHERE citizenid = ? AND active = ?', {cid, 1})
     if result[1] ~= nil then
         cb(json.decode(result[1].skin))
     else
@@ -13,11 +13,11 @@ QBCore.Functions.CreateCallback("qb-multicharacter:server:getSkin", function(sou
 end)
 ```
 
-- Replace the `RegisterNUICallback('cDataPed', function(data)'` callback on Line: 118 of qb-multicharacter/client/main.lua with:
+- Replace the `RegisterNUICallback('cDataPed', function(nData, cb)` callback on Line: 118 of qb-multicharacter/client/main.lua with:
 
 ```lua
-RegisterNUICallback('cDataPed', function(data)
-    local cData = data.cData
+RegisterNUICallback('cDataPed', function(nData, cb)
+    local cData = nData.cData
     SetEntityAsMissionEntity(charPed, true, true)
     DeleteEntity(charPed)
     if cData ~= nil then
@@ -56,9 +56,10 @@ RegisterNUICallback('cDataPed', function(data)
                     SetBlockingOfNonTemporaryEvents(charPed, true)
                 end)
             end
+            cb("ok")
         end, cData.citizenid)
     else
-        Citizen.CreateThread(function()
+        CreateThread(function()
             local randommodels = {
                 "mp_m_freemode_01",
                 "mp_f_freemode_01",
@@ -66,7 +67,7 @@ RegisterNUICallback('cDataPed', function(data)
             local model = GetHashKey(randommodels[math.random(1, #randommodels)])
             RequestModel(model)
             while not HasModelLoaded(model) do
-                Citizen.Wait(0)
+                Wait(0)
             end
             charPed = CreatePed(2, model, Config.PedCoords.x, Config.PedCoords.y, Config.PedCoords.z - 0.98, Config.PedCoords.w, false, true)
             SetPedComponentVariation(charPed, 0, 0, 0, 2)
@@ -75,6 +76,7 @@ RegisterNUICallback('cDataPed', function(data)
             PlaceObjectOnGroundProperly(charPed)
             SetBlockingOfNonTemporaryEvents(charPed, true)
         end)
+        cb("ok")
     end
 end)
 ```
