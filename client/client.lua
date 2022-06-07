@@ -6,6 +6,7 @@ local inZone = false
 local PlayerData = {}
 local PlayerJob = {}
 local PlayerGang = {}
+Gender = nil
 
 local TargetPeds = {
     Store = {},
@@ -50,6 +51,7 @@ AddEventHandler('onResourceStart', function(resource)
         PlayerData = QBCore.Functions.GetPlayerData()
         PlayerJob = PlayerData.job
         PlayerGang = PlayerData.gang
+        Gender = PlayerData.charinfo.gender
         TriggerEvent("updateJob", PlayerJob.name)
         TriggerEvent("updateGang", PlayerGang.name)
     end
@@ -109,6 +111,7 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerJob = PlayerData.job
     PlayerGang = PlayerData.gang
+    Gender = PlayerData.charinfo.gender
 
     QBCore.Functions.TriggerCallback('fivem-appearance:server:getAppearance', function(appearance)
         if not appearance then
@@ -527,7 +530,7 @@ end
 local function getPlayerJobOutfits(clothingRoom)
     local outfits = {}
     local gender = "male"
-    if PlayerData.charinfo.gender == 1 then
+    if Gender == 1 then
         gender = "female"
     end
     local gradeLevel = clothingRoom.isGang and PlayerGang.grade.level or PlayerJob.grade.level

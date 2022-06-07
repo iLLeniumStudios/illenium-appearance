@@ -138,7 +138,7 @@ Config.ClothingRooms = {
 
 Config.PlayerOutfitRooms = {
     -- Sample outfit room config
---[[
+    --[[
     {
         coords = vector4(287.28, -573.41, 43.16, 79.61),
         width = 3,
@@ -486,5 +486,191 @@ Config.Outfits = {
                 grades = {3, 4},
             }
         }
+    }
+}
+
+Config.ToggleVariations = {
+    Components = {
+        Mask = {
+            On = {
+
+            },
+            Off = {
+                
+            },
+            Male = {
+                Drawable = 0,
+                Texture = 0
+            },
+            Female = {
+                Drawable = 0,
+                Texture = 0
+            }
+        },
+        UpperBody = {
+            Male = {
+                Drawable = 0,
+                Texture = 0
+            },
+            Female = {
+                Drawable = 0,
+                Texture = 0
+            }
+        },
+        LowerBody = {
+            Male = {
+                Drawable = 0,
+                Texture = 0
+            },
+            Female = {
+                Drawable = 0,
+                Texture = 0
+            }
+        },
+        Bags = {
+            Male = {
+                Drawable = 0,
+                Texture = 0
+            },
+            Female = {
+                Drawable = 0,
+                Texture = 0
+            }
+        },
+        Shoes = {
+            Male = {
+                Drawable = 0,
+                Texture = 0
+            },
+            Female = {
+                Drawable = 0,
+                Texture = 0
+            }
+        },
+        ScarfAndChains = {
+            Male = {
+                Drawable = 0,
+                Texture = 0
+            },
+            Female = {
+                Drawable = 0,
+                Texture = 0
+            }
+        },
+        Shirt = {
+            Male = {
+                Drawable = 0,
+                Texture = 0
+            },
+            Female = {
+                Drawable = 0,
+                Texture = 0
+            }
+        },
+        BodyArmor = {
+            Male = {
+                Drawable = 0,
+                Texture = 0
+            },
+            Female = {
+                Drawable = 0,
+                Texture = 0
+            }
+        },
+        Decals = {
+            Male = {
+                Drawable = 0,
+                Texture = 0
+            },
+            Female = {
+                Drawable = 0,
+                Texture = 0
+            }
+        },
+        Jackets = {
+            Male = {
+                Drawable = 0,
+                Texture = 0
+            },
+            Female = {
+                Drawable = 0,
+                Texture = 0
+            }
+        }
+    },
+    Props = {
+        Hat = {
+            Male = {
+                Drawable = 0,
+                Texture = 0
+            },
+            Female = {
+                Drawable = 0,
+                Texture = 0
+            }
+        },
+        Glasses = {
+            Male = {
+                Drawable = 0,
+                Texture = 0
+            },
+            Female = {
+                Drawable = 0,
+                Texture = 0
+            }
+        },
+        Ear = {
+            Male = {
+                Drawable = 0,
+                Texture = 0
+            },
+            Female = {
+                Drawable = 0,
+                Texture = 0
+            }
+        },
+        Watch = {
+            Male = {
+                Drawable = 0,
+                Texture = 0
+            },
+            Female = {
+                Drawable = 0,
+                Texture = 0
+            }
+        },
+        Bracelet = {
+            Male = {
+                Drawable = 0,
+                Texture = 0
+            },
+            Female = {
+                Drawable = 0,
+                Texture = 0
+            }
+        }
+    }
+}
+
+Config.ClothingMenuToggle = {
+    Head = {
+        On = {
+            Dict = "mp_masks@standard_car@ds@",
+            Anim = "put_on_mask",
+            Move = 51,
+            Duration = 600,
+        },
+        Off = {
+
+        }
+        Components = {"Mask"},
+        Props = {"Hat"},
+        
+    },
+    Body = {
+
+    },
+    Bottom = {
+
     }
 }
