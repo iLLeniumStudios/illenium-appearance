@@ -1,5 +1,5 @@
 fx_version "cerulean"
-game { "gta5" }
+game "gta5"
 
 author 'snakewiz'
 description 'A flexible player customization script for FiveM.'
