@@ -4,7 +4,7 @@ game { "gta5" }
 author 'snakewiz'
 description 'A flexible player customization script for FiveM.'
 repository 'https://github.com/pedr0fontoura/fivem-appearance'
-version '3.0.2'
+version 'main'
 
 client_scripts {
   'game/dist/index.js',
