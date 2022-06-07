@@ -13,8 +13,8 @@ client_scripts {
   'client/client.lua',
   'client/backward-events.lua',
   '@PolyZone/client.lua',
-	'@PolyZone/BoxZone.lua',
-	'@PolyZone/ComboZone.lua',
+  '@PolyZone/BoxZone.lua',
+  '@PolyZone/ComboZone.lua',
   'migrate/client/client.lua'
 }
 
