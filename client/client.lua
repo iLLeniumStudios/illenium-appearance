@@ -110,6 +110,9 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     PlayerJob = PlayerData.job
     PlayerGang = PlayerData.gang
 
+    TriggerEvent("updateJob", PlayerJob.name)
+    TriggerEvent("updateGang", PlayerGang.name)
+
     QBCore.Functions.TriggerCallback('fivem-appearance:server:getAppearance', function(appearance)
         if not appearance then
             return
