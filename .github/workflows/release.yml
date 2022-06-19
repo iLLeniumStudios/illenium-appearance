@@ -19,7 +19,7 @@ jobs:
         mkdir -p ${{ github.event.repository.name }}
         shopt -s extglob
         rm -rf .git* docs LICENSE README.md
-        sed '0,/main/s/main/${{steps.vars.outputs.tag }}/' fxmanifest.lua > fxmanifest.lua
+        sed -i '0,/main/s/main/${{steps.vars.outputs.tag }}/' fxmanifest.lua
         mv !(${{ github.event.repository.name }}) ${{ github.event.repository.name }}/
     - uses: thedoctor0/zip-release@master
       with:
