@@ -67,12 +67,14 @@ RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
     PlayerData.job = JobInfo
     PlayerJob = JobInfo
     TriggerEvent("updateJob", PlayerJob.name)
+    ResetBlips(PlayerJob.name, PlayerGang.name)
 end)
 
 RegisterNetEvent('QBCore:Client:OnGangUpdate', function(GangInfo)
     PlayerData.gang = GangInfo
     PlayerGang = GangInfo
     TriggerEvent("updateGang", PlayerGang.name)
+    ResetBlips(PlayerJob.name, PlayerGang.name)
 end)
 
 RegisterNetEvent('QBCore:Client:SetDuty', function(duty)
@@ -130,6 +132,7 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
             end
         end
     end)
+    ResetBlips(PlayerJob.name, PlayerGang.name)
 end)
 
 local function getConfigForPermission(hasPedPerms)
@@ -555,23 +558,31 @@ end
 
 local function SetupStoreZones()
     local zones = {}
-    for _, v in pairs(Config.Stores) do
+    for k, v in pairs(Config.Stores) do
         zones[#zones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
-            name = v.shopType,
+            name = 'Stores_' .. k,
             minZ = v.coords.z - 1.5,
             maxZ = v.coords.z + 1.5,
             heading = v.coords.w
         })
     end
 
-    local clothingCombo = ComboZone:Create(zones, {
-        name = "clothingCombo",
+    local storeCombo = ComboZone:Create(zones, {
+        name = "storeCombo",
         debugPoly = Config.Debug
     })
-    clothingCombo:onPlayerInOut(function(isPointInside, _, zone)
+    storeCombo:onPlayerInOut(function(isPointInside, _, zone)
         if isPointInside then
             inZone = true
             zoneName = zone.name
+            local currentStore = Config.Stores[tonumber(string.sub(zoneName, 8))]
+            local jobName = (currentStore.job and currentStore.job == PlayerJob.name)
+            if jobName == clothingRoom.requiredJob then
+                if CheckDuty() then
+                    inZone = true
+                    exports['qb-core']:DrawText('[E] Clothing Room')
+                end
+            end
             if zoneName == 'clothing' then
                 exports['qb-core']:DrawText('[E] Clothing Store')
             elseif zoneName == 'barber' then
