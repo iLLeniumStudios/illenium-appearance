@@ -498,6 +498,10 @@ RegisterNetEvent('fivem-appearance:client:openJobOutfitsMenu', function(outfitsT
 end)
 
 RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
+    local playerPed = PlayerPedId()
+    local health = GetEntityHealth(playerPed)
+    local maxhealth = GetEntityMaxHealth(playerPed)
+
     QBCore.Functions.TriggerCallback('fivem-appearance:server:getAppearance', function(appearance)
         if not appearance then
             return
@@ -506,6 +510,10 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
         if Config.PersistUniforms then
             TriggerServerEvent("fivem-appearance:server:syncUniform", nil)
         end
+        playerPed = PlayerPedId()
+        SetPedMaxHealth(playerPed, maxhealth)
+        Citizen.Wait(1000) -- Safety Delay
+        SetEntityHealth(playerPed, health)
     end)
 end)
 
