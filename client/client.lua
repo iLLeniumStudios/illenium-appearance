@@ -514,6 +514,9 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
         SetPedMaxHealth(playerPed, maxhealth)
         Citizen.Wait(1000) -- Safety Delay
         SetEntityHealth(playerPed, health)
+        local player = PlayerId()
+        SetPlayerHealthRechargeMultiplier(player, 0.0)
+        SetPlayerHealthRechargeLimit(player, 0.0)
     end)
 end)
 
