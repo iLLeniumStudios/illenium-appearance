@@ -14,7 +14,7 @@ local function SetupBlips(job, gang)
     for k, _ in pairs (Config.Stores) do
         local blipConfig = Config.Blips[Config.Stores[k].shopType]
         if ShowBlip(blipConfig, Config.Stores[k], job, gang) then
-            local blip = AddBlipForCoord(Config.Stores[k].coords)
+            local blip = AddBlipForCoord(Config.Stores[k].coords.x, Config.Stores[k].coords.y, Config.Stores[k].coords.z)
             SetBlipSprite(blip, blipConfig.Sprite)
             SetBlipColour(blip, blipConfig.Color)
             SetBlipScale(blip, blipConfig.Scale)

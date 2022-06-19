@@ -573,24 +573,20 @@ local function SetupStoreZones()
     })
     storeCombo:onPlayerInOut(function(isPointInside, _, zone)
         if isPointInside then
-            inZone = true
             zoneName = zone.name
             local currentStore = Config.Stores[tonumber(string.sub(zoneName, 8))]
             local jobName = (currentStore.job and currentStore.job == PlayerJob.name)
-            if jobName == clothingRoom.requiredJob then
-                if CheckDuty() then
-                    inZone = true
-                    exports['qb-core']:DrawText('[E] Clothing Room')
+            if jobName == currentStore.requiredJob then
+                inZone = true
+                if zoneName == 'clothing' then
+                    exports['qb-core']:DrawText('[E] Clothing Store')
+                elseif zoneName == 'barber' then
+                    exports['qb-core']:DrawText('[E] Barber')
+                elseif zoneName == 'tattoo' then
+                    exports['qb-core']:DrawText('[E] Tattoo Shop')
+                elseif zoneName == 'surgeon' then
+                    exports['qb-core']:DrawText('[E] Plastic Surgeon')
                 end
-            end
-            if zoneName == 'clothing' then
-                exports['qb-core']:DrawText('[E] Clothing Store')
-            elseif zoneName == 'barber' then
-                exports['qb-core']:DrawText('[E] Barber')
-            elseif zoneName == 'tattoo' then
-                exports['qb-core']:DrawText('[E] Tattoo Shop')
-            elseif zoneName == 'surgeon' then
-                exports['qb-core']:DrawText('[E] Plastic Surgeon')
             end
         else
             inZone = false
