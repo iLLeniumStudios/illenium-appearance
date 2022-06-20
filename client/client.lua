@@ -584,8 +584,9 @@ local function SetupStoreZones()
     })
     storeCombo:onPlayerInOut(function(isPointInside, _, zone)
         if isPointInside then
-            _, zoneName, shopIndex = zone.name:match("([^_]+)_([^_]+)_([^_]+)")
-            local currentStore = Config.Stores[tonumber(shopIndex)]
+            local matches = {zone.name:match("([^_]+)_([^_]+)_([^_]+)")}
+            zoneName = matches[2]
+            local currentStore = Config.Stores[tonumber(matches[3])]
             local jobName = (currentStore.job and PlayerJob.name) or (currentStore.gang and PlayerGang.name)
             if jobName == (currentStore.job or currentStore.gang) then
                 inZone = true
