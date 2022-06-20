@@ -32,7 +32,7 @@ local function RemoveTargets()
         RemoveTargetPeds(TargetPeds.ClothingRoom)
     else
         for k, v in pairs(Config.ClothingRooms) do
-            exports['qb-target']:RemoveZone('clothing_' .. v.requiredJob .. k)
+            exports['qb-target']:RemoveZone('clothing_' .. v.job or v.gang .. k)
         end
     end
 
@@ -44,40 +44,6 @@ local function RemoveTargets()
         end
     end
 end
-
-AddEventHandler('onResourceStart', function(resource)
-    if resource == GetCurrentResourceName() then
-        PlayerData = QBCore.Functions.GetPlayerData()
-        PlayerJob = PlayerData.job
-        PlayerGang = PlayerData.gang
-        TriggerEvent("updateJob", PlayerJob.name)
-        TriggerEvent("updateGang", PlayerGang.name)
-    end
-end)
-
-AddEventHandler('onResourceStop', function(resource)
-    if resource == GetCurrentResourceName() and GetResourceState("qb-target") == "started" then
-        if Config.UseTarget then
-            RemoveTargets()
-        end
-    end
-end)
-
-RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
-    PlayerData.job = JobInfo
-    PlayerJob = JobInfo
-    TriggerEvent("updateJob", PlayerJob.name)
-end)
-
-RegisterNetEvent('QBCore:Client:OnGangUpdate', function(GangInfo)
-    PlayerData.gang = GangInfo
-    PlayerGang = GangInfo
-    TriggerEvent("updateGang", PlayerGang.name)
-end)
-
-RegisterNetEvent('QBCore:Client:SetDuty', function(duty)
-    PlayerJob.onduty = duty
-end)
 
 local function LoadPlayerUniform()
     QBCore.Functions.TriggerCallback("fivem-appearance:server:getUniform", function(uniformData)
@@ -105,7 +71,7 @@ local function LoadPlayerUniform()
     end)
 end
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
+local function InitAppearance()
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerJob = PlayerData.job
     PlayerGang = PlayerData.gang
@@ -130,6 +96,43 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
             end
         end
     end)
+    ResetBlips(PlayerJob.name, PlayerGang.name)
+end
+
+AddEventHandler('onResourceStart', function(resource)
+    if resource == GetCurrentResourceName() then
+        InitAppearance()
+    end
+end)
+
+AddEventHandler('onResourceStop', function(resource)
+    if resource == GetCurrentResourceName() and GetResourceState("qb-target") == "started" then
+        if Config.UseTarget then
+            RemoveTargets()
+        end
+    end
+end)
+
+RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
+    PlayerData.job = JobInfo
+    PlayerJob = JobInfo
+    TriggerEvent("updateJob", PlayerJob.name)
+    ResetBlips(PlayerJob.name, PlayerGang.name)
+end)
+
+RegisterNetEvent('QBCore:Client:OnGangUpdate', function(GangInfo)
+    PlayerData.gang = GangInfo
+    PlayerGang = GangInfo
+    TriggerEvent("updateGang", PlayerGang.name)
+    ResetBlips(PlayerJob.name, PlayerGang.name)
+end)
+
+RegisterNetEvent('QBCore:Client:SetDuty', function(duty)
+    PlayerJob.onduty = duty
+end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
+    InitAppearance()
 end)
 
 local function getConfigForPermission(hasPedPerms)
@@ -566,31 +569,36 @@ end
 
 local function SetupStoreZones()
     local zones = {}
-    for _, v in pairs(Config.Stores) do
+    for k, v in pairs(Config.Stores) do
         zones[#zones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
-            name = v.shopType,
+            name = 'Stores_' .. v.shopType .. '_' .. k,
             minZ = v.coords.z - 1.5,
             maxZ = v.coords.z + 1.5,
             heading = v.coords.w
         })
     end
 
-    local clothingCombo = ComboZone:Create(zones, {
-        name = "clothingCombo",
+    local storeCombo = ComboZone:Create(zones, {
+        name = "storeCombo",
         debugPoly = Config.Debug
     })
-    clothingCombo:onPlayerInOut(function(isPointInside, _, zone)
+    storeCombo:onPlayerInOut(function(isPointInside, _, zone)
         if isPointInside then
-            inZone = true
-            zoneName = zone.name
-            if zoneName == 'clothing' then
-                exports['qb-core']:DrawText('[E] Clothing Store')
-            elseif zoneName == 'barber' then
-                exports['qb-core']:DrawText('[E] Barber')
-            elseif zoneName == 'tattoo' then
-                exports['qb-core']:DrawText('[E] Tattoo Shop')
-            elseif zoneName == 'surgeon' then
-                exports['qb-core']:DrawText('[E] Plastic Surgeon')
+            local matches = {zone.name:match("([^_]+)_([^_]+)_([^_]+)")}
+            zoneName = matches[2]
+            local currentStore = Config.Stores[tonumber(matches[3])]
+            local jobName = (currentStore.job and PlayerJob.name) or (currentStore.gang and PlayerGang.name)
+            if jobName == (currentStore.job or currentStore.gang) then
+                inZone = true
+                if zoneName == 'clothing' then
+                    exports['qb-core']:DrawText('[E] Clothing Store')
+                elseif zoneName == 'barber' then
+                    exports['qb-core']:DrawText('[E] Barber')
+                elseif zoneName == 'tattoo' then
+                    exports['qb-core']:DrawText('[E] Tattoo Shop')
+                elseif zoneName == 'surgeon' then
+                    exports['qb-core']:DrawText('[E] Plastic Surgeon')
+                end
             end
         else
             inZone = false
@@ -618,8 +626,8 @@ local function SetupClothingRoomZones()
         if isPointInside then
             zoneName = zone.name
             local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zone.name, 15))]
-            local jobName = clothingRoom.isGang and PlayerGang.name or PlayerJob.name
-            if jobName == clothingRoom.requiredJob then
+            local jobName = clothingRoom.job and PlayerJob.name or PlayerGang.name
+            if jobName == (clothingRoom.job or clothingRoom.gang) then
                 if CheckDuty() then
                     inZone = true
                     exports['qb-core']:DrawText('[E] Clothing Room')
@@ -745,7 +753,8 @@ local function SetupClothingRoomTargets()
                 icon = targetConfig.icon,
                 label = targetConfig.label,
                 canInteract = CheckDuty,
-                job = v.requiredJob
+                job = v.job,
+                gang = v.gang
             }},
             distance = targetConfig.distance
         }
@@ -754,8 +763,8 @@ local function SetupClothingRoomTargets()
             TargetPeds.ClothingRoom[k] = CreatePedAtCoords(targetConfig.model, v.coords, targetConfig.scenario)
             exports['qb-target']:AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
         else
-            exports['qb-target']:AddBoxZone('clothing_' .. v.requiredJob .. k, v.coords, v.length, v.width, {
-                name = 'clothing_' .. v.requiredJob .. k,
+            exports['qb-target']:AddBoxZone('clothing_' .. v.job or v.gang .. k, v.coords, v.length, v.width, {
+                name = 'clothing_' .. v.job or v.gang .. k,
                 debugPoly = Config.Debug,
                 minZ = v.coords.z - 2,
                 maxZ = v.coords.z + 2

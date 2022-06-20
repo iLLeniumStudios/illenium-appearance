@@ -21,6 +21,7 @@ Discord: https://discord.gg/ZVJEkjUTkx
 - Everything from standalone fivem-appearance
 - Player outfits
 - Rank based Clothing Rooms for Jobs / Gangs
+- Job / Gang locked Stores
 - Tattoo's Support
 - Hair Textures
 - Polyzone Support
