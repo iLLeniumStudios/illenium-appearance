@@ -32,7 +32,7 @@ local function RemoveTargets()
         RemoveTargetPeds(TargetPeds.ClothingRoom)
     else
         for k, v in pairs(Config.ClothingRooms) do
-            exports['qb-target']:RemoveZone('clothing_' .. v.requiredJob .. k)
+            exports['qb-target']:RemoveZone('clothing_' .. v.job or v.gang .. k)
         end
     end
 
@@ -45,13 +45,37 @@ local function RemoveTargets()
     end
 end
 
+local function InitAppearance()
+    PlayerData = QBCore.Functions.GetPlayerData()
+    PlayerJob = PlayerData.job
+    PlayerGang = PlayerData.gang
+
+    TriggerEvent("updateJob", PlayerJob.name)
+    TriggerEvent("updateGang", PlayerGang.name)
+
+    QBCore.Functions.TriggerCallback('fivem-appearance:server:getAppearance', function(appearance)
+        if not appearance then
+            return
+        end
+        exports['fivem-appearance']:setPlayerAppearance(appearance)
+        if Config.PersistUniforms then
+            LoadPlayerUniform()
+        end
+
+        if Config.Debug then -- This will detect if the player model is set as "player_zero" aka michael. Will then set the character as a freemode ped based on gender.
+            Wait(5000)
+            if GetEntityModel(PlayerPedId()) == `player_zero` then
+                print('Player detected as "player_zero", Starting CreateFirstCharacter event')
+                TriggerEvent('qb-clothes:client:CreateFirstCharacter')
+            end
+        end
+    end)
+    ResetBlips(PlayerJob.name, PlayerGang.name)
+end
+
 AddEventHandler('onResourceStart', function(resource)
     if resource == GetCurrentResourceName() then
-        PlayerData = QBCore.Functions.GetPlayerData()
-        PlayerJob = PlayerData.job
-        PlayerGang = PlayerData.gang
-        TriggerEvent("updateJob", PlayerJob.name)
-        TriggerEvent("updateGang", PlayerGang.name)
+        InitAppearance()
     end
 end)
 
@@ -108,31 +132,7 @@ local function LoadPlayerUniform()
 end
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
-    PlayerData = QBCore.Functions.GetPlayerData()
-    PlayerJob = PlayerData.job
-    PlayerGang = PlayerData.gang
-
-    TriggerEvent("updateJob", PlayerJob.name)
-    TriggerEvent("updateGang", PlayerGang.name)
-
-    QBCore.Functions.TriggerCallback('fivem-appearance:server:getAppearance', function(appearance)
-        if not appearance then
-            return
-        end
-        exports['fivem-appearance']:setPlayerAppearance(appearance)
-        if Config.PersistUniforms then
-            LoadPlayerUniform()
-        end
-
-        if Config.Debug then -- This will detect if the player model is set as "player_zero" aka michael. Will then set the character as a freemode ped based on gender.
-            Wait(5000)
-            if GetEntityModel(PlayerPedId()) == `player_zero` then
-                print('Player detected as "player_zero", Starting CreateFirstCharacter event')
-                TriggerEvent('qb-clothes:client:CreateFirstCharacter')
-            end
-        end
-    end)
-    ResetBlips(PlayerJob.name, PlayerGang.name)
+    InitAppearance()
 end)
 
 local function getConfigForPermission(hasPedPerms)
@@ -501,6 +501,10 @@ RegisterNetEvent('fivem-appearance:client:openJobOutfitsMenu', function(outfitsT
 end)
 
 RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
+    local playerPed = PlayerPedId()
+    local health = GetEntityHealth(playerPed)
+    local maxhealth = GetEntityMaxHealth(playerPed)
+
     QBCore.Functions.TriggerCallback('fivem-appearance:server:getAppearance', function(appearance)
         if not appearance then
             return
@@ -509,6 +513,13 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
         if Config.PersistUniforms then
             TriggerServerEvent("fivem-appearance:server:syncUniform", nil)
         end
+        playerPed = PlayerPedId()
+        SetPedMaxHealth(playerPed, maxhealth)
+        Citizen.Wait(1000) -- Safety Delay
+        SetEntityHealth(playerPed, health)
+        local player = PlayerId()
+        SetPlayerHealthRechargeMultiplier(player, 0.0)
+        SetPlayerHealthRechargeLimit(player, 0.0)
     end)
 end)
 
@@ -560,7 +571,7 @@ local function SetupStoreZones()
     local zones = {}
     for k, v in pairs(Config.Stores) do
         zones[#zones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
-            name = 'Stores_' .. k,
+            name = 'Stores_' .. v.shopType .. '_' .. k,
             minZ = v.coords.z - 1.5,
             maxZ = v.coords.z + 1.5,
             heading = v.coords.w
@@ -573,24 +584,20 @@ local function SetupStoreZones()
     })
     storeCombo:onPlayerInOut(function(isPointInside, _, zone)
         if isPointInside then
-            inZone = true
-            zoneName = zone.name
-            local currentStore = Config.Stores[tonumber(string.sub(zoneName, 8))]
-            local jobName = (currentStore.job and currentStore.job == PlayerJob.name)
-            if jobName == clothingRoom.requiredJob then
-                if CheckDuty() then
-                    inZone = true
-                    exports['qb-core']:DrawText('[E] Clothing Room')
+            _, zoneName, shopIndex = zone.name:match("([^_]+)_([^_]+)_([^_]+)")
+            local currentStore = Config.Stores[tonumber(shopIndex)]
+            local jobName = (currentStore.job and PlayerJob.name) or (currentStore.gang and PlayerGang.name)
+            if jobName == (currentStore.job or currentStore.gang) then
+                inZone = true
+                if zoneName == 'clothing' then
+                    exports['qb-core']:DrawText('[E] Clothing Store')
+                elseif zoneName == 'barber' then
+                    exports['qb-core']:DrawText('[E] Barber')
+                elseif zoneName == 'tattoo' then
+                    exports['qb-core']:DrawText('[E] Tattoo Shop')
+                elseif zoneName == 'surgeon' then
+                    exports['qb-core']:DrawText('[E] Plastic Surgeon')
                 end
-            end
-            if zoneName == 'clothing' then
-                exports['qb-core']:DrawText('[E] Clothing Store')
-            elseif zoneName == 'barber' then
-                exports['qb-core']:DrawText('[E] Barber')
-            elseif zoneName == 'tattoo' then
-                exports['qb-core']:DrawText('[E] Tattoo Shop')
-            elseif zoneName == 'surgeon' then
-                exports['qb-core']:DrawText('[E] Plastic Surgeon')
             end
         else
             inZone = false
@@ -618,8 +625,8 @@ local function SetupClothingRoomZones()
         if isPointInside then
             zoneName = zone.name
             local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zone.name, 15))]
-            local jobName = clothingRoom.isGang and PlayerGang.name or PlayerJob.name
-            if jobName == clothingRoom.requiredJob then
+            local jobName = clothingRoom.job and PlayerJob.name or PlayerGang.name
+            if jobName == (clothingRoom.job or clothingRoom.gang) then
                 if CheckDuty() then
                     inZone = true
                     exports['qb-core']:DrawText('[E] Clothing Room')
@@ -745,7 +752,8 @@ local function SetupClothingRoomTargets()
                 icon = targetConfig.icon,
                 label = targetConfig.label,
                 canInteract = CheckDuty,
-                job = v.requiredJob
+                job = v.job,
+                gang = v.gang
             }},
             distance = targetConfig.distance
         }
@@ -754,8 +762,8 @@ local function SetupClothingRoomTargets()
             TargetPeds.ClothingRoom[k] = CreatePedAtCoords(targetConfig.model, v.coords, targetConfig.scenario)
             exports['qb-target']:AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
         else
-            exports['qb-target']:AddBoxZone('clothing_' .. v.requiredJob .. k, v.coords, v.length, v.width, {
-                name = 'clothing_' .. v.requiredJob .. k,
+            exports['qb-target']:AddBoxZone('clothing_' .. v.job or v.gang .. k, v.coords, v.length, v.width, {
+                name = 'clothing_' .. v.job or v.gang .. k,
                 debugPoly = Config.Debug,
                 minZ = v.coords.z - 2,
                 maxZ = v.coords.z + 2
