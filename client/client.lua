@@ -45,6 +45,32 @@ local function RemoveTargets()
     end
 end
 
+local function LoadPlayerUniform()
+    QBCore.Functions.TriggerCallback("fivem-appearance:server:getUniform", function(uniformData)
+        if not uniformData then
+            return
+        end
+        local outfits = Config.Outfits[uniformData.jobName][uniformData.gender]
+        local uniform = nil
+        for i = 1, #outfits, 1 do
+            if outfits[i].outfitLabel == uniformData.label then
+                uniform = outfits[i]
+                break
+            end
+        end
+
+        if not uniform then
+            TriggerServerEvent("fivem-appearance:server:syncUniform", nil) -- Uniform doesn't exist anymore
+            return
+        end
+
+        uniform.jobName = uniformData.jobName
+        uniform.gender = uniformData.gender
+
+        TriggerEvent("qb-clothing:client:loadOutfit", uniform)
+    end)
+end
+
 local function InitAppearance()
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerJob = PlayerData.job
@@ -104,32 +130,6 @@ end)
 RegisterNetEvent('QBCore:Client:SetDuty', function(duty)
     PlayerJob.onduty = duty
 end)
-
-local function LoadPlayerUniform()
-    QBCore.Functions.TriggerCallback("fivem-appearance:server:getUniform", function(uniformData)
-        if not uniformData then
-            return
-        end
-        local outfits = Config.Outfits[uniformData.jobName][uniformData.gender]
-        local uniform = nil
-        for i = 1, #outfits, 1 do
-            if outfits[i].outfitLabel == uniformData.label then
-                uniform = outfits[i]
-                break
-            end
-        end
-
-        if not uniform then
-            TriggerServerEvent("fivem-appearance:server:syncUniform", nil) -- Uniform doesn't exist anymore
-            return
-        end
-
-        uniform.jobName = uniformData.jobName
-        uniform.gender = uniformData.gender
-
-        TriggerEvent("qb-clothing:client:loadOutfit", uniform)
-    end)
-end
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     InitAppearance()
