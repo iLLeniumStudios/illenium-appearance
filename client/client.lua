@@ -770,8 +770,9 @@ local function SetupClothingRoomTargets()
             TargetPeds.ClothingRoom[k] = CreatePedAtCoords(targetConfig.model, v.coords, targetConfig.scenario)
             exports['qb-target']:AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
         else
-            exports['qb-target']:AddBoxZone('clothing_' .. v.job or v.gang .. k, v.coords, v.length, v.width, {
-                name = 'clothing_' .. v.job or v.gang .. k,
+            local key = 'clothing_' .. (v.job or v.gang) .. k
+            exports['qb-target']:AddBoxZone(key, v.coords, v.length, v.width, {
+                name = key,
                 debugPoly = Config.Debug,
                 minZ = v.coords.z - 2,
                 maxZ = v.coords.z + 2
@@ -799,7 +800,7 @@ local function SetupPlayerOutfitRoomTargets()
             distance = targetConfig.distance
         }
 
-        if Config.EnablePedsForClothingRooms then
+        if Config.EnablePedsForPlayerOutfitRooms then
             TargetPeds.PlayerOutfitRoom[k] = CreatePedAtCoords(targetConfig.model, v.coords, targetConfig.scenario)
             exports['qb-target']:AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
         else
