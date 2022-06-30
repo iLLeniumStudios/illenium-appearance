@@ -36,6 +36,7 @@ Discord: https://discord.gg/ZVJEkjUTkx
 - QBCore Theme
 - Component & Props Blacklist support
 - Limit Components & Props to certain Jobs / Gangs
+- Limit Components & Props to ACEs (Allows you to have VIP clothing on your Server)
 - Persist Job / Gang Clothes on reconnects / logout
 - Themes Support
 
@@ -49,6 +50,9 @@ https://streamable.com/qev2h7
 - Delete / stop any tattoo shop resources e.g., `qb-tattooshop` from your resources folder
 - Put `setr fivem-appearance:locale "en"` in your server.cfg
 - Put `ensure fivem-appearance` in your server.cfg
+- If you want to use ACE permissions for clothing items then do the following:
+  - Add `add_ace resource.fivem-appearance command.list_aces allow` to server.cfg
+  - Set `Config.EnableACEPermissions` to `true` in `shared/config.lua`
 - Delete the table `player_outfits` from your database
 - Apply the SQL file located [here](sql/player_outfits.sql) to your database to have the new `player_outfits` table created 
 - If you want to configure qb-multicharacter, follow the corresponding guide for your version [here](docs/multicharacter-setup.md)
@@ -87,7 +91,7 @@ Migration demo: https://streamable.com/ydxoqb
 - Restart the server
 
 
-## Blacklisting Clothes and / or Limiting them to Jobs / Gangs
+## Blacklisting Clothes and / or Limiting them to Jobs / Gangs / ACEs
 
 You can now blacklist different clothes by adding them in a specific format to `blacklist.json`. The default file contains all the component names that you can choose to blacklist. For example if you want to blacklist following items:
 
@@ -96,8 +100,9 @@ Jackets: 10, 12, 13, 18 (All Textures)
 Jackets: 11 (Texture: 1, 2, 3)
 Masks: 10, 11, 12, 13 (All Textures)
 Masks: 14 (Texture: 5, 7, 10, 12, 13)
-Jackets: 25, 30, 35 (Accessible only by "police" job)
-Hats: 41, 42, 45 (Accessible only by "ballas" gang)
+Jackets: 25, 30, 35 (Accessible only to "police" job)
+Hats: 41, 42, 45 (Accessible only to "ballas" gang)
+Scarfs & Chains: 5, 6, 7 (Accessible only to "vip" ACE)
 ```
 
 Here is how the JSON file would look like, for such configuration:
@@ -108,40 +113,45 @@ Here is how the JSON file would look like, for such configuration:
     "components": {
       "masks": [
         {
-          "drawables": [ 10, 11, 12, 13 ]
+          "drawables": [10, 11, 12, 13]
         },
         {
           "drawables": [14],
-          "textures": [ 5, 7, 10, 11, 12, 13 ]
+          "textures": [5, 7, 10, 11, 12, 13]
         }
       ],
       "upperBody": [],
       "lowerBody": [],
       "bags": [],
       "shoes": [],
-      "scarfAndChains": [],
+      "scarfAndChains": [
+        {
+          "drawables": [5, 6, 7],
+          "aces": ["vip"]
+        }
+      ],
       "shirts": [],
       "bodyArmor": [],
       "decals": [],
       "jackets": [
         {
-          "drawables":  [ 11 ],
-          "textures": [ 1, 2, 3 ]
+          "drawables":  [11],
+          "textures": [1, 2, 3]
         },
         {
-          "drawables": [ 10, 12, 13, 18 ]
+          "drawables": [10, 12, 13, 18]
         },
         {
-          "drawables": [ 25, 30, 35 ],
-          "jobs": [ "police" ]
+          "drawables": [25, 30, 35],
+          "jobs": ["police"]
         }
       ]
     },
     "props": {
       "hats": [
         {
-          "drawables": [ 41, 42, 45 ],
-          "gangs": [ "ballas" ]
+          "drawables": [41, 42, 45],
+          "gangs": ["ballas"]
         }
       ],
       "glasses": [],

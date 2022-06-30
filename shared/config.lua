@@ -22,6 +22,11 @@ Config.PersistUniforms = false -- Keeps Job / Gang Outfits on player reconnects 
 
 Config.OnDutyOnlyClothingRooms = false -- Set to `true` to make the clothing rooms accessible only to players who are On Duty
 
+-- ACE Permissions Config
+Config.EnableACEPermissions = false
+Config.ACEResetCooldown = 5000
+Config.ACEListCooldown = 60 * 60 * 1000 -- 1 Hour
+
 Config.Blips = {
     ["clothing"] = {
         Show = true,

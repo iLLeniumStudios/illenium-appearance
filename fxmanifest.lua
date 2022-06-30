@@ -20,6 +20,7 @@ client_scripts {
 
 server_scripts {
   'server/server.lua',
+  'server/permissions.lua',
   '@oxmysql/lib/MySQL.lua',
   'migrate/server/server.lua',
 }
