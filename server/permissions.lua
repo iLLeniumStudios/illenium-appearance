@@ -1,6 +1,3 @@
-local QBCore = exports["qb-core"]:GetCoreObject()
-
-local listCooldown = 60 * 60 * 1000 -- 1 Hour
 local resetTimer = GetGameTimer()
 local allAces = {}
 
