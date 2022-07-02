@@ -89,7 +89,7 @@ local function InitAppearance()
         if not appearance then
             return
         end
-        exports['is-clothing']:setPlayerAppearance(appearance)
+        exports['fivem-appearance']:setPlayerAppearance(appearance)
         if Config.PersistUniforms then
             LoadPlayerUniform()
         end
@@ -205,15 +205,15 @@ RegisterNetEvent('qb-clothes:client:CreateFirstCharacter', function()
         if pd.charinfo.gender == 1 then
             skin = "mp_f_freemode_01"
         end
-        exports['is-clothing']:setPlayerModel(skin)
+        exports['fivem-appearance']:setPlayerModel(skin)
         -- Fix for tattoo's appearing when creating a new character
         local ped = PlayerPedId()
-        exports['is-clothing']:setPedTattoos(ped, {})
+        exports['fivem-appearance']:setPedTattoos(ped, {})
         ClearPedDecorations(ped)
         QBCore.Functions.TriggerCallback("QBCore:HasPermission", function(permission)
             local config = getConfigForPermission(permission)
             config.enableExit = false
-            exports['is-clothing']:startPlayerCustomization(function(appearance)
+            exports['fivem-appearance']:startPlayerCustomization(function(appearance)
                 if (appearance) then
                     TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
                     ResetRechargeMultipliers()
@@ -230,7 +230,7 @@ function OpenShop(config, isPedMenu, shopType)
             return
         end
 
-        exports['is-clothing']:startPlayerCustomization(function(appearance)
+        exports['fivem-appearance']:startPlayerCustomization(function(appearance)
             if appearance then
                 if not isPedMenu then
                     TriggerServerEvent("fivem-appearance:server:chargeCustomer", shopType)
@@ -308,9 +308,9 @@ RegisterNetEvent('fivem-appearance:client:saveOutfit', function()
             end
 
             local playerPed = PlayerPedId()
-            local pedModel = exports['is-clothing']:getPedModel(playerPed)
-            local pedComponents = exports['is-clothing']:getPedComponents(playerPed)
-            local pedProps = exports['is-clothing']:getPedProps(playerPed)
+            local pedModel = exports['fivem-appearance']:getPedModel(playerPed)
+            local pedComponents = exports['fivem-appearance']:getPedComponents(playerPed)
+            local pedProps = exports['fivem-appearance']:getPedProps(playerPed)
 
             TriggerServerEvent('fivem-appearance:server:saveOutfit', keyboard.input, pedModel, pedComponents, pedProps)
         end)
@@ -458,13 +458,13 @@ end)
 
 RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
     local playerPed = PlayerPedId()
-    local pedModel = exports['is-clothing']:getPedModel(playerPed)
+    local pedModel = exports['fivem-appearance']:getPedModel(playerPed)
     local failed = false
     local appearanceDB = nil
     if pedModel ~= data.model then
         QBCore.Functions.TriggerCallback("fivem-appearance:server:getAppearance", function(appearance)
             if appearance then
-                exports['is-clothing']:setPlayerAppearance(appearance)
+                exports['fivem-appearance']:setPlayerAppearance(appearance)
                 appearanceDB = appearance
                 ResetRechargeMultipliers()
             else
@@ -475,18 +475,18 @@ RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
             end
         end, data.model)
     else
-        appearanceDB = exports['is-clothing']:getPedAppearance(playerPed)
+        appearanceDB = exports['fivem-appearance']:getPedAppearance(playerPed)
     end
     if not failed then
         while not appearanceDB do
             Wait(100)
         end
         playerPed = PlayerPedId()
-        exports['is-clothing']:setPedComponents(playerPed, data.components)
-        exports['is-clothing']:setPedProps(playerPed, data.props)
-        exports['is-clothing']:setPedHair(playerPed, appearanceDB.hair)
+        exports['fivem-appearance']:setPedComponents(playerPed, data.components)
+        exports['fivem-appearance']:setPedProps(playerPed, data.props)
+        exports['fivem-appearance']:setPedHair(playerPed, appearanceDB.hair)
 
-        local appearance = exports['is-clothing']:getPedAppearance(playerPed)
+        local appearance = exports['fivem-appearance']:getPedAppearance(playerPed)
         TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
     end
 end)
@@ -533,7 +533,7 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
         if not appearance then
             return
         end
-        exports['is-clothing']:setPlayerAppearance(appearance)
+        exports['fivem-appearance']:setPlayerAppearance(appearance)
         if Config.PersistUniforms then
             TriggerServerEvent("fivem-appearance:server:syncUniform", nil)
         end
