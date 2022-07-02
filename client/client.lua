@@ -514,6 +514,7 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
     local playerPed = PlayerPedId()
     local health = GetEntityHealth(playerPed)
     local maxhealth = GetEntityMaxHealth(playerPed)
+    local armour = GetPedArmour(playerPed)
 
     QBCore.Functions.TriggerCallback('fivem-appearance:server:getAppearance', function(appearance)
         if not appearance then
@@ -527,6 +528,7 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
         SetPedMaxHealth(playerPed, maxhealth)
         Citizen.Wait(1000) -- Safety Delay
         SetEntityHealth(playerPed, health)
+        SetPedArmour(playerPed, armour)
         ResetRechargeMultipliers()
     end)
 end)
