@@ -37,6 +37,7 @@ Discord: https://discord.gg/ZVJEkjUTkx
 - Blacklist / Limit Peds to certain Jobs / Gangs / ACEs
 - Persist Job / Gang Clothes on reconnects / logout
 - Themes Support (Default & QBCore provided out of the box)
+- Disable Components / Props Entirely (Clothing as items support)
 
 ## New Preview (with Tattoos)
 
@@ -260,6 +261,12 @@ You can customize every theme using the parameters defined in `theme.json`. Foll
 | smoothBackgroundTransition | Enable to fade in to the background color during hover        |
 
 *Note:* After creating the custom theme, make sure to change `currentTheme` to the `id` of the new theme. You can ofcourse modify the existing themes as well if you want, but it is recommended to create your own so that you can switch between the defaults and the custom one whenever needed.
+
+## Disabling Components / Props entirely
+
+You can now disable any Component / Prop using `shared/config.lua` if you have some clothing as items.
+- For example if you want to disable Masks then you can change `Masks` value to `true` under `Config.DisableComponents`.
+- For example if you want to disable Watches then you can change `Watches` to `true` under `Component.DisableProps`.
 
 ## Credits
 - Original Script: https://github.com/pedr0fontoura/fivem-appearance
