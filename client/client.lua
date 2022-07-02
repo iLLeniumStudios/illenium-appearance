@@ -167,7 +167,7 @@ local function getPropConfig()
     }
 end
 
-local function getDefaultConfig()
+function getDefaultConfig()
     return {
         ped = false,
         headBlend = false,
