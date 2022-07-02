@@ -7,7 +7,7 @@ local function ShowBlip(blipConfig, blip, job, gang)
         return false
     end
 
-    return (blipConfig.Show and not blip.showBlip) or blip.showBlip
+    return (blipConfig.Show and blip.showBlip == nil) or blip.showBlip
 end
 
 local function SetupBlips(job, gang)
