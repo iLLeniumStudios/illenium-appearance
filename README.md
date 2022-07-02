@@ -33,12 +33,10 @@ Discord: https://discord.gg/ZVJEkjUTkx
 - Skin migration support (qb-clothing / old fivem-appearance)
 - Player specific outfit locations (Restricted via CitizenID)
 - Makeup Secondary Color
-- QBCore Theme
-- Component & Props Blacklist support
-- Limit Components & Props to certain Jobs / Gangs
-- Limit Components & Props to ACEs (Allows you to have VIP clothing on your Server)
+- Blacklist / Limit Components & Props to certain Jobs / Gangs / ACEs (Allows you to have VIP clothing on your Server)
+- Blacklist / Limit Peds to certain Jobs / Gangs / ACEs
 - Persist Job / Gang Clothes on reconnects / logout
-- Themes Support
+- Themes Support (Default & QBCore provided out of the box)
 
 ## New Preview (with Tattoos)
 
@@ -185,6 +183,48 @@ Here is how the JSON file would look like, for such configuration:
 ```
 
 You can separately blacklist male and female clothes. Just put them under the right section in the json and you should be good to go.
+
+## Limiting Ped Models to Jobs / Gangs / ACEs
+
+You can now limit different ped models by adding them in a specific format to `peds.json`. The default file contains all the ped models without any blacklisting. For example if you want to limit following peds:
+
+```
+a_f_m_beach_01, a_f_m_bevhills_01, a_f_m_bevhills_02 => "police" job
+a_f_m_bodybuild_01 => "vagos" gang
+a_f_m_downtown_01 => "admin" ace
+a_f_m_skidrow_01 => "police" job, "ballas" gang
+```
+
+To do this, you first need to remove all these peds from the `peds` list which doesn't have any filters / limits defined (The default one provided in `peds.json`).
+
+Here is how the JSON file will look like, for such configuration (**Note:** The `...` should be the list of all peds that you want to be accessible to everyone):
+
+```json
+{
+  "pedConfig": [
+    {
+      "peds": [...]
+    },
+    {
+      "peds": ["a_f_m_beach_01", "a_f_m_bevhills_01", "a_f_m_bevhills_02"],
+      "jobs": ["police"],
+    },
+    {
+      "peds": ["a_f_m_bodybuild_01"],
+      "gangs": ["vagos"],
+    },
+    {
+      "peds": ["a_f_m_downtown_01"],
+      "aces": ["admin"],
+    },
+    {
+      "peds": ["a_f_m_skidrow_01"],
+      "jobs": ["police"],
+      "gangs": ["ballas"]
+    }
+  ]
+}
+```
 
 ## Theme configuration
 
