@@ -213,7 +213,7 @@ RegisterNetEvent('qb-clothes:client:CreateFirstCharacter', function()
         QBCore.Functions.TriggerCallback("QBCore:HasPermission", function(permission)
             local config = getConfigForPermission(permission)
             config.enableExit = false
-            exports['is-clothing']:startPlayerCustomization(function(appearance)
+            exports['fivem-appearance']:startPlayerCustomization(function(appearance)
                 if (appearance) then
                     TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
                     ResetRechargeMultipliers()
