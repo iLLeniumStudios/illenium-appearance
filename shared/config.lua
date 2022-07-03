@@ -971,3 +971,200 @@ Config.Outfits = {
         }
     }
 }
+
+Config.InitialPlayerClothes = {
+    Male = {
+        Components = {
+            {
+                component_id = 0, -- Face
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 1, -- Mask
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 2, -- Hair
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 3, -- Upper Body
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 4, -- Lower Body
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 5, -- Bag
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 6, -- Shoes
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 7, -- Scarf & Chains
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 8, -- Shirt
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 9, -- Body Armor
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 10, -- Decals
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 11, -- Jacket
+                drawable = 0,
+                texture = 0
+            }
+        },
+        Props = {
+            {
+                prop_id = 0, -- Hat
+                drawable = -1,
+                texture = -1
+            },
+            {
+                prop_id = 1, -- Glasses
+                drawable = -1,
+                texture = -1
+            },
+            {
+                prop_id = 2, -- Ear
+                drawable = -1,
+                texture = -1
+            },
+            {
+                prop_id = 6, -- Watch
+                drawable = -1,
+                texture = -1
+            },
+            {
+                prop_id = 7, -- Bracelet
+                drawable = -1,
+                texture = -1
+            }
+        },
+        Hair = {
+            color = 0,
+            highlight = 0,
+            style = 0,
+            texture = 0
+        }
+    },
+    Female = {
+        Components = {
+            {
+                component_id = 0, -- Face
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 1, -- Mask
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 2, -- Hair
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 3, -- Upper Body
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 4, -- Lower Body
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 5, -- Bag
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 6, -- Shoes
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 7, -- Scarf & Chains
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 8, -- Shirt
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 9, -- Body Armor
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 10, -- Decals
+                drawable = 0,
+                texture = 0
+            },
+            {
+                component_id = 11, -- Jacket
+                drawable = 0,
+                texture = 0
+            }
+        },
+        Props = {
+            {
+                prop_id = 0, -- Hat
+                drawable = -1,
+                texture = -1
+            },
+            {
+                prop_id = 1, -- Glasses
+                drawable = -1,
+                texture = -1
+            },
+            {
+                prop_id = 2, -- Ear
+                drawable = -1,
+                texture = -1
+            },
+            {
+                prop_id = 6, -- Watch
+                drawable = -1,
+                texture = -1
+            },
+            {
+                prop_id = 7, -- Bracelet
+                drawable = -1,
+                texture = -1
+            }
+        },
+        Hair = {
+            color = 0,
+            highlight = 0,
+            style = 0,
+            texture = 0
+        }
+    }
+}
