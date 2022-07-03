@@ -22,6 +22,32 @@ Config.PersistUniforms = false -- Keeps Job / Gang Outfits on player reconnects 
 
 Config.OnDutyOnlyClothingRooms = false -- Set to `true` to make the clothing rooms accessible only to players who are On Duty
 
+-- ACE Permissions Config
+Config.EnableACEPermissions = false
+Config.ACEResetCooldown = 5000
+Config.ACEListCooldown = 60 * 60 * 1000 -- 1 Hour
+
+Config.DisableComponents = {
+    Masks = false,
+    UpperBody = false,
+    LowerBody = false,
+    Bags = false,
+    Shoes = false,
+    ScarfAndChains = false,
+    BodyArmor = false,
+    Shirts = false,
+    Decals = false,
+    Jackets = false
+}
+
+Config.DisableProps = {
+    Hats = false,
+    Glasses = false,
+    Ear = false,
+    Watches = false,
+    Bracelets = false
+}
+
 Config.Blips = {
     ["clothing"] = {
         Show = true,
@@ -113,7 +139,7 @@ Config.Stores = {
     {shopType = "clothing", coords = vector4(-3171.32, 1043.56, 20.86, 334.3), width = 4, length = 4},
     {shopType = "clothing", coords = vector4(-1105.52, 2707.79, 19.11, 317.19), width = 4, length = 4},
     {shopType = "clothing", coords = vector4(-1207.65, -1456.89, 4.37, 38.59), width = 4, length = 4},
-    {shopType = "clothing", coords = vector4(124.82, -224.36, 54.56, 335.41), width = 2, length = 2},
+    {shopType = "clothing", coords = vector4(124.82, -224.36, 54.56, 335.41), width = 4, length = 4},
     {shopType = "barber", coords = vector4(-814.22, -183.7, 37.57, 116.91), width = 2, length = 2},
     {shopType = "barber", coords = vector4(136.78, -1708.4, 29.29, 144.19), width = 2, length = 2},
     {shopType = "barber", coords = vector4(-1282.57, -1116.84, 6.99, 89.25), width = 2, length = 2},
@@ -131,8 +157,7 @@ Config.Stores = {
 }
 
 Config.ClothingRooms = {
-    {requiredJob = "police", isGang = false, coords = vector4(462.85, -999.21, 30.69, 93.35), width = 3, length = 3},
-    {requiredJob = "police", isGang = false, coords = vector4(301.58, -598.82, 43.29, 79.61), width = 3, length = 3}, -- Right double door in Hospital Map that is on QBCore GitHub
+    {job = "police", coords = vector4(462.85, -999.21, 30.69, 93.35), width = 3, length = 3},
 }
 
 

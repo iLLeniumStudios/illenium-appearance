@@ -16,15 +16,15 @@ end
 -- Backwards Compatible Events
 
 RegisterNetEvent('qb-clothing:client:openMenu', function()
-    OpenShop({
-        ped = true,
-        headBlend = true,
-        faceFeatures = true,
-        headOverlays = true,
-        components = true,
-        props = true,
-        tattoos = true
-    }, true, 'all')
+    local config = getDefaultConfig()
+    config.ped = true
+    config.headBlend = true
+    config.faceFeatures = true
+    config.headOverlays = true
+    config.components = true
+    config.props = true
+    config.tattoos = true
+    OpenShop(config, true, 'all')
 end)
 
 RegisterNetEvent('qb-clothing:client:openOutfitMenu', function()

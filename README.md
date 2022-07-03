@@ -21,6 +21,7 @@ Discord: https://discord.gg/ZVJEkjUTkx
 - Everything from standalone fivem-appearance
 - Player outfits
 - Rank based Clothing Rooms for Jobs / Gangs
+- Job / Gang locked Stores
 - Tattoo's Support
 - Hair Textures
 - Polyzone Support
@@ -32,11 +33,11 @@ Discord: https://discord.gg/ZVJEkjUTkx
 - Skin migration support (qb-clothing / old fivem-appearance)
 - Player specific outfit locations (Restricted via CitizenID)
 - Makeup Secondary Color
-- QBCore Theme
-- Component & Props Blacklist support
-- Limit Components & Props to certain Jobs / Gangs
+- Blacklist / Limit Components & Props to certain Jobs / Gangs / ACEs (Allows you to have VIP clothing on your Server)
+- Blacklist / Limit Peds to certain Jobs / Gangs / ACEs
 - Persist Job / Gang Clothes on reconnects / logout
-- Themes Support
+- Themes Support (Default & QBCore provided out of the box)
+- Disable Components / Props Entirely (Clothing as items support)
 
 ## New Preview (with Tattoos)
 
@@ -48,6 +49,9 @@ https://streamable.com/qev2h7
 - Delete / stop any tattoo shop resources e.g., `qb-tattooshop` from your resources folder
 - Put `setr fivem-appearance:locale "en"` in your server.cfg
 - Put `ensure fivem-appearance` in your server.cfg
+- If you want to use ACE permissions for clothing items then do the following:
+  - Add `add_ace resource.fivem-appearance command.list_aces allow` to server.cfg
+  - Set `Config.EnableACEPermissions` to `true` in `shared/config.lua`
 - Delete the table `player_outfits` from your database
 - Apply the SQL file located [here](sql/player_outfits.sql) to your database to have the new `player_outfits` table created 
 - If you want to configure qb-multicharacter, follow the corresponding guide for your version [here](docs/multicharacter-setup.md)
@@ -86,7 +90,7 @@ Migration demo: https://streamable.com/ydxoqb
 - Restart the server
 
 
-## Blacklisting Clothes and / or Limiting them to Jobs / Gangs
+## Blacklisting Clothes and / or Limiting them to Jobs / Gangs / ACEs
 
 You can now blacklist different clothes by adding them in a specific format to `blacklist.json`. The default file contains all the component names that you can choose to blacklist. For example if you want to blacklist following items:
 
@@ -95,8 +99,9 @@ Jackets: 10, 12, 13, 18 (All Textures)
 Jackets: 11 (Texture: 1, 2, 3)
 Masks: 10, 11, 12, 13 (All Textures)
 Masks: 14 (Texture: 5, 7, 10, 12, 13)
-Jackets: 25, 30, 35 (Accessible only by "police" job)
-Hats: 41, 42, 45 (Accessible only by "ballas" gang)
+Jackets: 25, 30, 35 (Accessible only to "police" job)
+Hats: 41, 42, 45 (Accessible only to "ballas" gang)
+Scarfs & Chains: 5, 6, 7 (Accessible only to "vip" ACE)
 ```
 
 Here is how the JSON file would look like, for such configuration:
@@ -107,40 +112,45 @@ Here is how the JSON file would look like, for such configuration:
     "components": {
       "masks": [
         {
-          "drawables": [ 10, 11, 12, 13 ]
+          "drawables": [10, 11, 12, 13]
         },
         {
           "drawables": [14],
-          "textures": [ 5, 7, 10, 11, 12, 13 ]
+          "textures": [5, 7, 10, 11, 12, 13]
         }
       ],
       "upperBody": [],
       "lowerBody": [],
       "bags": [],
       "shoes": [],
-      "scarfAndChains": [],
+      "scarfAndChains": [
+        {
+          "drawables": [5, 6, 7],
+          "aces": ["vip"]
+        }
+      ],
       "shirts": [],
       "bodyArmor": [],
       "decals": [],
       "jackets": [
         {
-          "drawables":  [ 11 ],
-          "textures": [ 1, 2, 3 ]
+          "drawables":  [11],
+          "textures": [1, 2, 3]
         },
         {
-          "drawables": [ 10, 12, 13, 18 ]
+          "drawables": [10, 12, 13, 18]
         },
         {
-          "drawables": [ 25, 30, 35 ],
-          "jobs": [ "police" ]
+          "drawables": [25, 30, 35],
+          "jobs": ["police"]
         }
       ]
     },
     "props": {
       "hats": [
         {
-          "drawables": [ 41, 42, 45 ],
-          "gangs": [ "ballas" ]
+          "drawables": [41, 42, 45],
+          "gangs": ["ballas"]
         }
       ],
       "glasses": [],
@@ -174,6 +184,48 @@ Here is how the JSON file would look like, for such configuration:
 ```
 
 You can separately blacklist male and female clothes. Just put them under the right section in the json and you should be good to go.
+
+## Limiting Ped Models to Jobs / Gangs / ACEs
+
+You can now limit different ped models by adding them in a specific format to `peds.json`. The default file contains all the ped models without any blacklisting. For example if you want to limit following peds:
+
+```
+a_f_m_beach_01, a_f_m_bevhills_01, a_f_m_bevhills_02 => "police" job
+a_f_m_bodybuild_01 => "vagos" gang
+a_f_m_downtown_01 => "admin" ace
+a_f_m_skidrow_01 => "police" job, "ballas" gang
+```
+
+To do this, you first need to remove all these peds from the `peds` list which doesn't have any filters / limits defined (The default one provided in `peds.json`).
+
+Here is how the JSON file will look like, for such configuration (**Note:** The `...` should be the list of all peds that you want to be accessible to everyone):
+
+```json
+{
+  "pedConfig": [
+    {
+      "peds": [...]
+    },
+    {
+      "peds": ["a_f_m_beach_01", "a_f_m_bevhills_01", "a_f_m_bevhills_02"],
+      "jobs": ["police"],
+    },
+    {
+      "peds": ["a_f_m_bodybuild_01"],
+      "gangs": ["vagos"],
+    },
+    {
+      "peds": ["a_f_m_downtown_01"],
+      "aces": ["admin"],
+    },
+    {
+      "peds": ["a_f_m_skidrow_01"],
+      "jobs": ["police"],
+      "gangs": ["ballas"]
+    }
+  ]
+}
+```
 
 ## Theme configuration
 
@@ -209,6 +261,12 @@ You can customize every theme using the parameters defined in `theme.json`. Foll
 | smoothBackgroundTransition | Enable to fade in to the background color during hover        |
 
 *Note:* After creating the custom theme, make sure to change `currentTheme` to the `id` of the new theme. You can ofcourse modify the existing themes as well if you want, but it is recommended to create your own so that you can switch between the defaults and the custom one whenever needed.
+
+## Disabling Components / Props entirely
+
+You can now disable any Component / Prop using `shared/config.lua` if you have some clothing as items.
+- For example if you want to disable Masks then you can change `Masks` value to `true` under `Config.DisableComponents`.
+- For example if you want to disable Watches then you can change `Watches` to `true` under `Component.DisableProps`.
 
 ## Credits
 - Original Script: https://github.com/pedr0fontoura/fivem-appearance

@@ -33,7 +33,7 @@ local function RemoveTargets()
         RemoveTargetPeds(TargetPeds.ClothingRoom)
     else
         for k, v in pairs(Config.ClothingRooms) do
-            exports['qb-target']:RemoveZone('clothing_' .. v.requiredJob .. k)
+            exports['qb-target']:RemoveZone('clothing_' .. v.job or v.gang .. k)
         end
     end
 
@@ -45,41 +45,6 @@ local function RemoveTargets()
         end
     end
 end
-
-AddEventHandler('onResourceStart', function(resource)
-    if resource == GetCurrentResourceName() then
-        PlayerData = QBCore.Functions.GetPlayerData()
-        PlayerJob = PlayerData.job
-        PlayerGang = PlayerData.gang
-        Gender = PlayerData.charinfo.gender
-        TriggerEvent("updateJob", PlayerJob.name)
-        TriggerEvent("updateGang", PlayerGang.name)
-    end
-end)
-
-AddEventHandler('onResourceStop', function(resource)
-    if resource == GetCurrentResourceName() and GetResourceState("qb-target") == "started" then
-        if Config.UseTarget then
-            RemoveTargets()
-        end
-    end
-end)
-
-RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
-    PlayerData.job = JobInfo
-    PlayerJob = JobInfo
-    TriggerEvent("updateJob", PlayerJob.name)
-end)
-
-RegisterNetEvent('QBCore:Client:OnGangUpdate', function(GangInfo)
-    PlayerData.gang = GangInfo
-    PlayerGang = GangInfo
-    TriggerEvent("updateGang", PlayerGang.name)
-end)
-
-RegisterNetEvent('QBCore:Client:SetDuty', function(duty)
-    PlayerJob.onduty = duty
-end)
 
 local function LoadPlayerUniform()
     QBCore.Functions.TriggerCallback("fivem-appearance:server:getUniform", function(uniformData)
@@ -107,11 +72,20 @@ local function LoadPlayerUniform()
     end)
 end
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
+local function ResetRechargeMultipliers()
+    local player = PlayerId()
+    SetPlayerHealthRechargeMultiplier(player, 0.0)
+    SetPlayerHealthRechargeLimit(player, 0.0)
+end
+
+local function InitAppearance()
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerJob = PlayerData.job
     PlayerGang = PlayerData.gang
     Gender = PlayerData.charinfo.gender
+
+    TriggerEvent("updateJob", PlayerJob.name)
+    TriggerEvent("updateGang", PlayerGang.name)
 
     QBCore.Functions.TriggerCallback('fivem-appearance:server:getAppearance', function(appearance)
         if not appearance then
@@ -121,6 +95,7 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
         if Config.PersistUniforms then
             LoadPlayerUniform()
         end
+        ResetRechargeMultipliers()
 
         if Config.Debug then -- This will detect if the player model is set as "player_zero" aka michael. Will then set the character as a freemode ped based on gender.
             Wait(5000)
@@ -130,18 +105,94 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
             end
         end
     end)
+    ResetBlips(PlayerJob.name, PlayerGang.name)
+end
+
+AddEventHandler('onResourceStart', function(resource)
+    if resource == GetCurrentResourceName() then
+        InitAppearance()
+    end
 end)
 
-local function getConfigForPermission(hasPedPerms)
-    local config = {
-        ped = true,
-        headBlend = true,
-        faceFeatures = true,
-        headOverlays = true,
-        components = true,
-        props = true,
-        tattoos = true
+AddEventHandler('onResourceStop', function(resource)
+    if resource == GetCurrentResourceName() and GetResourceState("qb-target") == "started" then
+        if Config.UseTarget then
+            RemoveTargets()
+        end
+    end
+end)
+
+RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
+    PlayerData.job = JobInfo
+    PlayerJob = JobInfo
+    TriggerEvent("updateJob", PlayerJob.name)
+    ResetBlips(PlayerJob.name, PlayerGang.name)
+end)
+
+RegisterNetEvent('QBCore:Client:OnGangUpdate', function(GangInfo)
+    PlayerData.gang = GangInfo
+    PlayerGang = GangInfo
+    TriggerEvent("updateGang", PlayerGang.name)
+    ResetBlips(PlayerJob.name, PlayerGang.name)
+end)
+
+RegisterNetEvent('QBCore:Client:SetDuty', function(duty)
+    PlayerJob.onduty = duty
+end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
+    InitAppearance()
+end)
+
+local function getComponentConfig()
+    return {
+        masks = not Config.DisableComponents.Masks,
+        upperBody = not Config.DisableComponents.UpperBody,
+        lowerBody = not Config.DisableComponents.LowerBody,
+        bags = not Config.DisableComponents.Bags,
+        shoes = not Config.DisableComponents.Shoes,
+        scarfAndChains = not Config.DisableComponents.ScarfAndChains,
+        bodyArmor = not Config.DisableComponents.BodyArmor,
+        shirts = not Config.DisableComponents.Shirts,
+        decals = not Config.DisableComponents.Decals,
+        jackets = not Config.DisableComponents.Jackets
     }
+end
+
+local function getPropConfig()
+    return {
+        hats = not Config.DisableProps.Hats,
+        glasses = not Config.DisableProps.Glasses,
+        ear = not Config.DisableProps.Ear,
+        watches = not Config.DisableProps.Watches,
+        bracelets = not Config.DisableProps.Bracelets
+    }
+end
+
+function getDefaultConfig()
+    return {
+        ped = false,
+        headBlend = false,
+        faceFeatures = false,
+        headOverlays = false,
+        components = false,
+        componentConfig = getComponentConfig(),
+        props = false,
+        propConfig = getPropConfig(),
+        tattoos = false,
+        enableExit = true,
+    }
+end
+
+local function getConfigForPermission(hasPedPerms)
+    local config = getDefaultConfig()
+    config.ped = true
+    config.headBlend = true
+    config.faceFeatures = true
+    config.headOverlays = true
+    config.components = true
+    config.props = true
+    config.tattoos = true
 
     if Config.EnablePedMenu then
         config.ped = hasPedPerms
@@ -163,9 +214,11 @@ RegisterNetEvent('qb-clothes:client:CreateFirstCharacter', function()
         ClearPedDecorations(ped)
         QBCore.Functions.TriggerCallback("QBCore:HasPermission", function(permission)
             local config = getConfigForPermission(permission)
+            config.enableExit = false
             exports['fivem-appearance']:startPlayerCustomization(function(appearance)
                 if (appearance) then
                     TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
+                    ResetRechargeMultipliers()
                 end
             end, config)
         end, Config.PedMenuGroup)
@@ -193,63 +246,37 @@ function OpenShop(config, isPedMenu, shopType)
 end
 
 local function OpenClothingShop(isPedMenu)
-    local config = {
-        ped = false,
-        headBlend = false,
-        faceFeatures = false,
-        headOverlays = false,
-        components = true,
-        props = true,
-        tattoos = false
-    }
+    local config = getDefaultConfig()
+    config.components = true
+    config.props = true
+
     if isPedMenu then
-        config = {
-            ped = true,
-            headBlend = true,
-            faceFeatures = true,
-            headOverlays = true,
-            components = true,
-            props = true,
-            tattoos = true
-        }
+        config.ped = true
+        config.headBlend = true
+        config.faceFeatures = true
+        config.headOverlays = true
+        config.tattoos = true
     end
     OpenShop(config, isPedMenu, 'clothing')
 end
 
 local function OpenBarberShop()
-    OpenShop({
-        ped = false,
-        headBlend = false,
-        faceFeatures = false,
-        headOverlays = true,
-        components = false,
-        props = false,
-        tattoos = false
-    }, false, 'barber')
+    local config = getDefaultConfig()
+    config.headOverlays = true
+    OpenShop(config, false, 'barber')
 end
 
 local function OpenTattooShop()
-    OpenShop({
-        ped = false,
-        headBlend = false,
-        faceFeatures = false,
-        headOverlays = false,
-        components = false,
-        props = false,
-        tattoos = true
-    }, false, 'tattoo')
+    local config = getDefaultConfig()
+    config.tattoos = true
+    OpenShop(config, false, 'tattoo')
 end
 
 local function OpenSurgeonShop()
-    OpenShop({
-        ped = false,
-        headBlend = true,
-        faceFeatures = true,
-        headOverlays = false,
-        components = false,
-        props = false,
-        tattoos = false
-    }, false, 'surgeon')
+    local config = getDefaultConfig()
+    config.headBlend = true
+    config.faceFeatures = true
+    OpenShop(config, false, 'surgeon')
 end
 
 RegisterNetEvent('fivem-appearance:client:openClothingShop', OpenClothingShop)
@@ -441,6 +468,7 @@ RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
             if appearance then
                 exports['fivem-appearance']:setPlayerAppearance(appearance)
                 appearanceDB = appearance
+                ResetRechargeMultipliers()
             else
                 QBCore.Functions.Notify(
                     "Something went wrong. The outfit that you're trying to change to, does not have a base appearance.",
@@ -498,6 +526,11 @@ RegisterNetEvent('fivem-appearance:client:openJobOutfitsMenu', function(outfitsT
 end)
 
 RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
+    local playerPed = PlayerPedId()
+    local health = GetEntityHealth(playerPed)
+    local maxhealth = GetEntityMaxHealth(playerPed)
+    local armour = GetPedArmour(playerPed)
+
     QBCore.Functions.TriggerCallback('fivem-appearance:server:getAppearance', function(appearance)
         if not appearance then
             return
@@ -506,6 +539,12 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
         if Config.PersistUniforms then
             TriggerServerEvent("fivem-appearance:server:syncUniform", nil)
         end
+        playerPed = PlayerPedId()
+        SetPedMaxHealth(playerPed, maxhealth)
+        Citizen.Wait(1000) -- Safety Delay
+        SetEntityHealth(playerPed, health)
+        SetPedArmour(playerPed, armour)
+        ResetRechargeMultipliers()
     end)
 end)
 
@@ -555,31 +594,36 @@ end
 
 local function SetupStoreZones()
     local zones = {}
-    for _, v in pairs(Config.Stores) do
+    for k, v in pairs(Config.Stores) do
         zones[#zones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
-            name = v.shopType,
+            name = 'Stores_' .. v.shopType .. '_' .. k,
             minZ = v.coords.z - 1.5,
             maxZ = v.coords.z + 1.5,
             heading = v.coords.w
         })
     end
 
-    local clothingCombo = ComboZone:Create(zones, {
-        name = "clothingCombo",
+    local storeCombo = ComboZone:Create(zones, {
+        name = "storeCombo",
         debugPoly = Config.Debug
     })
-    clothingCombo:onPlayerInOut(function(isPointInside, _, zone)
+    storeCombo:onPlayerInOut(function(isPointInside, _, zone)
         if isPointInside then
-            inZone = true
-            zoneName = zone.name
-            if zoneName == 'clothing' then
-                exports['qb-core']:DrawText('[E] Clothing Store')
-            elseif zoneName == 'barber' then
-                exports['qb-core']:DrawText('[E] Barber')
-            elseif zoneName == 'tattoo' then
-                exports['qb-core']:DrawText('[E] Tattoo Shop')
-            elseif zoneName == 'surgeon' then
-                exports['qb-core']:DrawText('[E] Plastic Surgeon')
+            local matches = {zone.name:match("([^_]+)_([^_]+)_([^_]+)")}
+            zoneName = matches[2]
+            local currentStore = Config.Stores[tonumber(matches[3])]
+            local jobName = (currentStore.job and PlayerJob.name) or (currentStore.gang and PlayerGang.name)
+            if jobName == (currentStore.job or currentStore.gang) then
+                inZone = true
+                if zoneName == 'clothing' then
+                    exports['qb-core']:DrawText('[E] Clothing Store')
+                elseif zoneName == 'barber' then
+                    exports['qb-core']:DrawText('[E] Barber')
+                elseif zoneName == 'tattoo' then
+                    exports['qb-core']:DrawText('[E] Tattoo Shop')
+                elseif zoneName == 'surgeon' then
+                    exports['qb-core']:DrawText('[E] Plastic Surgeon')
+                end
             end
         else
             inZone = false
@@ -607,8 +651,8 @@ local function SetupClothingRoomZones()
         if isPointInside then
             zoneName = zone.name
             local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zone.name, 15))]
-            local jobName = clothingRoom.isGang and PlayerGang.name or PlayerJob.name
-            if jobName == clothingRoom.requiredJob then
+            local jobName = clothingRoom.job and PlayerJob.name or PlayerGang.name
+            if jobName == (clothingRoom.job or clothingRoom.gang) then
                 if CheckDuty() then
                     inZone = true
                     exports['qb-core']:DrawText('[E] Clothing Room')
@@ -734,7 +778,8 @@ local function SetupClothingRoomTargets()
                 icon = targetConfig.icon,
                 label = targetConfig.label,
                 canInteract = CheckDuty,
-                job = v.requiredJob
+                job = v.job,
+                gang = v.gang
             }},
             distance = targetConfig.distance
         }
@@ -743,8 +788,9 @@ local function SetupClothingRoomTargets()
             TargetPeds.ClothingRoom[k] = CreatePedAtCoords(targetConfig.model, v.coords, targetConfig.scenario)
             exports['qb-target']:AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
         else
-            exports['qb-target']:AddBoxZone('clothing_' .. v.requiredJob .. k, v.coords, v.length, v.width, {
-                name = 'clothing_' .. v.requiredJob .. k,
+            local key = 'clothing_' .. (v.job or v.gang) .. k
+            exports['qb-target']:AddBoxZone(key, v.coords, v.length, v.width, {
+                name = key,
                 debugPoly = Config.Debug,
                 minZ = v.coords.z - 2,
                 maxZ = v.coords.z + 2
@@ -772,7 +818,7 @@ local function SetupPlayerOutfitRoomTargets()
             distance = targetConfig.distance
         }
 
-        if Config.EnablePedsForClothingRooms then
+        if Config.EnablePedsForPlayerOutfitRooms then
             TargetPeds.PlayerOutfitRoom[k] = CreatePedAtCoords(targetConfig.model, v.coords, targetConfig.scenario)
             exports['qb-target']:AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
         else
