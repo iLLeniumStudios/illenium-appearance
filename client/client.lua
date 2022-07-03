@@ -3,6 +3,8 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local zoneName = nil
 local inZone = false
 
+local MenuItemId = nil
+
 local PlayerData = {}
 local PlayerJob = {}
 local PlayerGang = {}
@@ -77,6 +79,13 @@ local function ResetRechargeMultipliers()
     SetPlayerHealthRechargeLimit(player, 0.0)
 end
 
+local function RemoveRadialMenuOption()
+    if MenuItemId then
+        exports['qb-radialmenu']:RemoveOption(MenuItemId)
+        MenuItemId = nil
+    end
+end
+
 local function InitAppearance()
     PlayerData = QBCore.Functions.GetPlayerData()
     PlayerJob = PlayerData.job
@@ -116,6 +125,9 @@ AddEventHandler('onResourceStop', function(resource)
     if resource == GetCurrentResourceName() and GetResourceState("qb-target") == "started" then
         if Config.UseTarget then
             RemoveTargets()
+        end
+        if Config.UseRadialMenu then
+            RemoveRadialMenuOption()
         end
     end
 end)
@@ -433,6 +445,18 @@ RegisterNetEvent("fivem-appearance:client:openClothingShopMenu", function(isPedM
     OpenMenu(isPedMenu, "fivem-appearance:client:openClothingShopMenu", "default")
 end)
 
+RegisterNetEvent("fivem-appearance:client:OpenBarberShop", function()
+    OpenBarberShop()
+end)
+
+RegisterNetEvent("fivem-appearance:client:OpenTattooShop", function()
+    OpenTattooShop()
+end)
+
+RegisterNetEvent("fivem-appearance:client:OpenSurgeonShop", function()
+    OpenSurgeonShop()
+end)
+
 RegisterNetEvent("fivem-appearance:client:changeOutfitMenu", function(data)
     QBCore.Functions.TriggerCallback('fivem-appearance:server:getOutfits', function(result)
         local outfitMenu = {{
@@ -551,6 +575,42 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
     end)
 end)
 
+RegisterNetEvent("qb-radialmenu:client:onRadialmenuOpen", function()
+    if not inZone or not zoneName then
+        RemoveRadialMenuOption()
+        return
+    end
+    local event, title
+    if string.find(zoneName, "ClothingRooms_") then
+        event = "fivem-appearance:client:OpenClothingRoom"
+        title = "Clothing Room"
+    elseif string.find(zoneName, "PlayerOutfitRooms_") then
+        event = "fivem-appearance:client:OpenPlayerOutfitRoom"
+        title = "Player Outfits"
+    elseif zoneName == "clothing" then
+        event = "fivem-appearance:client:openClothingShopMenu"
+        title = "Clothing Shop"
+    elseif zoneName == "barber" then
+        event = "fivem-appearance:client:OpenBarberShop"
+        title = "Barber Shop"
+    elseif zoneName == "tattoo" then
+        event = "fivem-appearance:client:OpenTattooShop"
+        title = "Tattoo Shop"
+    elseif zoneName == "surgeon" then
+        event = "fivem-appearance:client:OpenSurgeonShop"
+        title = "Surgeon Shop"
+    end
+
+    MenuItemId = exports["qb-radialmenu"]:AddOption({
+        id = "open_clothing_menu",
+        title = title,
+        icon = "shirt",
+        type = "client",
+        event = event,
+        shouldClose = true
+    }, MenuItemId)
+end)
+
 local function isPlayerAllowedForOutfitRoom(outfitRoom)
     local isAllowed = false
     for i = 1, #outfitRoom.citizenIDs, 1 do
@@ -591,6 +651,17 @@ local function getPlayerJobOutfits(clothingRoom)
     return outfits
 end
 
+RegisterNetEvent("fivem-appearance:client:OpenClothingRoom", function()
+    local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zoneName, 15))]
+    local outfits = getPlayerJobOutfits(clothingRoom)
+    TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', outfits)
+end)
+
+RegisterNetEvent("fivem-appearance:client:OpenPlayerOutfitRoom", function()
+    local outfitRoom = Config.PlayerOutfitRooms[tonumber(string.sub(zoneName, 19))]
+    OpenOutfitRoom(outfitRoom)
+end)
+
 local function CheckDuty()
     return not Config.OnDutyOnlyClothingRooms or (Config.OnDutyOnlyClothingRooms and PlayerJob.onduty)
 end
@@ -598,12 +669,20 @@ end
 local function SetupStoreZones()
     local zones = {}
     for k, v in pairs(Config.Stores) do
-        zones[#zones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
-            name = 'Stores_' .. v.shopType .. '_' .. k,
-            minZ = v.coords.z - 1.5,
-            maxZ = v.coords.z + 1.5,
-            heading = v.coords.w
-        })
+        if Config.UseRadialMenu then
+            zones[#zones + 1] = PolyZone:Create(v.zone.shape, {
+                name = 'Stores_' .. v.shopType .. '_' .. k,
+                minZ = v.zone.minZ,
+                maxZ = v.zone.maxZ,
+            })
+        else
+            zones[#zones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
+                name = 'Stores_' .. v.shopType .. '_' .. k,
+                minZ = v.coords.z - 1.5,
+                maxZ = v.coords.z + 1.5,
+                heading = v.coords.w
+            })
+        end
     end
 
     local storeCombo = ComboZone:Create(zones, {
@@ -618,14 +697,15 @@ local function SetupStoreZones()
             local jobName = (currentStore.job and PlayerJob.name) or (currentStore.gang and PlayerGang.name)
             if jobName == (currentStore.job or currentStore.gang) then
                 inZone = true
+                local prefix = Config.UseRadialMenu and '' or '[E] '
                 if zoneName == 'clothing' then
-                    exports['qb-core']:DrawText('[E] Clothing Store')
+                    exports['qb-core']:DrawText(prefix .. 'Clothing Store')
                 elseif zoneName == 'barber' then
-                    exports['qb-core']:DrawText('[E] Barber')
+                    exports['qb-core']:DrawText(prefix .. 'Barber')
                 elseif zoneName == 'tattoo' then
-                    exports['qb-core']:DrawText('[E] Tattoo Shop')
+                    exports['qb-core']:DrawText(prefix .. 'Tattoo Shop')
                 elseif zoneName == 'surgeon' then
-                    exports['qb-core']:DrawText('[E] Plastic Surgeon')
+                    exports['qb-core']:DrawText(prefix .. 'Plastic Surgeon')
                 end
             end
         else
@@ -638,12 +718,20 @@ end
 local function SetupClothingRoomZones()
     local roomZones = {}
     for k, v in pairs(Config.ClothingRooms) do
-        roomZones[#roomZones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
-            name = 'ClothingRooms_' .. k,
-            minZ = v.coords.z - 1.5,
-            maxZ = v.coords.z + 1,
-            heading = v.coords.w
-        })
+        if Config.UseRadialMenu then
+            roomZones[#roomZones + 1] = PolyZone:Create(v.zone.shape, {
+                name = 'ClothingRooms_' .. k,
+                minZ = v.zone.minZ,
+                maxZ = v.zone.maxZ,
+            })
+        else
+            roomZones[#roomZones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
+                name = 'ClothingRooms_' .. k,
+                minZ = v.coords.z - 1.5,
+                maxZ = v.coords.z + 1,
+                heading = v.coords.w
+            })
+        end
     end
 
     local clothingRoomsCombo = ComboZone:Create(roomZones, {
@@ -658,7 +746,8 @@ local function SetupClothingRoomZones()
             if jobName == (clothingRoom.job or clothingRoom.gang) then
                 if CheckDuty() then
                     inZone = true
-                    exports['qb-core']:DrawText('[E] Clothing Room')
+                    local prefix = Config.UseRadialMenu and '' or '[E] '
+                    exports['qb-core']:DrawText(prefix .. 'Clothing Room')
                 end
             end
         else
@@ -671,11 +760,19 @@ end
 local function SetupPlayerOutfitRoomZones()
     local roomZones = {}
     for k, v in pairs(Config.PlayerOutfitRooms) do
-        roomZones[#roomZones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
-            name = 'PlayerOutfitRooms_' .. k,
-            minZ = v.coords.z - 1.5,
-            maxZ = v.coords.z + 1
-        })
+        if Config.UseRadialMenu then
+            roomZones[#roomZones + 1] = PolyZone:Create(v.zone.shape, {
+                name = 'PlayerOutfitRooms_' .. k,
+                minZ = v.zone.minZ,
+                maxZ = v.zone.maxZ,
+            })
+        else
+            roomZones[#roomZones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
+                name = 'PlayerOutfitRooms_' .. k,
+                minZ = v.coords.z - 1.5,
+                maxZ = v.coords.z + 1
+            })
+        end
     end
 
     local playerOutfitRoomsCombo = ComboZone:Create(roomZones, {
@@ -689,7 +786,8 @@ local function SetupPlayerOutfitRoomZones()
             local isAllowed = isPlayerAllowedForOutfitRoom(outfitRoom)
             if isAllowed then
                 inZone = true
-                exports['qb-core']:DrawText('[E] Outfits')
+                local prefix = Config.UseRadialMenu and '' or '[E] '
+                exports['qb-core']:DrawText(prefix .. 'Outfits')
             end
         else
             inZone = false
@@ -875,6 +973,8 @@ CreateThread(function()
         SetupTargets()
     else
         SetupZones()
-        ZonesLoop()
+        if not Config.UseRadialMenu then
+            ZonesLoop()
+        end
     end
 end)
