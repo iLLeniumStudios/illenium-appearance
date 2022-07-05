@@ -554,11 +554,20 @@ RegisterNetEvent('fivem-appearance:client:openJobOutfitsMenu', function(outfitsT
     OpenMenu(nil, "fivem-appearance:client:openJobOutfitsMenu", "job-outfit", outfitsToShow)
 end)
 
+local function InCooldown()
+    return (GetGameTimer() - reloadSkinTimer) < Config.ReloadSkinCooldown
+end
+
+local function CheckPlayerMeta()
+    return PlayerData.metadata["isdead"] or PlayerData.metadata["inlaststand"] or PlayerData.metadata["ishandcuffed"]
+end
+
 RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
-    if (GetGameTimer() - reloadSkinTimer) < Config.ReloadSkinCooldown then
+    if InCooldown() or CheckPlayerMeta() then
         QBCore.Functions.Notify("You cannot use reloadskin right now", "error")
         return
     end
+
     reloadSkinTimer = GetGameTimer()
     local playerPed = PlayerPedId()
     local health = GetEntityHealth(playerPed)
