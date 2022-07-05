@@ -23,6 +23,8 @@ Config.PersistUniforms = false -- Keeps Job / Gang Outfits on player reconnects 
 
 Config.OnDutyOnlyClothingRooms = false -- Set to `true` to make the clothing rooms accessible only to players who are On Duty
 
+Config.ReloadSkinCooldown = 5000
+
 -- ACE Permissions Config
 Config.EnableACEPermissions = false
 Config.ACEResetCooldown = 5000

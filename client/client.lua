@@ -9,6 +9,8 @@ local PlayerData = {}
 local PlayerJob = {}
 local PlayerGang = {}
 
+local reloadSkinTimer = GetGameTimer()
+
 local TargetPeds = {
     Store = {},
     ClothingRoom = {},
@@ -553,6 +555,11 @@ RegisterNetEvent('fivem-appearance:client:openJobOutfitsMenu', function(outfitsT
 end)
 
 RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
+    if (GetGameTimer() - reloadSkinTimer) < Config.ReloadSkinCooldown then
+        QBCore.Functions.Notify("You cannot use reloadskin right now", "error")
+        return
+    end
+    reloadSkinTimer = GetGameTimer()
     local playerPed = PlayerPedId()
     local health = GetEntityHealth(playerPed)
     local maxhealth = GetEntityMaxHealth(playerPed)
