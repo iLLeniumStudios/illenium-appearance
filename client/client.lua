@@ -36,7 +36,7 @@ local function RemoveTargets()
         RemoveTargetPeds(TargetPeds.ClothingRoom)
     else
         for k, v in pairs(Config.ClothingRooms) do
-            exports['qb-target']:RemoveZone('clothing_' .. v.job or v.gang .. k)
+            exports['qb-target']:RemoveZone('clothing_' .. (v.job or v.gang) .. k)
         end
     end
 
@@ -910,7 +910,8 @@ local function SetupClothingRoomTargets()
                 name = key,
                 debugPoly = Config.Debug,
                 minZ = v.coords.z - 2,
-                maxZ = v.coords.z + 2
+                maxZ = v.coords.z + 2,
+                heading = v.coords.w
             }, parameters)
         end
     end
@@ -943,7 +944,8 @@ local function SetupPlayerOutfitRoomTargets()
                 name = 'playeroutfitroom_' .. k,
                 debugPoly = Config.Debug,
                 minZ = v.coords.z - 2,
-                maxZ = v.coords.z + 2
+                maxZ = v.coords.z + 2,
+                heading = v.coords.w
             }, parameters)
         end
     end
