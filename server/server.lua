@@ -53,10 +53,6 @@ QBCore.Functions.CreateCallback('fivem-appearance:server:getAppearance', functio
     end
 end)
 
-QBCore.Functions.CreateCallback('QBCore:HasPermission', function(source, cb, perm)
-    cb(QBCore.Functions.HasPermission(source, perm))
-end)
-
 QBCore.Functions.CreateCallback('fivem-appearance:server:hasMoney', function(source, cb, shopType)
     local Player = QBCore.Functions.GetPlayer(source)
     local money = getMoneyForShop(shopType)
