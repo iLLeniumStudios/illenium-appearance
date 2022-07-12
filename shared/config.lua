@@ -17,6 +17,16 @@ Config.EnablePedsForPlayerOutfitRooms = true
 Config.EnablePedMenu = true
 Config.PedMenuGroup = "admin"
 
+Config.NewCharacterSections = {
+    Ped = true,
+    HeadBlend = true,
+    FaceFeatures = true,
+    HeadOverlays = true,
+    Components = true,
+    Props = true,
+    Tattoos = true
+}
+
 Config.AlwaysKeepProps = false
 
 Config.PersistUniforms = false -- Keeps Job / Gang Outfits on player reconnects / logout

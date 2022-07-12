@@ -196,19 +196,17 @@ function getDefaultConfig()
     }
 end
 
-local function getConfigForPermission(hasPedPerms)
+local function getNewCharacterConfig()
     local config = getDefaultConfig()
-    config.ped = true
-    config.headBlend = true
-    config.faceFeatures = true
-    config.headOverlays = true
-    config.components = true
-    config.props = true
-    config.tattoos = true
+    config.enableExit   = false
 
-    if Config.EnablePedMenu then
-        config.ped = hasPedPerms
-    end
+    config.ped          = Config.NewCharacterSections.Ped
+    config.headBlend    = Config.NewCharacterSections.HeadBlend
+    config.faceFeatures = Config.NewCharacterSections.FaceFeatures
+    config.headOverlays = Config.NewCharacterSections.HeadOverlays
+    config.components   = Config.NewCharacterSections.Components
+    config.props        = Config.NewCharacterSections.Props
+    config.tattoos      = Config.NewCharacterSections.Tattoos
 
     return config
 end
@@ -229,16 +227,13 @@ RegisterNetEvent('qb-clothes:client:CreateFirstCharacter', function()
         exports['fivem-appearance']:setPedProps(ped, Config.InitialPlayerClothes[gender].Props)
         exports['fivem-appearance']:setPedHair(ped, Config.InitialPlayerClothes[gender].Hair)
         ClearPedDecorations(ped)
-        QBCore.Functions.TriggerCallback("QBCore:HasPermission", function(permission)
-            local config = getConfigForPermission(permission)
-            config.enableExit = false
-            exports['fivem-appearance']:startPlayerCustomization(function(appearance)
-                if (appearance) then
-                    TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
-                    ResetRechargeMultipliers()
-                end
-            end, config)
-        end, Config.PedMenuGroup)
+        local config = getNewCharacterConfig()
+        exports['fivem-appearance']:startPlayerCustomization(function(appearance)
+            if (appearance) then
+                TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
+                ResetRechargeMultipliers()
+            end
+        end, config)
     end)
 end)
 
