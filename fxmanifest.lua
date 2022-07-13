@@ -5,6 +5,7 @@ author 'snakewiz'
 description 'A flexible player customization script for FiveM.'
 repository 'https://github.com/pedr0fontoura/fivem-appearance'
 version 'main'
+lua54 'yes'
 
 client_scripts {
   'game/dist/index.js',
