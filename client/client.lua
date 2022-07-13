@@ -821,7 +821,7 @@ local function EnsurePedModel(pedModel)
 end
 
 local function CreatePedAtCoords(pedModel, coords, scenario)
-    pedModel = type(pedModel) == "string" and GetHashKey(pedModel) or pedModel
+    pedModel = type(pedModel) == "string" and joaat(pedModel) or pedModel
     EnsurePedModel(pedModel)
     local ped = CreatePed(0, pedModel, coords.x, coords.y, coords.z - 0.98, coords.w, false, false)
     TaskStartScenarioInPlace(ped, scenario, true)
