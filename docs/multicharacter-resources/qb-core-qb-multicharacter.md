@@ -25,9 +25,9 @@ RegisterNUICallback('cDataPed', function(nData, cb)
             if skinData then
                 local model = skinData.model
                 CreateThread(function()
-                    RequestModel(GetHashKey(model))
-                    while not HasModelLoaded(GetHashKey(model)) do
-                        Wait(10)
+                    RequestModel(model)
+                    while not HasModelLoaded(model) do
+                        Wait(0)
                     end
                     charPed = CreatePed(2, model, Config.PedCoords.x, Config.PedCoords.y, Config.PedCoords.z - 0.98, Config.PedCoords.w, false, true)
                     SetPedComponentVariation(charPed, 0, 0, 0, 2)
@@ -43,10 +43,10 @@ RegisterNUICallback('cDataPed', function(nData, cb)
                         "mp_m_freemode_01",
                         "mp_f_freemode_01",
                     }
-                    local model = GetHashKey(randommodels[math.random(1, #randommodels)])
+                    model = GetHashKey(randommodels[math.random(1, #randommodels)])
                     RequestModel(model)
                     while not HasModelLoaded(model) do
-                        Wait(10)
+                        Wait(0)
                     end
                     charPed = CreatePed(2, model, Config.PedCoords.x, Config.PedCoords.y, Config.PedCoords.z - 0.98, Config.PedCoords.w, false, true)
                     SetPedComponentVariation(charPed, 0, 0, 0, 2)
