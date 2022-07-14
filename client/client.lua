@@ -646,8 +646,9 @@ local function getPlayerJobOutfits(clothingRoom)
     if PlayerData.charinfo.gender == 1 then
         gender = "female"
     end
-    local gradeLevel = clothingRoom.isGang and PlayerGang.grade.level or PlayerJob.grade.level
-    local jobName = clothingRoom.isGang and PlayerGang.name or PlayerJob.name
+
+    local gradeLevel = clothingRoom.job and PlayerJob.grade.level or PlayerGang.grade.level
+    local jobName = clothingRoom.job and PlayerJob.name or PlayerGang.name
 
     for i = 1, #Config.Outfits[jobName][gender], 1 do
         for _, v in pairs(Config.Outfits[jobName][gender][i].grades) do
