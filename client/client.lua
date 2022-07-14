@@ -439,6 +439,9 @@ RegisterNetEvent("fivem-appearance:client:openJobOutfitsListMenu", function(data
 end)
 
 RegisterNetEvent("fivem-appearance:client:openClothingShopMenu", function(isPedMenu)
+    if type(isPedMenu) == "table" then
+        isPedMenu = false
+    end
     OpenMenu(isPedMenu, "fivem-appearance:client:openClothingShopMenu", "default")
 end)
 
