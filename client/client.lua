@@ -481,7 +481,7 @@ RegisterNetEvent("fivem-appearance:client:SaveManagementOutfit", function(mType)
         Props = exports[resourceName]:getPedProps(playerPed)
     }
 
-    local rankValues = {}
+    local rankValues
     
     if mType == "Job" then
         outfitData.JobName = PlayerJob.name

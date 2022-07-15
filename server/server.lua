@@ -90,7 +90,7 @@ QBCore.Functions.CreateCallback("fivem-appearance:server:getManagementOutfits", 
         queryArgs[#queryArgs + 1] = gender
     end
 
-    managementOutfits = {}
+    local managementOutfits = {}
     local result = MySQL.Sync.fetchAll(query, queryArgs)
     for i = 1, #result, 1 do
         if grade >= result[i].minrank then
@@ -160,13 +160,21 @@ end)
 
 RegisterNetEvent("fivem-appearance:server:saveManagementOutfit", function(outfitData)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
 
     MySQL.Async.insert("INSERT INTO management_outfits (job_name, type, minrank, name, gender, model, props, components) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-    { outfitData.JobName, outfitData.Type, outfitData.MinRank, outfitData.Name, outfitData.Gender, outfitData.Model, json.encode(outfitData.Props), json.encode(outfitData.Components) },
-    function(id)
-        TriggerClientEvent('QBCore:Notify', src, 'Outfit ' .. outfitData.Name .. ' has been saved', 'success')
-    end)
+        {
+            outfitData.JobName,
+            outfitData.Type,
+            outfitData.MinRank,
+            outfitData.Name,
+            outfitData.Gender,
+            outfitData.Model,
+            json.encode(outfitData.Props),
+            json.encode(outfitData.Components)
+        },
+        function()
+            TriggerClientEvent('QBCore:Notify', src, 'Outfit ' .. outfitData.Name .. ' has been saved', 'success')
+        end)
 end)
 
 RegisterNetEvent("fivem-appearance:server:deleteManagementOutfit", function(id)
