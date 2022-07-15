@@ -69,7 +69,7 @@ local function LoadPlayerUniform()
         if not uniformData then
             return
         end
-        if Config.PlayerManagedOutfits then
+        if Config.BossManagedOutfits then
             QBCore.Functions.TriggerCallback("fivem-appearance:server:getManagementOutfits", function(result)
                 local uniform = nil
                 for i = 1, #result, 1 do
@@ -186,7 +186,7 @@ local function InitAppearance()
         end
     end)
     ResetBlips(PlayerJob.name, PlayerGang.name)
-    if Config.PlayerManagedOutfits then
+    if Config.BossManagedOutfits then
         AddManagementMenuItems()
     end
 end
@@ -205,7 +205,7 @@ AddEventHandler('onResourceStop', function(resource)
         if Config.UseRadialMenu and GetResourceState("qb-radialmenu") == "started" then
             RemoveRadialMenuOption()
         end
-        if Config.PlayerManagedOutfits and GetResourceState("qb-management") == "started" then
+        if Config.BossManagedOutfits and GetResourceState("qb-management") == "started" then
             RemoveManagementMenuItems()
         end
     end
@@ -695,7 +695,7 @@ RegisterNetEvent("fivem-appearance:client:openJobOutfitsListMenu", function(data
         }
     }}
     local event = "qb-clothing:client:loadOutfit"
-    if Config.PlayerManagedOutfits then
+    if Config.BossManagedOutfits then
         event = "fivem-appearance:client:changeOutfit"
     end
     if data.menuData then
@@ -936,7 +936,7 @@ local function getPlayerJobOutfits(clothingRoom)
     local gradeLevel = clothingRoom.job and PlayerJob.grade.level or PlayerGang.grade.level
     local jobName = clothingRoom.job and PlayerJob.name or PlayerGang.name
 
-    if Config.PlayerManagedOutfits then
+    if Config.BossManagedOutfits then
         local mType = clothingRoom.job and "Job" or "Gang"
         QBCore.Functions.TriggerCallback('fivem-appearance:server:getManagementOutfits', function(result)
             for i = 1, #result, 1 do
