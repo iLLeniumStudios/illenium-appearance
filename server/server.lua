@@ -71,6 +71,42 @@ QBCore.Functions.CreateCallback('fivem-appearance:server:getOutfits', function(s
     cb(outfitCache[Player.PlayerData.citizenid])
 end)
 
+QBCore.Functions.CreateCallback("fivem-appearance:server:getManagementOutfits", function(source, cb, mType, gender)
+    local Player = QBCore.Functions.GetPlayer(source)
+    local jobName = Player.PlayerData.job.name
+    local grade = Player.PlayerData.job.grade.level
+    if mType == "Gang" then
+        jobName = Player.PlayerData.gang.name
+        grade = Player.PlayerData.gang.grade.level
+    end
+    
+    grade = tonumber(grade)
+
+    local query = "SELECT * FROM management_outfits WHERE type = ? AND job_name = ?"
+    local queryArgs = {mType, jobName}
+
+    if gender then
+        query = query .. " AND gender = ?"
+        queryArgs[#queryArgs + 1] = gender
+    end
+
+    local managementOutfits = {}
+    local result = MySQL.Sync.fetchAll(query, queryArgs)
+    for i = 1, #result, 1 do
+        if grade >= result[i].minrank then
+            managementOutfits[#managementOutfits + 1] = {
+                id = result[i].id,
+                name = result[i].name,
+                model = result[i].model,
+                gender = result[i].gender,
+                components = json.decode(result[i].components),
+                props = json.decode(result[i].props)
+            }
+        end
+    end
+    cb(managementOutfits)
+end)
+
 QBCore.Functions.CreateCallback("fivem-appearance:server:getUniform", function(source, cb)
     local Player = QBCore.Functions.GetPlayer(source)
     cb(uniformCache[Player.PlayerData.citizenid])
@@ -120,6 +156,29 @@ RegisterNetEvent('fivem-appearance:server:saveOutfit', function(name, model, com
                 TriggerClientEvent('QBCore:Notify', src, 'Outfit ' .. name .. ' has been saved', 'success')
             end)
     end
+end)
+
+RegisterNetEvent("fivem-appearance:server:saveManagementOutfit", function(outfitData)
+    local src = source
+
+    MySQL.Async.insert("INSERT INTO management_outfits (job_name, type, minrank, name, gender, model, props, components) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        {
+            outfitData.JobName,
+            outfitData.Type,
+            outfitData.MinRank,
+            outfitData.Name,
+            outfitData.Gender,
+            outfitData.Model,
+            json.encode(outfitData.Props),
+            json.encode(outfitData.Components)
+        },
+        function()
+            TriggerClientEvent('QBCore:Notify', src, 'Outfit ' .. outfitData.Name .. ' has been saved', 'success')
+        end)
+end)
+
+RegisterNetEvent("fivem-appearance:server:deleteManagementOutfit", function(id)
+    MySQL.query("DELETE FROM management_outfits WHERE id = ?", {id})
 end)
 
 RegisterNetEvent("fivem-appearance:server:syncUniform", function(uniform)

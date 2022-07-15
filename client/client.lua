@@ -1,5 +1,7 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
+local resourceName = GetCurrentResourceName()
+
 local zoneName = nil
 local inZone = false
 
@@ -9,6 +11,11 @@ local PlayerData = {}
 local PlayerJob = {}
 local PlayerGang = {}
 
+local ManagementItemIDs = {
+    Gang = nil,
+    Boss = nil
+}
+
 local reloadSkinTimer = GetGameTimer()
 
 local TargetPeds = {
@@ -16,6 +23,14 @@ local TargetPeds = {
     ClothingRoom = {},
     PlayerOutfitRoom = {}
 }
+
+local function getGender()
+    local gender = "male"
+    if PlayerData.charinfo.gender == 1 then
+        gender = "female"
+    end
+    return gender
+end
 
 local function RemoveTargetPeds(peds)
     for i = 1, #peds, 1 do
@@ -54,24 +69,50 @@ local function LoadPlayerUniform()
         if not uniformData then
             return
         end
-        local outfits = Config.Outfits[uniformData.jobName][uniformData.gender]
-        local uniform = nil
-        for i = 1, #outfits, 1 do
-            if outfits[i].outfitLabel == uniformData.label then
-                uniform = outfits[i]
-                break
+        if Config.PlayerManagedOutfits then
+            QBCore.Functions.TriggerCallback("fivem-appearance:server:getManagementOutfits", function(result)
+                local uniform = nil
+                for i = 1, #result, 1 do
+                    if result[i].name == uniformData.name then
+                        uniform = {
+                            type = uniformData.type,
+                            name = result[i].name,
+                            model = result[i].model,
+                            components = result[i].components,
+                            props = result[i].props,
+                            disableSave = true,
+                        }
+                        break
+                    end
+                end
+
+                if not uniform then
+                    TriggerServerEvent("fivem-appearance:server:syncUniform", nil) -- Uniform doesn't exist anymore
+                    return
+                end
+    
+                TriggerEvent("fivem-appearance:client:changeOutfit", uniform)
+            end, uniformData.type, getGender())
+        else
+            local outfits = Config.Outfits[uniformData.jobName][uniformData.gender]
+            local uniform = nil
+            for i = 1, #outfits, 1 do
+                if outfits[i].name == uniformData.label then
+                    uniform = outfits[i]
+                    break
+                end
             end
+
+            if not uniform then
+                TriggerServerEvent("fivem-appearance:server:syncUniform", nil) -- Uniform doesn't exist anymore
+                return
+            end
+
+            uniform.jobName = uniformData.jobName
+            uniform.gender = uniformData.gender
+
+            TriggerEvent("qb-clothing:client:loadOutfit", uniform)
         end
-
-        if not uniform then
-            TriggerServerEvent("fivem-appearance:server:syncUniform", nil) -- Uniform doesn't exist anymore
-            return
-        end
-
-        uniform.jobName = uniformData.jobName
-        uniform.gender = uniformData.gender
-
-        TriggerEvent("qb-clothing:client:loadOutfit", uniform)
     end)
 end
 
@@ -79,6 +120,36 @@ local function ResetRechargeMultipliers()
     local player = PlayerId()
     SetPlayerHealthRechargeMultiplier(player, 0.0)
     SetPlayerHealthRechargeLimit(player, 0.0)
+end
+
+local function RemoveManagementMenuItems()
+    if ManagementItemIDs.Boss then
+        exports["qb-management"]:RemoveBossMenuItem(ManagementItemIDs.Boss)
+    end
+    if ManagementItemIDs.Gang then
+        exports["qb-management"]:RemoveGangMenuItem(ManagementItemIDs.Gang)
+    end
+end
+
+local function AddManagementMenuItems()
+    local eventName = "fivem-appearance:client:OutfitManagementMenu"
+    local menuItem = {
+        header = "Outfit Management",
+        icon = "fa-solid fa-shirt",
+        params = {
+            event = eventName,
+            args = {
+                backEvent = eventName
+            }
+        }
+    }
+    menuItem.txt = "Manage outfits for Job"
+    menuItem.params.args.type = "Job"
+    ManagementItemIDs.Boss = exports["qb-management"]:AddBossMenuItem(menuItem)
+
+    menuItem.txt = "Manage outfits for Gang"
+    menuItem.params.args.type = "Gang"
+    ManagementItemIDs.Gang = exports["qb-management"]:AddGangMenuItem(menuItem)
 end
 
 local function RemoveRadialMenuOption()
@@ -100,7 +171,7 @@ local function InitAppearance()
         if not appearance then
             return
         end
-        exports['fivem-appearance']:setPlayerAppearance(appearance)
+        exports[resourceName]:setPlayerAppearance(appearance)
         if Config.PersistUniforms then
             LoadPlayerUniform()
         end
@@ -115,6 +186,9 @@ local function InitAppearance()
         end
     end)
     ResetBlips(PlayerJob.name, PlayerGang.name)
+    if Config.PlayerManagedOutfits then
+        AddManagementMenuItems()
+    end
 end
 
 AddEventHandler('onResourceStart', function(resource)
@@ -124,12 +198,15 @@ AddEventHandler('onResourceStart', function(resource)
 end)
 
 AddEventHandler('onResourceStop', function(resource)
-    if resource == GetCurrentResourceName() and GetResourceState("qb-target") == "started" then
-        if Config.UseTarget then
+    if resource == GetCurrentResourceName() then
+        if Config.UseTarget and GetResourceState("qb-target") == "started" then
             RemoveTargets()
         end
-        if Config.UseRadialMenu then
+        if Config.UseRadialMenu and GetResourceState("qb-radialmenu") == "started" then
             RemoveRadialMenuOption()
+        end
+        if Config.PlayerManagedOutfits and GetResourceState("qb-management") == "started" then
+            RemoveManagementMenuItems()
         end
     end
 end)
@@ -219,16 +296,16 @@ RegisterNetEvent('qb-clothes:client:CreateFirstCharacter', function()
             skin = "mp_f_freemode_01"
             gender = "Female"
         end
-        exports['fivem-appearance']:setPlayerModel(skin)
+        exports[resourceName]:setPlayerModel(skin)
         -- Fix for tattoo's appearing when creating a new character
         local ped = PlayerPedId()
-        exports['fivem-appearance']:setPedTattoos(ped, {})
-        exports['fivem-appearance']:setPedComponents(ped, Config.InitialPlayerClothes[gender].Components)
-        exports['fivem-appearance']:setPedProps(ped, Config.InitialPlayerClothes[gender].Props)
-        exports['fivem-appearance']:setPedHair(ped, Config.InitialPlayerClothes[gender].Hair)
+        exports[resourceName]:setPedTattoos(ped, {})
+        exports[resourceName]:setPedComponents(ped, Config.InitialPlayerClothes[gender].Components)
+        exports[resourceName]:setPedProps(ped, Config.InitialPlayerClothes[gender].Props)
+        exports[resourceName]:setPedHair(ped, Config.InitialPlayerClothes[gender].Hair)
         ClearPedDecorations(ped)
         local config = getNewCharacterConfig()
-        exports['fivem-appearance']:startPlayerCustomization(function(appearance)
+        exports[resourceName]:startPlayerCustomization(function(appearance)
             if (appearance) then
                 TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
                 ResetRechargeMultipliers()
@@ -244,7 +321,7 @@ function OpenShop(config, isPedMenu, shopType)
             return
         end
 
-        exports['fivem-appearance']:startPlayerCustomization(function(appearance)
+        exports[resourceName]:startPlayerCustomization(function(appearance)
             if appearance then
                 if not isPedMenu then
                     TriggerServerEvent("fivem-appearance:server:chargeCustomer", shopType)
@@ -322,13 +399,206 @@ RegisterNetEvent('fivem-appearance:client:saveOutfit', function()
             end
 
             local playerPed = PlayerPedId()
-            local pedModel = exports['fivem-appearance']:getPedModel(playerPed)
-            local pedComponents = exports['fivem-appearance']:getPedComponents(playerPed)
-            local pedProps = exports['fivem-appearance']:getPedProps(playerPed)
+            local pedModel = exports[resourceName]:getPedModel(playerPed)
+            local pedComponents = exports[resourceName]:getPedComponents(playerPed)
+            local pedProps = exports[resourceName]:getPedProps(playerPed)
 
             TriggerServerEvent('fivem-appearance:server:saveOutfit', keyboard.input, pedModel, pedComponents, pedProps)
         end)
     end
+end)
+
+RegisterNetEvent("fivem-appearance:client:OutfitManagementMenu", function(args)
+    local bossMenuEvent = "qb-bossmenu:client:OpenMenu"
+    if args.type == "Gang" then
+        bossMenuEvent = "qb-gangmenu:client:OpenMenu"
+    end
+    local menuItems = {
+        {
+            header = "👔 | Manage " .. args.type .. " Outfits",
+            isMenuHeader = true
+        },
+        {
+            header = "Change Outfit",
+            txt = "Pick from any of your currently saved "  .. args.type .. " outfits",
+            params = {
+                event = "fivem-appearance:client:ChangeManagementOutfitMenu",
+                args = {
+                    backEvent = args.backEvent,
+                    type = args.type,
+                }
+            }
+        },
+        {
+            header = "Save current Outfit",
+            txt = "Save your current outfit as " .. args.type .. " outfit",
+            params = {
+                event = "fivem-appearance:client:SaveManagementOutfit",
+                args = args.type
+            }
+        },
+        {
+            header = "Delete Outfit",
+            txt = "Delete a saved " .. args.type .. " outfit",
+            params = {
+                event = "fivem-appearance:client:DeleteManagementOutfitMenu",
+                args = {
+                    backEvent = args.backEvent,
+                    type = args.type,
+                }
+            }
+        },
+        {
+            header = "Return",
+            icon = "fa-solid fa-angle-left",
+            params = {
+                event = bossMenuEvent,
+            }
+        }
+    }
+
+    exports["qb-menu"]:openMenu(menuItems)
+
+end)
+
+local function getRankInputValues(rankList)
+    local rankValues = {}
+    for k, v in pairs(rankList) do
+        rankValues[#rankValues + 1] = {
+            text = v.name,
+            value = k
+        }
+    end
+    return rankValues
+end
+
+RegisterNetEvent("fivem-appearance:client:SaveManagementOutfit", function(mType)
+    local playerPed = PlayerPedId()
+    local outfitData = {
+        Type = mType,
+        Model = exports[resourceName]:getPedModel(playerPed),
+        Components = exports[resourceName]:getPedComponents(playerPed),
+        Props = exports[resourceName]:getPedProps(playerPed)
+    }
+
+    local rankValues
+    
+    if mType == "Job" then
+        outfitData.JobName = PlayerJob.name
+        rankValues = getRankInputValues(QBCore.Shared.Jobs[PlayerJob.name].grades)
+        
+    else
+        outfitData.JobName = PlayerGang.name
+        rankValues = getRankInputValues(QBCore.Shared.Gangs[PlayerGang.name].grades)
+    end
+
+    local saveDialog = exports['qb-input']:ShowInput({
+        header = "Management Outfit Details",
+        submitText = "Save Outfit",
+        inputs = {
+            {
+                text = "Outfit Name",
+                name = "outfitName",
+                type = "text",
+                isRequired = true
+            },
+            {
+                text = "Gender",
+                name = "gender",
+                type = "radio",
+                options = {
+                    {
+                        text = "Male", value = "male"
+                    },
+                    {
+                        text = "Female", value = "female"
+                    }
+                },
+                default = "male"
+            },
+            {
+                text = "Minimum Rank",
+                name = "minRank",
+                type = "select",
+                options = rankValues,
+                default = '0'
+            }
+        }
+    })
+
+    if not saveDialog then
+        return
+    end
+
+    outfitData.Name = saveDialog["outfitName"]
+    outfitData.Gender = saveDialog["gender"]
+    outfitData.MinRank = tonumber(saveDialog["minRank"])
+
+    TriggerServerEvent("fivem-appearance:server:saveManagementOutfit", outfitData)
+
+end)
+
+RegisterNetEvent("fivem-appearance:client:DeleteManagementOutfitMenu", function(args)
+    QBCore.Functions.TriggerCallback('fivem-appearance:server:getManagementOutfits', function(result)
+        local outfitMenu = {}
+        for i = 1, #result, 1 do
+            outfitMenu[#outfitMenu + 1] = {
+                header = 'Delete "' .. result[i].name .. '"',
+                txt = "Model: " .. result[i].model .. " - Gender: " .. result[i].gender,
+                params = {
+                    event = 'fivem-appearance:client:DeleteManagementOutfit',
+                    args = result[i].id
+                }
+            }
+        end
+        outfitMenu[#outfitMenu + 1] = {
+            header = "Return",
+            icon = "fa-solid fa-angle-left",
+            params = {
+                event = "fivem-appearance:client:OutfitManagementMenu",
+                args = {
+                    backEvent = args.backEvent,
+                    type = args.type,
+                }
+            }
+        }
+        exports['qb-menu']:openMenu(outfitMenu)
+    end, args.type)
+end)
+
+RegisterNetEvent("fivem-appearance:client:ChangeManagementOutfitMenu", function(args)
+    QBCore.Functions.TriggerCallback('fivem-appearance:server:getManagementOutfits', function(result)
+        local outfitMenu = {}
+        for i = 1, #result, 1 do
+            outfitMenu[#outfitMenu + 1] = {
+                header = result[i].name,
+                txt = result[i].model,
+                params = {
+                    event = 'fivem-appearance:client:changeOutfit',
+                    args = {
+                        type = args.type,
+                        name = result[i].name,
+                        model = result[i].model,
+                        components = result[i].components,
+                        props = result[i].props,
+                        disableSave = true,
+                    }
+                }
+            }
+        end
+        outfitMenu[#outfitMenu + 1] = {
+            header = "Return",
+            icon = "fa-solid fa-angle-left",
+            params = {
+                event = "fivem-appearance:client:OutfitManagementMenu",
+                args = {
+                    backEvent = args.backEvent,
+                    type = args.type,
+                }
+            }
+        }
+        exports['qb-menu']:openMenu(outfitMenu)
+    end, args.type, getGender())
 end)
 
 function OpenMenu(isPedMenu, backEvent, menuType, menuData)
@@ -424,12 +694,16 @@ RegisterNetEvent("fivem-appearance:client:openJobOutfitsListMenu", function(data
             args = data.menuData
         }
     }}
+    local event = "qb-clothing:client:loadOutfit"
+    if Config.PlayerManagedOutfits then
+        event = "fivem-appearance:client:changeOutfit"
+    end
     if data.menuData then
         for _, v in pairs(data.menuData) do
             menu[#menu + 1] = {
-                header = v.outfitLabel,
+                header = v.name,
                 params = {
-                    event = 'qb-clothing:client:loadOutfit',
+                    event = event,
                     args = v
                 }
             }
@@ -473,7 +747,7 @@ RegisterNetEvent("fivem-appearance:client:changeOutfitMenu", function(data)
                 params = {
                     event = 'fivem-appearance:client:changeOutfit',
                     args = {
-                        outfitName = result[i].outfitname,
+                        name = result[i].outfitname,
                         model = result[i].model,
                         components = result[i].components,
                         props = result[i].props
@@ -487,13 +761,13 @@ end)
 
 RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
     local playerPed = PlayerPedId()
-    local pedModel = exports['fivem-appearance']:getPedModel(playerPed)
+    local pedModel = exports[resourceName]:getPedModel(playerPed)
     local failed = false
     local appearanceDB = nil
     if pedModel ~= data.model then
         QBCore.Functions.TriggerCallback("fivem-appearance:server:getAppearance", function(appearance)
             if appearance then
-                exports['fivem-appearance']:setPlayerAppearance(appearance)
+                exports[resourceName]:setPlayerAppearance(appearance)
                 appearanceDB = appearance
                 ResetRechargeMultipliers()
             else
@@ -504,19 +778,26 @@ RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
             end
         end, data.model)
     else
-        appearanceDB = exports['fivem-appearance']:getPedAppearance(playerPed)
+        appearanceDB = exports[resourceName]:getPedAppearance(playerPed)
     end
     if not failed then
         while not appearanceDB do
             Wait(100)
         end
         playerPed = PlayerPedId()
-        exports['fivem-appearance']:setPedComponents(playerPed, data.components)
-        exports['fivem-appearance']:setPedProps(playerPed, data.props)
-        exports['fivem-appearance']:setPedHair(playerPed, appearanceDB.hair)
+        exports[resourceName]:setPedComponents(playerPed, data.components)
+        exports[resourceName]:setPedProps(playerPed, data.props)
+        exports[resourceName]:setPedHair(playerPed, appearanceDB.hair)
 
-        local appearance = exports['fivem-appearance']:getPedAppearance(playerPed)
-        TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
+        if data.disableSave then
+            TriggerServerEvent("fivem-appearance:server:syncUniform", {
+                type = data.type,
+                name = data.name
+            }) -- Is a uniform
+        else
+            local appearance = exports[resourceName]:getPedAppearance(playerPed)
+            TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
+        end
     end
 end)
 
@@ -541,6 +822,11 @@ RegisterNetEvent("fivem-appearance:client:deleteOutfitMenu", function(data)
         end
         exports['qb-menu']:openMenu(outfitMenu)
     end)
+end)
+
+RegisterNetEvent("fivem-appearance:client:DeleteManagementOutfit", function(id)
+    TriggerServerEvent("fivem-appearance:server:deleteManagementOutfit", id)
+    QBCore.Functions.Notify('Outfit Deleted', 'error')
 end)
 
 RegisterNetEvent('fivem-appearance:client:deleteOutfit', function(id)
@@ -576,13 +862,13 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
         if not appearance then
             return
         end
-        exports['fivem-appearance']:setPlayerAppearance(appearance)
+        exports[resourceName]:setPlayerAppearance(appearance)
         if Config.PersistUniforms then
             TriggerServerEvent("fivem-appearance:server:syncUniform", nil)
         end
         playerPed = PlayerPedId()
         SetPedMaxHealth(playerPed, maxhealth)
-        Citizen.Wait(1000) -- Safety Delay
+        Wait(1000) -- Safety Delay
         SetEntityHealth(playerPed, health)
         SetPedArmour(playerPed, armour)
         ResetRechargeMultipliers()
@@ -645,20 +931,37 @@ end
 
 local function getPlayerJobOutfits(clothingRoom)
     local outfits = {}
-    local gender = "male"
-    if PlayerData.charinfo.gender == 1 then
-        gender = "female"
-    end
-
+    local gender = getGender()
+    local fetched = false
     local gradeLevel = clothingRoom.job and PlayerJob.grade.level or PlayerGang.grade.level
     local jobName = clothingRoom.job and PlayerJob.name or PlayerGang.name
 
-    for i = 1, #Config.Outfits[jobName][gender], 1 do
-        for _, v in pairs(Config.Outfits[jobName][gender][i].grades) do
-            if v == gradeLevel then
-                outfits[#outfits + 1] = Config.Outfits[jobName][gender][i]
-                outfits[#outfits].gender = gender
-                outfits[#outfits].jobName = jobName
+    if Config.PlayerManagedOutfits then
+        local mType = clothingRoom.job and "Job" or "Gang"
+        QBCore.Functions.TriggerCallback('fivem-appearance:server:getManagementOutfits', function(result)
+            for i = 1, #result, 1 do
+                outfits[#outfits + 1] = {
+                    type = mType,
+                    model = result[i].model,
+                    components = result[i].components,
+                    props = result[i].props,
+                    disableSave = true,
+                    name = result[i].name
+                }
+            end
+            fetched = true
+        end, mType, gender)
+        while not fetched do
+            Wait(10)
+        end
+    else
+        for i = 1, #Config.Outfits[jobName][gender], 1 do
+            for _, v in pairs(Config.Outfits[jobName][gender][i].grades) do
+                if v == gradeLevel then
+                    outfits[#outfits + 1] = Config.Outfits[jobName][gender][i]
+                    outfits[#outfits].gender = gender
+                    outfits[#outfits].jobName = jobName
+                end
             end
         end
     end
