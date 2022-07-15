@@ -13,6 +13,8 @@ local skinData = {
     },
 }
 
+local resourceName = GetCurrentResourceName()
+
 RegisterNetEvent("fivem-appearance:client:migration:load-qb-clothing-skin", function(playerSkin)
     local model = playerSkin.model
     model = model ~= nil and tonumber(model) or false
@@ -182,7 +184,7 @@ RegisterNetEvent('fivem-appearance:client:migration:load-qb-clothing-clothes', f
     SetPedFaceFeature(ped, 18, (data['chimp_hole'].item / 10))
     SetPedFaceFeature(ped, 19, (data['neck_thikness'].item / 10))
     
-    local appearance = exports['fivem-appearance']:getPedAppearance(ped)
+    local appearance = exports[resourceName]:getPedAppearance(ped)
 
     TriggerServerEvent("fivem-appearance:server:migrate-qb-clothing-skin", playerSkin.citizenid, appearance)
 end)

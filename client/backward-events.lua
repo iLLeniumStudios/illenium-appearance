@@ -1,5 +1,7 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
+local resourceName = GetCurrentResourceName()
+
 local function typeof(var)
     local _type = type(var);
     if (_type ~= "table" and _type ~= "userdata") then
@@ -141,14 +143,14 @@ RegisterNetEvent('qb-clothing:client:loadOutfit', function(oData)
         TriggerServerEvent("fivem-appearance:server:syncUniform", {
             jobName = oData.jobName,
             gender = oData.gender,
-            label = oData.outfitLabel
+            label = oData.name
         })
     end
 end)
 
 RegisterNetEvent("qb-multicharacter:client:chooseChar", function()
     local ped = PlayerPedId()
-    exports['fivem-appearance']:setPedTattoos(ped, {})
+    exports[resourceName]:setPedTattoos(ped, {})
     ClearPedDecorations(ped)
 
     TriggerServerEvent("fivem-appearance:server:resetOutfitCache")
