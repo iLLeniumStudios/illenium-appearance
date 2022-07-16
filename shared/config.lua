@@ -650,7 +650,7 @@ Config.Outfits = {
     ["police"] = {
         ["male"] = {
             {
-                outfitLabel = "Short Sleeve",
+                name = "Short Sleeve",
                 outfitData = {
                     ["pants"] = {item = 24, texture = 0}, -- Pants
                     ["arms"] = {item = 19, texture = 0}, -- Arms
@@ -667,7 +667,7 @@ Config.Outfits = {
                 grades = {0, 1, 2, 3, 4},
             },
             {
-                outfitLabel = "Trooper Tan",
+                name = "Trooper Tan",
                 outfitData = {
                     ["pants"] = {item = 24, texture = 0}, -- Pants
                     ["arms"] = {item = 20, texture = 0}, -- Arms
@@ -684,7 +684,7 @@ Config.Outfits = {
                 grades = {0, 1, 2, 3, 4},
             },
             {
-                outfitLabel = "Long Sleeve",
+                name = "Long Sleeve",
                 outfitData = {
                     ["pants"] = {item = 24, texture = 0}, -- Pants
                     ["arms"] = {item = 20, texture = 0}, -- Arms
@@ -701,7 +701,7 @@ Config.Outfits = {
                 grades = {1, 2, 3, 4},
             },
             {
-                outfitLabel = "Trooper Black",
+                name = "Trooper Black",
                 outfitData = {
                     ["pants"] = {item = 24, texture = 0}, -- Pants
                     ["arms"] = {item = 20, texture = 0}, -- Arms
@@ -718,7 +718,7 @@ Config.Outfits = {
                 grades = {2, 3, 4},
             },
             {
-                outfitLabel = "SWAT",
+                name = "SWAT",
                 outfitData = {
                     ["pants"] = {item = 130, texture = 1}, -- Pants
                     ["arms"] = {item = 172, texture = 0}, -- Arms
@@ -736,7 +736,7 @@ Config.Outfits = {
         },
         ["female"] = {
             {
-                outfitLabel = "Short Sleeve",
+                name = "Short Sleeve",
                 outfitData = {
                     ["pants"] = {item = 133, texture = 0}, -- Pants
                     ["arms"] = {item = 31, texture = 0}, -- Arms
@@ -753,7 +753,7 @@ Config.Outfits = {
                 grades = {0, 1, 2, 3, 4},
             },
             {
-                outfitLabel = "Trooper Tan",
+                name = "Trooper Tan",
                 outfitData = {
                     ["pants"] = {item = 133, texture = 0}, -- Pants
                     ["arms"] = {item = 31, texture = 0}, -- Arms
@@ -770,7 +770,7 @@ Config.Outfits = {
                 grades = {0, 1, 2, 3, 4},
             },
             {
-                outfitLabel = "Long Sleeve",
+                name = "Long Sleeve",
                 outfitData = {
                     ["pants"] = {item = 133, texture = 0}, -- Pants
                     ["arms"] = {item = 31, texture = 0}, -- Arms
@@ -787,7 +787,7 @@ Config.Outfits = {
                 grades = {1, 2, 3, 4},
             },
             {
-                outfitLabel = "Trooper Black",
+                name = "Trooper Black",
                 outfitData = {
                     ["pants"] = {item = 133, texture = 0}, -- Pants
                     ["arms"] = {item = 31, texture = 0}, -- Arms
@@ -804,7 +804,7 @@ Config.Outfits = {
                 grades = {2, 3, 4},
             },
             {
-                outfitLabel = "SWAT",
+                name = "SWAT",
                 outfitData = {
                     ["pants"] = {item = 135, texture = 1}, -- Pants
                     ["arms"] = {item = 213, texture = 0}, -- Arms
@@ -826,7 +826,7 @@ Config.Outfits = {
         ["male"] = {
             {
                 -- Outfits
-                outfitLabel = "Worker",
+                name = "Worker",
                 outfitData = {
                     ["pants"]       = { item = 28, texture = 0},  -- Pants
                     ["arms"]        = { item = 1, texture = 0},  -- Arms
@@ -845,7 +845,7 @@ Config.Outfits = {
         },
         ["female"] = {
             {
-                outfitLabel = "Worker",
+                name = "Worker",
                 outfitData = {
                     ["pants"]       = { item = 57, texture = 2},  -- Pants
                     ["arms"]        = { item = 0, texture = 0},  -- Arms
@@ -866,7 +866,7 @@ Config.Outfits = {
     ["ambulance"] = {
         ["male"] = {
             {
-                outfitLabel = "T-Shirt",
+                name = "T-Shirt",
                 outfitData = {
                     ["arms"] = {item = 85, texture = 0}, -- Arms
                     ["t-shirt"] = {item = 129, texture = 0}, -- T-Shirt
@@ -885,7 +885,7 @@ Config.Outfits = {
                 grades = {0, 1, 2, 3, 4},
             },
             {
-                outfitLabel = "Polo",
+                name = "Polo",
                 outfitData = {
                     ["arms"] = {item = 90, texture = 0}, -- Arms
                     ["t-shirt"] = {item = 15, texture = 0}, -- T-Shirt
@@ -904,7 +904,7 @@ Config.Outfits = {
                 grades = {2, 3, 4},
             },
             {
-                outfitLabel = "Doctor",
+                name = "Doctor",
                 outfitData = {
                     ["arms"] = {item = 93, texture = 0}, -- Arms
                     ["t-shirt"] = {item = 32, texture = 3}, -- T-Shirt
@@ -925,7 +925,7 @@ Config.Outfits = {
         },
         ["female"] = {
             {
-                outfitLabel = "T-Shirt",
+                name = "T-Shirt",
                 outfitData = {
                     ["arms"] = {item = 109, texture = 0}, -- Arms
                     ["t-shirt"] = {item = 159, texture = 0}, -- T-Shirt
@@ -944,7 +944,7 @@ Config.Outfits = {
                 grades = {0, 1, 2, 3, 4},
             },
             {
-                outfitLabel = "Polo",
+                name = "Polo",
                 outfitData = {
                     ["arms"] = {item = 105, texture = 0}, -- Arms
                     ["t-shirt"] = {item = 13, texture = 0}, -- T-Shirt
@@ -963,7 +963,7 @@ Config.Outfits = {
                 grades = {2, 3, 4},
             },
             {
-                outfitLabel = "Doctor",
+                name = "Doctor",
                 outfitData = {
                     ["arms"] = {item = 105, texture = 0}, -- Arms
                     ["t-shirt"] = {item = 39, texture = 3}, -- T-Shirt
