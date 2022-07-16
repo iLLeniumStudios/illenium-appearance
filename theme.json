@@ -28,6 +28,20 @@
       "scaleOnHover": true,
       "sectionFontWeight": "bold",
       "smoothBackgroundTransition": true
+    },
+    {
+      "id": "project-sloth",
+      "borderRadius": "6vh",
+      "fontColor": "255, 255, 255",
+      "fontColorHover": "255, 255, 255",
+      "fontColorSelected": "255, 255, 255",
+      "fontFamily": "Inter",
+      "primaryBackground": "2, 241, 181",
+      "primaryBackgroundSelected": "2, 241, 181",
+      "secondaryBackground": "27, 24, 69",
+      "scaleOnHover": true,
+      "sectionFontWeight": "bold",
+      "smoothBackgroundTransition": false
     }
   ]
 }
