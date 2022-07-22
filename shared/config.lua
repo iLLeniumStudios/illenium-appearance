@@ -27,6 +27,8 @@ Config.NewCharacterSections = {
     Tattoos = true
 }
 
+Config.GenderBasedOnPed = true
+
 Config.AlwaysKeepProps = false
 
 Config.PersistUniforms = false -- Keeps Job / Gang Outfits on player reconnects / logout

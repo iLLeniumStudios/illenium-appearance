@@ -25,11 +25,18 @@ local TargetPeds = {
 }
 
 local function getGender()
-    local gender = "male"
-    if PlayerData.charinfo.gender == 1 then
-        gender = "female"
+    local gender
+    if Config.GenderBasedOnPed then
+        local model = exports[resourceName]:getPedModel(PlayerPedId())
+        if model == "mp_f_freemode_01" then
+            gender = "female"
+        end
+    else
+        if PlayerData.charinfo.gender == 1 then
+            gender = "female"
+        end
     end
-    return gender
+    return gender or "male"
 end
 
 local function RemoveTargetPeds(peds)
