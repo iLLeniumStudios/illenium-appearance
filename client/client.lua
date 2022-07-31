@@ -854,13 +854,15 @@ local function CheckPlayerMeta()
 end
 
 RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
-    if InCooldown() or CheckPlayerMeta() then
+    local playerPed = PlayerPedId()
+
+    if InCooldown() or CheckPlayerMeta() or IsPedInAnyVehicle(playerPed, true) then
         QBCore.Functions.Notify("You cannot use reloadskin right now", "error")
         return
     end
 
     reloadSkinTimer = GetGameTimer()
-    local playerPed = PlayerPedId()
+
     local health = GetEntityHealth(playerPed)
     local maxhealth = GetEntityMaxHealth(playerPed)
     local armour = GetPedArmour(playerPed)
@@ -880,6 +882,24 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
         SetPedArmour(playerPed, armour)
         ResetRechargeMultipliers()
     end)
+end)
+
+RegisterNetEvent("fivem-appearance:client:ClearStuckProps", function()
+    if InCooldown() or CheckPlayerMeta() then
+        QBCore.Functions.Notify("You cannot use clearstuckprops right now", "error")
+        return
+    end
+
+    reloadSkinTimer = GetGameTimer()
+    local playerPed = PlayerPedId()
+
+    for _, v in pairs(GetGamePool('CObject')) do
+      if IsEntityAttachedToEntity(playerPed, v) then
+        SetEntityAsMissionEntity(v, true, true)
+        DeleteObject(v)
+        DeleteEntity(v)
+      end
+    end
 end)
 
 RegisterNetEvent("qb-radialmenu:client:onRadialmenuOpen", function()
