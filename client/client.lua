@@ -882,6 +882,24 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
     end)
 end)
 
+RegisterNetEvent("fivem-appearance:client:ClearStuckProps", function()
+    if InCooldown() or CheckPlayerMeta() then
+        QBCore.Functions.Notify("You cannot use clearstuckprops right now", "error")
+        return
+    end
+
+    reloadSkinTimer = GetGameTimer()
+    local playerPed = PlayerPedId()
+
+    for _, v in pairs(GetGamePool('CObject')) do
+      if IsEntityAttachedToEntity(playerPed, v) then
+        SetEntityAsMissionEntity(v, true, true)
+        DeleteObject(v)
+        DeleteEntity(v)
+      end
+    end
+end)
+
 RegisterNetEvent("qb-radialmenu:client:onRadialmenuOpen", function()
     if not inZone or not zoneName then
         RemoveRadialMenuOption()
