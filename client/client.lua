@@ -885,13 +885,13 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
 end)
 
 RegisterNetEvent("fivem-appearance:client:ClearStuckProps", function()
-    local playerPed = PlayerPedId()
-    if InCooldown() or CheckPlayerMeta() or IsPedInAnyVehicle(playerPed, true) then
+    if InCooldown() or CheckPlayerMeta() then
         QBCore.Functions.Notify("You cannot use clearstuckprops right now", "error")
         return
     end
 
     reloadSkinTimer = GetGameTimer()
+    local playerPed = PlayerPedId()
 
     for _, v in pairs(GetGamePool('CObject')) do
       if IsEntityAttachedToEntity(playerPed, v) then
