@@ -856,7 +856,7 @@ end
 RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
     local playerPed = PlayerPedId()
 
-    if InCooldown() or CheckPlayerMeta() or IsPedInAnyVehicle(playerPed, true) then
+    if InCooldown() or CheckPlayerMeta() or IsPedInAnyVehicle(playerPed, true) or IsPedFalling(playerPed) then
         QBCore.Functions.Notify("You cannot use reloadskin right now", "error")
         return
     end
