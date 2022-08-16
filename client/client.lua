@@ -1089,7 +1089,7 @@ local function SetupClothingRoomZones()
             local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zone.name, 15))]
             local jobName = clothingRoom.job and PlayerJob.name or PlayerGang.name
             if jobName == (clothingRoom.job or clothingRoom.gang) then
-                if CheckDuty() then
+                if CheckDuty() or clothingRoom.gang then
                     inZone = true
                     local prefix = Config.UseRadialMenu and '' or '[E] '
                     exports['qb-core']:DrawText(prefix .. 'Clothing Room')
@@ -1223,7 +1223,7 @@ local function SetupClothingRoomTargets()
                 action = action,
                 icon = targetConfig.icon,
                 label = targetConfig.label,
-                canInteract = CheckDuty,
+                canInteract = v.job and CheckDuty or nil,
                 job = v.job,
                 gang = v.gang
             }},
