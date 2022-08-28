@@ -911,27 +911,33 @@ RegisterNetEvent("qb-radialmenu:client:onRadialmenuOpen", function()
     if string.find(zoneName, "ClothingRooms_") then
         event = "fivem-appearance:client:OpenClothingRoom"
         title = "Clothing Room"
+        icon = "shirt"
     elseif string.find(zoneName, "PlayerOutfitRooms_") then
         event = "fivem-appearance:client:OpenPlayerOutfitRoom"
         title = "Player Outfits"
+        icon = "shirt"
     elseif zoneName == "clothing" then
         event = "fivem-appearance:client:openClothingShopMenu"
         title = "Clothing Shop"
+        icon = "shirt"
     elseif zoneName == "barber" then
         event = "fivem-appearance:client:OpenBarberShop"
         title = "Barber Shop"
+        icon = "scissors"
     elseif zoneName == "tattoo" then
         event = "fivem-appearance:client:OpenTattooShop"
         title = "Tattoo Shop"
+        icon = "syringe"
     elseif zoneName == "surgeon" then
         event = "fivem-appearance:client:OpenSurgeonShop"
         title = "Surgeon Shop"
+        icon = "head-side"
     end
 
     MenuItemId = exports["qb-radialmenu"]:AddOption({
         id = "open_clothing_menu",
         title = title,
-        icon = "shirt",
+        icon = icon,
         type = "client",
         event = event,
         shouldClose = true
