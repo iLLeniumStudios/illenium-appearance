@@ -1044,13 +1044,13 @@ local function SetupStoreZones()
                 inZone = true
                 local prefix = Config.UseRadialMenu and '' or '[E] '
                 if zoneName == 'clothing' then
-                    exports['qb-core']:DrawText(prefix .. 'Clothing Store')
+                    exports['qb-core']:DrawText(prefix .. 'Clothing Store<br>Price: $' .. Config.ClothingCost)
                 elseif zoneName == 'barber' then
-                    exports['qb-core']:DrawText(prefix .. 'Barber')
+                    exports['qb-core']:DrawText(prefix .. 'Barber<br>Price: $' .. Config.BarberCost)
                 elseif zoneName == 'tattoo' then
-                    exports['qb-core']:DrawText(prefix .. 'Tattoo Shop')
+                    exports['qb-core']:DrawText(prefix .. 'Tattoo Shop<br>Price: $' .. Config.TattooCost)
                 elseif zoneName == 'surgeon' then
-                    exports['qb-core']:DrawText(prefix .. 'Plastic Surgeon')
+                    exports['qb-core']:DrawText(prefix .. 'Plastic Surgeon<br>Price: $' .. Config.SurgeonCost)
                 end
             end
         else
