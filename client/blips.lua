@@ -19,9 +19,9 @@ local function SetupBlips(job, gang)
             SetBlipColour(blip, blipConfig.Color)
             SetBlipScale(blip, blipConfig.Scale)
             SetBlipAsShortRange(blip, true)
-            BeginTextCommandSetBlipName("STRING")
-            AddTextComponentString(blipConfig.Name)
-            EndTextCommandSetBlipName(blip)
+			AddTextEntry(blipConfig.Name, blipConfig.Name)
+			BeginTextCommandSetBlipName(blipConfig.Name)
+			EndTextCommandSetBlipName(blip)
             Blips[#Blips + 1] = blip
         end
     end
