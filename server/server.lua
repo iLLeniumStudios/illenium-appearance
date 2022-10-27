@@ -37,20 +37,20 @@ end
 QBCore.Functions.CreateCallback('fivem-appearance:server:getAppearance', function(source, cb, model)
     local Player = QBCore.Functions.GetPlayer(source)
     local query = 'SELECT skin FROM playerskins WHERE citizenid = ?'
-    local queryArgs = {Player.PlayerData.citizenid}
     if model ~= nil then
         query = query .. ' AND model = ?'
-        queryArgs[#queryArgs + 1] = model
+        modelActive = model
     else
         query = query .. ' AND active = ?'
-        queryArgs[#queryArgs + 1] = 1
+        modelActive = 1
     end
-    local result = MySQL.Sync.fetchAll(query, queryArgs)
-    if result[1] ~= nil then
-        cb(json.decode(result[1].skin))
-    else
-        cb(nil)
-    end
+    MySQL.query(query, {Player.PlayerData.citizenid, modelActive}, function(result)
+        if result ~= nil then
+            cb(json.decode(result[1].skin))
+        else
+            cb(nil)
+        end
+    end)
 end)
 
 QBCore.Functions.CreateCallback('fivem-appearance:server:hasMoney', function(source, cb, shopType)
