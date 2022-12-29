@@ -101,7 +101,7 @@ local function filterBlacklistSettings(items, drawableId)
 end
 
 local function componentBlacklistMap(gender, componentId)
-	local genderSettings = client.clothingBlacklistSettings[gender].components
+	local genderSettings = Config.Blacklist[gender].components
 	if componentId == 1 then
 		return genderSettings.masks
 	elseif componentId == 3 then
@@ -128,7 +128,7 @@ local function componentBlacklistMap(gender, componentId)
 end
 
 local function propBlacklistMap(gender, propId)
-	local genderSettings = client.clothingBlacklistSettings[gender].props
+	local genderSettings = Config.Blacklist[gender].props
 
 	if propId == 0 then
 		return genderSettings.hats
@@ -211,7 +211,7 @@ local function getHairSettings(ped)
 	}
 
 	if client.isPedFreemodeModel(ped) then
-		blacklistSettings = filterBlacklistSettings(client.clothingBlacklistSettings[gender].hair, GetPedDrawableVariation(ped, 2))
+		blacklistSettings = filterBlacklistSettings(Config.Blacklist[gender].hair, GetPedDrawableVariation(ped, 2))
 	end
 
 	local settings = {
@@ -241,12 +241,12 @@ local function getAppearanceSettings()
 
 	local ped = {
 		model = {
-			items = filterPedModelsForPlayer(client.pedConfig.pedConfig)
+			items = filterPedModelsForPlayer(Config.Peds.pedConfig)
 		}
 	}
 
 	local tattoos = {
-		items = client.totalTattoos
+		items = Config.Tattoos
 	}
 
 	local components = {}

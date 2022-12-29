@@ -5,11 +5,6 @@ local playerGang
 local PED_TATTOOS = {}
 local pedModelsByHash = {}
 
-local clothingBlacklistSettings = json_lib.parse(LoadResourceFile(GetCurrentResourceName(), 'blacklist.json'))
-local pedConfig = json_lib.parse(LoadResourceFile(GetCurrentResourceName(), 'peds.json'))
-local totalTattoos = json_lib.parse(LoadResourceFile(GetCurrentResourceName(), 'tattoos.json'))
-local themeConfiguration = json_lib.parse(LoadResourceFile(GetCurrentResourceName(), 'theme.json'))
-
 local function isPedFreemodeModel(ped)
 	local model = GetEntityModel(ped)
 	return model == `mp_m_freemode_01` or model == `mp_f_freemode_01`
@@ -40,12 +35,10 @@ local function getPlayerAces()
 end
 
 local function computePedModelsByHash()
-	if pedConfig then
-		for i = 1, #pedConfig.pedConfig do
-			local peds = pedConfig.pedConfig[i].peds
-			for j = 1, #peds do
-				pedModelsByHash[joaat(peds[j])] = peds[j]
-			end
+	for i = 1, #Config.Peds.pedConfig do
+		local peds = Config.Peds.pedConfig[i].peds
+		for j = 1, #peds do
+			pedModelsByHash[joaat(peds[j])] = peds[j]
 		end
 	end
 end
@@ -183,8 +176,8 @@ local function getPedHair(ped)
 	}
 end
 
-local function getPedDecorationType(ped)
-	local pedModel = GetEntityModel(ped)
+local function getPedDecorationType()
+	local pedModel = GetEntityModel(PlayerPedId())
 	local decorationType
 
 	if pedModel == `mp_m_freemode_01` then
@@ -420,10 +413,6 @@ client = {
 	setPedComponent = setPedComponent,
 	setPedProp = setPedProp,
 	setPlayerAppearance = setPlayerAppearance,
-	clothingBlacklistSettings = clothingBlacklistSettings,
-	pedConfig = pedConfig,
-	totalTattoos = totalTattoos,
-	themeConfiguration = themeConfiguration,
 	getPlayerJob = getPlayerJob,
 	getPlayerGang = getPlayerGang,
 	getPlayerAces = getPlayerAces,

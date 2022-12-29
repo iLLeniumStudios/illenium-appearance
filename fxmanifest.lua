@@ -31,18 +31,24 @@ server_scripts {
 }
 
 shared_scripts {
-  'shared/json.lua',
-  'shared/config.lua'
+  'shared/config.lua',
+  'shared/blacklist.lua',
+  'shared/peds.lua',
+  'shared/tattoos.lua',
+  'shared/theme.lua',
+  'locales/en.lua',
+  'locales/ar.lua',
+  'locales/bg.lua',
+  'locales/de.lua',
+  'locales/es-ES.lua',
+  'locales/fr.lua',
+  'locales/pt-BR.lua',
+  'locales/ro-RO.lua',
 }
 
 files {
   'web/dist/index.html',
   'web/dist/assets/*.js',
-  'locales/*.json',
-  'peds.json',
-  'tattoos.json',
-  'blacklist.json',
-  'theme.json'
 }
 
 ui_page 'web/dist/index.html'

@@ -1,21 +1,7 @@
 local client = client
 
-function dump(o)
-    if type(o) == 'table' then
-        local s = '{ '
-        for k,v in pairs(o) do
-                if type(k) ~= 'number' then k = '"'..k..'"' end
-                s = s .. '['..k..'] = ' .. dump(v) .. ','
-        end
-        return s .. '} '
-    else
-        return tostring(o)
-    end
-end
-
 RegisterNUICallback('appearance_get_locales', function(_, cb)
-	local locales = json_lib.parse(LoadResourceFile(GetCurrentResourceName(), ('locales/%s.json'):format(GetConvar('fivem-appearance:locale', 'en'))))
-	cb(locales)
+	cb(Locales[GetConvar('fivem-appearance:locale', 'en')])
 end)
 
 RegisterNUICallback('appearance_get_settings_and_data', function(_, cb)
@@ -140,6 +126,5 @@ RegisterNUICallback("rotate_right", function(_, cb)
 end)
 
 RegisterNUICallback("get_theme_configuration", function(_, cb)
-    local themeConfig = json_lib.parse(LoadResourceFile(GetCurrentResourceName(), "theme.json"))
-	cb(themeConfig)
+	cb(Config.Theme)
 end)
