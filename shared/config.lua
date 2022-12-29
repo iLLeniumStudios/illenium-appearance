@@ -7,7 +7,7 @@ Config.BarberCost = 100
 Config.TattooCost = 100
 Config.SurgeonCost = 100
 
-Config.UseTarget = GetConvar("UseTarget", "false") == "true"
+Config.UseTarget = true
 Config.UseRadialMenu = false
 
 Config.EnablePedsForShops = true
@@ -16,6 +16,11 @@ Config.EnablePedsForPlayerOutfitRooms = true
 
 Config.EnablePedMenu = true
 Config.PedMenuGroup = "admin"
+
+Config.ShowNearestShopOnly = false
+Config.NearestShopBlipUpdateDelay = 10000
+
+Config.InvincibleDuringCustomization = true
 
 Config.NewCharacterSections = {
     Ped = true,
@@ -146,7 +151,9 @@ Config.Stores = {
         coords = vector4(1693.2, 4828.11, 42.07, 188.66),
         width = 4,
         length = 4,
-        showBlip = true, -- showBlip overrides the blip visibilty configured above for the group
+        showBlip = true, -- overrides the blip visibilty configured above for the group
+        --targetModel = "s_m_m_doctor_01", -- overrides the target ped configured for the group
+        --targetScenario = "" -- overrides the target scenario configure for the group
         zone = {
             shape = {
                 vector2(1686.9018554688, 4829.8330078125),
