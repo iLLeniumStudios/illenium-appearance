@@ -1,3 +1,5 @@
+local reverseCamera
+
 local function getRgbColors()
 	local colors = {
 		hair = {},
@@ -72,6 +74,10 @@ local function filterPedModelsForPlayer(pedConfigs)
     return playerPeds
 end
 
+local function allowedForPlayer(item, job, gang, allowedAces)
+    return (item.jobs and listContains(item.jobs, job)) or (item.gangs and listContains(item.gangs, gang)) or (item.aces and listContainsAny(item.aces, allowedAces))
+end
+
 local function filterBlacklistSettings(items, drawableId)
 	local blacklistSettings = {
 		drawables = {},
@@ -84,9 +90,7 @@ local function filterBlacklistSettings(items, drawableId)
 
 	for i = 1, #items do
 		local item = items[i]
-		if (item.jobs and listContains(item.jobs, job)) or (item.gangs and listContains(item.gangs, gang)) or (item.aces and listContainsAny(item.aces, allowedAces)) then
-			
-		elseif item.drawables then
+		if not allowedToUse(item, job, gang, allowedAces) and item.drawables then
 			for j = 0, #item.drawables do
 				addToBlacklist(item, item.drawables[j], drawableId, blacklistSettings)
 			end
@@ -98,7 +102,7 @@ end
 
 local function componentBlacklistMap(gender, componentId)
 	local genderSettings = client.clothingBlacklistSettings[gender].components
-
+	print(json.encode(genderSettings))
 	if componentId == 1 then
 		return genderSettings.masks
 	elseif componentId == 3 then
@@ -412,7 +416,6 @@ local function setCamera(key)
 end
 client.setCamera = setCamera
 
-local reverseCamera
 function client.rotateCamera(direction)
 	if not isCameraInterpolating then
 		local coords, point = table.unpack(constants.CAMERAS[currentCamera])
@@ -514,14 +517,14 @@ function client.getHeading() return playerHeading end
 
 local toggleRadar = GetConvarInt('fivem-appearance:radar', 1) == 1
 local callback
-function client.startPlayerCustomization(cb, _config)
+function client.startPlayerCustomization(cb, conf)
 	local playerPed = PlayerPedId()
 	playerAppearance = client.getPedAppearance(playerPed)
 	playerCoords = GetEntityCoords(playerPed, true)
 	playerHeading = GetEntityHeading(playerPed)
 
 	callback = cb
-	config = _config
+	config = conf
 	reverseCamera = false
 	isCameraInterpolating = false
 

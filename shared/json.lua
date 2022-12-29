@@ -32,7 +32,7 @@ If you have control over the data and are using Lua, I would recommend just
 avoiding null values in your data to begin with.
 --]]
 
-
+-- luacheck: push ignore
 json_lib = {}
 
 
@@ -178,3 +178,4 @@ function json_lib.parse(str, pos, end_delim)
     error('Invalid json syntax starting at ' .. pos_info_str)
   end
 end
+-- luacheck: pop

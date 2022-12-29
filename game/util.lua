@@ -1,4 +1,3 @@
-local currentHairDecoration
 local hashesComputed = false
 local playerAces = {}
 local playerJob
@@ -10,7 +9,6 @@ local clothingBlacklistSettings = json_lib.parse(LoadResourceFile(GetCurrentReso
 local pedConfig = json_lib.parse(LoadResourceFile(GetCurrentResourceName(), 'peds.json'))
 local totalTattoos = json_lib.parse(LoadResourceFile(GetCurrentResourceName(), 'tattoos.json'))
 local themeConfiguration = json_lib.parse(LoadResourceFile(GetCurrentResourceName(), 'theme.json'))
-local locales = json_lib.parse(LoadResourceFile(GetCurrentResourceName(), "locales/" .. GetConvar("fivem-appearance:locale", "en") .. ".json"))
 
 local function isPedFreemodeModel(ped)
 	local model = GetEntityModel(ped)
@@ -303,7 +301,7 @@ end
 
 local function setPedComponents(ped, components)
 	if components then
-		for k, v in pairs(components) do
+		for _, v in pairs(components) do
 			setPedComponent(ped, v)
 		end
 	end
@@ -321,7 +319,7 @@ end
 
 local function setPedProps(ped, props)
 	if props then
-		for k, v in pairs(props) do
+		for _, v in pairs(props) do
 			setPedProp(ped, v)
 		end
 	end
@@ -330,7 +328,7 @@ end
 local function setTattoos(ped, tattoos)
 	local isMale = client.getPedDecorationType(ped) == "male"
 	ClearPedDecorations(ped)
-	for k, v in pairs(tattoos) do
+	for k in pairs(tattoos) do
 		for i = 1, #tattoos[k] do
 			local tattoo = tattoos[k][i]
 			local tattooGender = isMale and tattoo.hashMale or tattoo.hashFemale
@@ -362,7 +360,7 @@ local function setPreviewTattoo(ped, tattoos, tattoo)
 
 	ClearPedDecorations(ped)
 	AddPedDecorationFromHashes(ped, joaat(tattoo.collection), tattooGender)
-	for k, v in pairs(tattoos) do
+	for k in pairs(tattoos) do
 		for i = 1, #tattoos[k] do
 			local aTattoo = tattoos[k][i]
 			if aTattoo.name ~= tattoo.name then
