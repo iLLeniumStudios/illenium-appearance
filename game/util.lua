@@ -177,7 +177,8 @@ local function getPedHair(ped)
 end
 
 local function getPedDecorationType()
-	local pedModel = GetEntityModel(PlayerPedId())
+    local playerPed = PlayerPedId()
+	local pedModel = GetEntityModel(playerPed)
 	local decorationType
 
 	if pedModel == `mp_m_freemode_01` then
@@ -185,7 +186,7 @@ local function getPedDecorationType()
 	elseif pedModel == `mp_f_freemode_01` then
 		decorationType = 'female'
 	else
-		decorationType = IsPedMale(ped) and 'male' or 'female'
+		decorationType = IsPedMale(playerPed) and 'male' or 'female'
 	end
 
 	return decorationType
