@@ -90,7 +90,7 @@ local function filterBlacklistSettings(items, drawableId)
 
 	for i = 1, #items do
 		local item = items[i]
-		if not allowedToUse(item, job, gang, allowedAces) and item.drawables then
+		if not allowedForPlayer(item, job, gang, allowedAces) and item.drawables then
 			for j = 0, #item.drawables do
 				addToBlacklist(item, item.drawables[j], drawableId, blacklistSettings)
 			end
