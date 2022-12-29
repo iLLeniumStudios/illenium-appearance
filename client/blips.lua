@@ -1,6 +1,6 @@
 local Blips = {}
-local job
-local gang
+local job = nil
+local gang = nil
 
 local function ShowBlip(blipConfig, blip)
     if blip.job and blip.job ~= job then
@@ -34,7 +34,7 @@ local function SetupBlips()
     end
 end
 
-function ResetBlips(job, gang)
+function ResetBlips(j, g)
     if Config.ShowNearestShopOnly then
         return
     end
@@ -43,8 +43,8 @@ function ResetBlips(job, gang)
         RemoveBlip(Blips[i])
     end
     Blips = {}
-    job = job
-    gang = gang
+    job = j
+    gang = g
     SetupBlips()
 end
 
