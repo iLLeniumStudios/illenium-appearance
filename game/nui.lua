@@ -86,7 +86,7 @@ end)
 RegisterNUICallback('appearance_change_hair', function(hair, cb)
     local playerPed = PlayerPedId()
 	client.setPedHair(playerPed, hair)
-    cb(client.getHairSettings(playerPed, hair))
+    cb(client.getHairSettings(playerPed))
 end)
 
 RegisterNUICallback('appearance_change_eye_color', function(eyeColor, cb)

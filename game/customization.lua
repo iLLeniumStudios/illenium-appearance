@@ -202,7 +202,7 @@ local function getPropSettings(ped, propId)
 end
 client.getPropSettings = getPropSettings
 
-local function getHairSettings(ped, hair)
+local function getHairSettings(ped)
 	local colors = getRgbColors()
 	local gender = client.getPedDecorationType()
     local blacklistSettings = {
@@ -227,7 +227,7 @@ local function getHairSettings(ped, hair)
 		},
 		texture = {
 			min = 0,
-			max = GetNumberOfPedTextureVariations(ped, 2, GetPedDrawableVariation(playerPed, 2)) - 1
+			max = GetNumberOfPedTextureVariations(ped, 2, GetPedDrawableVariation(ped, 2)) - 1
 		},
         blacklist = blacklistSettings
 	}
