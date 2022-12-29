@@ -343,7 +343,7 @@ local function removePedTattoo(ped, tattoos)
 end
 
 local function setPreviewTattoo(ped, tattoos, tattoo)
-	local isMale = client.getPedDecorationType(ped) == "male"
+	local isMale = client.getPedDecorationType() == "male"
 	local tattooGender = isMale and tattoo.hashMale or tattoo.hashFemale
 
 	ClearPedDecorations(ped)

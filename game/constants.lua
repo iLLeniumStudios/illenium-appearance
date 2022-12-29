@@ -1254,7 +1254,13 @@ constants.DATA_CLOTHES = {
             female = {
                 {1, 0}
             }
-        }
+        },
+		props = {
+			male = {
+				{0, -1}
+			},
+			female = {}
+		}
     },
     body = {
         animations = {
@@ -1286,7 +1292,11 @@ constants.DATA_CLOTHES = {
                 {10, 0},
                 {5, 0}
             }
-        }
+        },
+		props = {
+			male = {},
+			female = {}
+		}
     },
     bottom = {
         animations = {

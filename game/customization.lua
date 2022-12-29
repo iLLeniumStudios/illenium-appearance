@@ -461,8 +461,10 @@ local function wearClothes(data, typeClothes)
 	local dataClothes = constants.DATA_CLOTHES[typeClothes]
 	local playerPed = PlayerPedId()
 	local animationsOn = dataClothes.animations.on
-	local components = dataClothes.components[client.getPedDecorationType(playerPed)]
+	local components = dataClothes.components[client.getPedDecorationType()]
 	local appliedComponents = data.components
+	local props = dataClothes.props[client.getPedDecorationType()]
+	local appliedProps = data.props
 
 	RequestAnimDict(animationsOn.dict)
 	while not HasAnimDictLoaded(animationsOn.dict) do
@@ -479,6 +481,16 @@ local function wearClothes(data, typeClothes)
 		end
 	end
 
+	for i = 1, #props do
+		local propId = props[i][1]
+		for j = 1, #appliedProps do
+			local applied = appliedProps[j]
+			if applied.prop_id == propId then
+				SetPedPropIndex(playerPed, propId, applied.drawable, applied.texture, true)
+			end
+		end
+	end
+
 	TaskPlayAnim(playerPed, animationsOn.dict, animationsOn.anim, 3.0, 3.0, animationsOn.duration, animationsOn.move, 0, false, false, false)
 end
 client.wearClothes = wearClothes
@@ -487,7 +499,8 @@ local function removeClothes(typeClothes)
 	local dataClothes = constants.DATA_CLOTHES[typeClothes]
 	local playerPed = PlayerPedId()
 	local animationsOff = dataClothes.animations.off
-	local components = dataClothes.components[client.getPedDecorationType(playerPed)]
+	local components = dataClothes.components[client.getPedDecorationType()]
+	local props = dataClothes.props[client.getPedDecorationType()]
 	
 	RequestAnimDict(animationsOff.dict)
 	while not HasAnimDictLoaded(animationsOff.dict) do
@@ -497,6 +510,10 @@ local function removeClothes(typeClothes)
 	for i = 1, #components do
 		local component = components[i]
 		SetPedComponentVariation(playerPed, component[1], component[2], 0, 2)
+	end
+
+	for i = 1, #props do
+		ClearPedProp(playerPed, props[i][1])
 	end
 
 	TaskPlayAnim(playerPed, animationsOff.dict, animationsOff.anim, 3.0, 3.0, animationsOff.duration, animationsOff.move, 0, false, false, false)
