@@ -11,7 +11,7 @@ lua54 'yes'
 client_scripts {
   'game/constants.lua',
   'game/util.lua',
-  'game/customisation.lua',
+  'game/customization.lua',
   'game/nui.lua',
   'client/blips.lua',
   'client/props.lua',
