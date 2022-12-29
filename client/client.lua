@@ -940,13 +940,14 @@ end)
 
 local function isPlayerAllowedForOutfitRoom(outfitRoom)
     local isAllowed = false
-    for i = 1, #outfitRoom.citizenIDs, 1 do
+    local count = #outfitRoom.citizenIDs
+    for i = 1, count, 1 do
         if outfitRoom.citizenIDs[i] == PlayerData.citizenid then
             isAllowed = true
             break
         end
     end
-    return isAllowed
+    return isAllowed or not outfitRoom.citizenIDs or count == 0
 end
 
 local function OpenOutfitRoom(outfitRoom)
