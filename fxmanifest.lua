@@ -1,14 +1,18 @@
 fx_version "cerulean"
 game "gta5"
 
-author 'snakewiz'
-description 'A flexible player customization script for FiveM.'
-repository 'https://github.com/pedr0fontoura/fivem-appearance'
+author 'snakewiz & iLLeniumStudios'
+description 'A flexible player customization script for FiveM qb-core servers.'
+repository 'https://github.com/iLLeniumStudios/fivem-appearance'
 version 'main'
+
 lua54 'yes'
 
 client_scripts {
-  'game/dist/index.js',
+  'game/constants.lua',
+  'game/util.lua',
+  'game/customisation.lua',
+  'game/nui.lua',
   'client/blips.lua',
   'client/props.lua',
   'client/client.lua',
@@ -27,6 +31,7 @@ server_scripts {
 }
 
 shared_scripts {
+  'shared/json.lua',
   'shared/config.lua'
 }
 
@@ -41,8 +46,6 @@ files {
 }
 
 ui_page 'web/dist/index.html'
-
-provide 'qb-clothing'
 
 dependencies {
   'qb-core',
