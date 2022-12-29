@@ -58,8 +58,6 @@ local function getPedModel(ped)
 		computePedModelsByHash()
 		hashesComputed = true
 	end
-	print(hashesComputed)
-	print(json.encode(pedModelsByHash))
 	return pedModelsByHash[GetEntityModel(ped)]
 end
 

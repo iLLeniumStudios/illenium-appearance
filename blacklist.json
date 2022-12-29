@@ -1,5 +1,6 @@
 {
   "male": {
+    "hair": [],
     "components": {
       "masks": [],
       "upperBody": [],
@@ -21,6 +22,7 @@
     }
   },
   "female": {
+    "hair": [],
     "components": {
       "masks": [],
       "upperBody": [],

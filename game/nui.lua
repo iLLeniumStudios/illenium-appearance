@@ -85,7 +85,6 @@ end)
 
 RegisterNUICallback('appearance_change_hair', function(hair, cb)
     local playerPed = PlayerPedId()
-	
 	client.setPedHair(playerPed, hair)
     cb(client.getHairSettings(playerPed, hair))
 end)
@@ -113,7 +112,6 @@ end)
 RegisterNUICallback("appearance_wear_clothes", function(dataWearClothes, cb)
     cb(1)
     client.wearClothes(dataWearClothes.data, dataWearClothes.key)
-	print(dataWearClothes.data, dataWearClothes.key)
 end)
 
 RegisterNUICallback("appearance_remove_clothes", function(clothes, cb)

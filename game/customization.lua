@@ -102,7 +102,6 @@ end
 
 local function componentBlacklistMap(gender, componentId)
 	local genderSettings = client.clothingBlacklistSettings[gender].components
-	print(json.encode(genderSettings))
 	if componentId == 1 then
 		return genderSettings.masks
 	elseif componentId == 3 then
@@ -205,6 +204,16 @@ client.getPropSettings = getPropSettings
 
 local function getHairSettings(ped, hair)
 	local colors = getRgbColors()
+	local gender = client.getPedDecorationType()
+    local blacklistSettings = {
+		drawables = {},
+		textures = {}
+	}
+
+	if client.isPedFreemodeModel(ped) then
+		blacklistSettings = filterBlacklistSettings(client.clothingBlacklistSettings[gender].hair, GetPedDrawableVariation(ped, 2))
+	end
+
 	local settings = {
 		style = {
 			min = 0,
@@ -218,8 +227,9 @@ local function getHairSettings(ped, hair)
 		},
 		texture = {
 			min = 0,
-			max = GetNumberOfPedTextureVariations(ped, 2, hair.style) - 1
-		}
+			max = GetNumberOfPedTextureVariations(ped, 2, GetPedDrawableVariation(playerPed, 2)) - 1
+		},
+        blacklist = blacklistSettings
 	}
 
 	return settings
@@ -335,23 +345,6 @@ local function getAppearanceSettings()
 		headOverlays[overlay] = settings
 	end
 
-	local hair = {
-		style = {
-			min = 0,
-			max = GetNumberOfPedDrawableVariations(playerPed, 2) - 1
-		},
-		color = {
-			items = colors.hair,
-		},
-		highlight = {
-			items = colors.hair
-		},
-		texture = {
-			min = 0,
-			max = GetNumberOfPedTextureVariations(playerPed, 2, GetPedDrawableVariation(playerPed, 2)) - 1
-		}
-	}
-
 	local eyeColor = {
 		min = 0,
 		max = 30
@@ -364,7 +357,7 @@ local function getAppearanceSettings()
 		headBlend = headBlend,
 		faceFeatures = faceFeatures,
 		headOverlays = headOverlays,
-		hair = hair,
+		hair = getHairSettings(playerPed),
 		eyeColor = eyeColor,
 		tattoos = tattoos
 	}
