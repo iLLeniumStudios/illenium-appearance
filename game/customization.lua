@@ -506,6 +506,7 @@ client.removeClothes = removeClothes
 local playerHeading
 function client.getHeading() return playerHeading end
 
+local playerArmour
 
 
 local toggleRadar = GetConvarInt('fivem-appearance:radar', 1) == 1
@@ -515,6 +516,7 @@ function client.startPlayerCustomization(cb, conf)
 	playerAppearance = client.getPedAppearance(playerPed)
 	playerCoords = GetEntityCoords(playerPed, true)
 	playerHeading = GetEntityHeading(playerPed)
+    playerArmour = GetPedArmour(playerPed)
 
 	callback = cb
 	config = conf
@@ -558,6 +560,8 @@ function client.exitPlayerCustomization(appearance)
 	else
 		client.setPedTattoos(playerPed, appearance.tattoos)
 	end
+
+    SetPedArmour(PlayerPedId(), playerArmour)
 
 	if callback then
 		callback(appearance)
