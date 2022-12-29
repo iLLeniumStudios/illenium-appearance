@@ -66,14 +66,12 @@ end
 ---@param ped number entity id
 ---@return table<number, table<string, number>>
 local function getPedComponents(ped)
-	local count = 0
 	local size = #constants.PED_COMPONENTS_IDS
 	local components = table.create(size, 0)
 
 	for i = 1, size do
 		local componentId = constants.PED_COMPONENTS_IDS[i]
-		count += 1
-		components[count] = {
+		components[i] = {
 			component_id = componentId,
 			drawable = GetPedDrawableVariation(ped, componentId),
 			texture = GetPedTextureVariation(ped, componentId),
@@ -86,14 +84,12 @@ end
 ---@param ped number entity id
 ---@return table<number, table<string, number>>
 local function getPedProps(ped)
-	local count = 0
 	local size = #constants.PED_PROPS_IDS
 	local props = table.create(size, 0)
 
 	for i = 1, size do
 		local propId = constants.PED_PROPS_IDS[i]
-		count += 1
-		props[count] = {
+		props[i] = {
 			prop_id = propId,
 			drawable = GetPedPropIndex(ped, propId),
 			texture = GetPedPropTextureIndex(ped, propId),
