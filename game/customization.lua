@@ -527,7 +527,7 @@ function client.startPlayerCustomization(cb, conf)
 	SetNuiFocus(true, true)
 	SetNuiFocusKeepInput(false)
 	RenderScriptCams(true, false, 0, true, true)
-	SetEntityInvincible(playerPed, true)
+	SetEntityInvincible(playerPed, Config.InvincibleDuringCustomization)
 	TaskStandStill(playerPed, -1)
 
 	if toggleRadar then DisplayRadar(false) end

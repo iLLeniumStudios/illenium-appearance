@@ -20,6 +20,8 @@ Config.PedMenuGroup = "admin"
 Config.ShowNearestShopOnly = false
 Config.NearestShopBlipUpdateDelay = 10000
 
+Config.InvincibleDuringCustomization = true
+
 Config.NewCharacterSections = {
     Ped = true,
     HeadBlend = true,
