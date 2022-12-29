@@ -17,6 +17,9 @@ Config.EnablePedsForPlayerOutfitRooms = true
 Config.EnablePedMenu = true
 Config.PedMenuGroup = "admin"
 
+Config.ShowNearestShopOnly = true
+Config.NearestShopBlipUpdateDelay = 10000
+
 Config.NewCharacterSections = {
     Ped = true,
     HeadBlend = true,
