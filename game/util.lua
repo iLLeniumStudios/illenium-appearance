@@ -424,4 +424,9 @@ client = {
 	getPedTattoos = getPedTattoos,
 	addPedTattoo = addPedTattoo,
 	removePedTattoo = removePedTattoo,
+	getPedModel = getPedModel,
+	setPedComponents = setPedComponents,
+	setPedProps = setPedProps,
+	getPedComponents = getPedComponents,
+	getPedProps = getPedProps
 }

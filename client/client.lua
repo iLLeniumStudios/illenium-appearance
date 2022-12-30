@@ -825,10 +825,10 @@ RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
     local failed = false
     local appearanceDB = nil
     if pedModel ~= data.model then
+        local p = promise.new()
         QBCore.Functions.TriggerCallback("fivem-appearance:server:getAppearance", function(appearance)
             if appearance then
                 client.setPlayerAppearance(appearance)
-                appearanceDB = appearance
                 ResetRechargeMultipliers()
             else
                 QBCore.Functions.Notify(
@@ -836,14 +836,13 @@ RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
                     "error")
                 failed = true
             end
+            p:resolve(appearance)
         end, data.model)
+        appearanceDB = Citizen.Await(p)
     else
         appearanceDB = client.getPedAppearance(playerPed)
     end
-    if not failed then
-        while not appearanceDB do
-            Wait(100)
-        end
+    if appearanceDB then
         playerPed = PlayerPedId()
         client.setPedComponents(playerPed, data.components)
         client.setPedProps(playerPed, data.props)
@@ -1013,12 +1012,12 @@ end
 local function getPlayerJobOutfits(clothingRoom)
     local outfits = {}
     local gender = getGender()
-    local fetched = false
     local gradeLevel = clothingRoom.job and PlayerJob.grade.level or PlayerGang.grade.level
     local jobName = clothingRoom.job and PlayerJob.name or PlayerGang.name
 
     if Config.BossManagedOutfits then
         local mType = clothingRoom.job and "Job" or "Gang"
+        local p = promise.new()
         QBCore.Functions.TriggerCallback('fivem-appearance:server:getManagementOutfits', function(result)
             for i = 1, #result, 1 do
                 outfits[#outfits + 1] = {
@@ -1030,11 +1029,9 @@ local function getPlayerJobOutfits(clothingRoom)
                     name = result[i].name
                 }
             end
-            fetched = true
+            p:resolve()
         end, mType, gender)
-        while not fetched do
-            Wait(10)
-        end
+        Citizen.Await(p)
     else
         for i = 1, #Config.Outfits[jobName][gender], 1 do
             for _, v in pairs(Config.Outfits[jobName][gender][i].grades) do
