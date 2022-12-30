@@ -8,6 +8,9 @@ Config.TattooCost = 100
 Config.SurgeonCost = 100
 
 Config.UseTarget = true
+
+Config.InputResource = "qb-input" -- can be `qb-input` or `ox_lib`
+
 Config.UseRadialMenu = false
 
 Config.EnablePedsForShops = true
