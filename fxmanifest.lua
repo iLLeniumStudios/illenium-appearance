@@ -44,6 +44,7 @@ shared_scripts {
   'locales/fr.lua',
   'locales/pt-BR.lua',
   'locales/ro-RO.lua',
+  --'@ox_lib/init.lua', -- Uncomment if you want to use ox_lib
 }
 
 files {
