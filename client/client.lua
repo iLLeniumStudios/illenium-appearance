@@ -822,8 +822,7 @@ end)
 RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
     local playerPed = PlayerPedId()
     local pedModel = client.getPedModel(playerPed)
-    local failed = false
-    local appearanceDB = nil
+    local appearanceDB
     if pedModel ~= data.model then
         local p = promise.new()
         QBCore.Functions.TriggerCallback("fivem-appearance:server:getAppearance", function(appearance)
@@ -834,7 +833,6 @@ RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
                 QBCore.Functions.Notify(
                     "Something went wrong. The outfit that you're trying to change to, does not have a base appearance.",
                     "error")
-                failed = true
             end
             p:resolve(appearance)
         end, data.model)
