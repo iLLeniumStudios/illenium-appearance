@@ -1,6 +1,6 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
-local resourceName = GetCurrentResourceName()
+local client = client
 
 local zoneName = nil
 local inZone = false
@@ -27,7 +27,7 @@ local TargetPeds = {
 local function getGender()
     local gender
     if Config.GenderBasedOnPed then
-        local model = exports[resourceName]:getPedModel(PlayerPedId())
+        local model = client.getPedModel(PlayerPedId())
         if model == "mp_f_freemode_01" then
             gender = "female"
         end
@@ -178,7 +178,7 @@ local function InitAppearance()
         if not appearance then
             return
         end
-        exports[resourceName]:setPlayerAppearance(appearance)
+        client.setPlayerAppearance(appearance)
         if Config.PersistUniforms then
             LoadPlayerUniform()
         end
@@ -303,16 +303,16 @@ RegisterNetEvent('qb-clothes:client:CreateFirstCharacter', function()
             skin = "mp_f_freemode_01"
             gender = "Female"
         end
-        exports[resourceName]:setPlayerModel(skin)
+        client.setPlayerModel(skin)
         -- Fix for tattoo's appearing when creating a new character
         local ped = PlayerPedId()
-        exports[resourceName]:setPedTattoos(ped, {})
-        exports[resourceName]:setPedComponents(ped, Config.InitialPlayerClothes[gender].Components)
-        exports[resourceName]:setPedProps(ped, Config.InitialPlayerClothes[gender].Props)
-        exports[resourceName]:setPedHair(ped, Config.InitialPlayerClothes[gender].Hair)
+        client.setPedTattoos(ped, {})
+        client.setPedComponents(ped, Config.InitialPlayerClothes[gender].Components)
+        client.setPedProps(ped, Config.InitialPlayerClothes[gender].Props)
+        client.setPedHair(ped, Config.InitialPlayerClothes[gender].Hair)
         ClearPedDecorations(ped)
         local config = getNewCharacterConfig()
-        exports[resourceName]:startPlayerCustomization(function(appearance)
+        client.startPlayerCustomization(function(appearance)
             if (appearance) then
                 TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
                 ResetRechargeMultipliers()
@@ -328,7 +328,7 @@ function OpenShop(config, isPedMenu, shopType)
             return
         end
 
-        exports[resourceName]:startPlayerCustomization(function(appearance)
+        client.startPlayerCustomization(function(appearance)
             if appearance then
                 if not isPedMenu then
                     TriggerServerEvent("fivem-appearance:server:chargeCustomer", shopType)
@@ -457,9 +457,9 @@ RegisterNetEvent('fivem-appearance:client:saveOutfit', function()
             end
 
             local playerPed = PlayerPedId()
-            local pedModel = exports[resourceName]:getPedModel(playerPed)
-            local pedComponents = exports[resourceName]:getPedComponents(playerPed)
-            local pedProps = exports[resourceName]:getPedProps(playerPed)
+            local pedModel = client.getPedModel(playerPed)
+            local pedComponents = client.getPedComponents(playerPed)
+            local pedProps = client.getPedProps(playerPed)
 
             TriggerServerEvent('fivem-appearance:server:saveOutfit', outfitName, pedModel, pedComponents, pedProps)
         end)
@@ -534,9 +534,9 @@ RegisterNetEvent("fivem-appearance:client:SaveManagementOutfit", function(mType)
     local playerPed = PlayerPedId()
     local outfitData = {
         Type = mType,
-        Model = exports[resourceName]:getPedModel(playerPed),
-        Components = exports[resourceName]:getPedComponents(playerPed),
-        Props = exports[resourceName]:getPedProps(playerPed)
+        Model = client.getPedModel(playerPed),
+        Components = client.getPedComponents(playerPed),
+        Props = client.getPedProps(playerPed)
     }
 
     local rankValues
@@ -821,13 +821,13 @@ end)
 
 RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
     local playerPed = PlayerPedId()
-    local pedModel = exports[resourceName]:getPedModel(playerPed)
+    local pedModel = client.getPedModel(playerPed)
     local failed = false
     local appearanceDB = nil
     if pedModel ~= data.model then
         QBCore.Functions.TriggerCallback("fivem-appearance:server:getAppearance", function(appearance)
             if appearance then
-                exports[resourceName]:setPlayerAppearance(appearance)
+                client.setPlayerAppearance(appearance)
                 appearanceDB = appearance
                 ResetRechargeMultipliers()
             else
@@ -838,16 +838,16 @@ RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
             end
         end, data.model)
     else
-        appearanceDB = exports[resourceName]:getPedAppearance(playerPed)
+        appearanceDB = client.getPedAppearance(playerPed)
     end
     if not failed then
         while not appearanceDB do
             Wait(100)
         end
         playerPed = PlayerPedId()
-        exports[resourceName]:setPedComponents(playerPed, data.components)
-        exports[resourceName]:setPedProps(playerPed, data.props)
-        exports[resourceName]:setPedHair(playerPed, appearanceDB.hair)
+        client.setPedComponents(playerPed, data.components)
+        client.setPedProps(playerPed, data.props)
+        client.setPedHair(playerPed, appearanceDB.hair)
 
         if data.disableSave then
             TriggerServerEvent("fivem-appearance:server:syncUniform", {
@@ -855,7 +855,7 @@ RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
                 name = data.name
             }) -- Is a uniform
         else
-            local appearance = exports[resourceName]:getPedAppearance(playerPed)
+            local appearance = client.getPedAppearance(playerPed)
             TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
         end
     end
@@ -924,7 +924,7 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
         if not appearance then
             return
         end
-        exports[resourceName]:setPlayerAppearance(appearance)
+        client.setPlayerAppearance(appearance)
         if Config.PersistUniforms then
             TriggerServerEvent("fivem-appearance:server:syncUniform", nil)
         end
