@@ -1,7 +1,7 @@
 local resetTimer = GetGameTimer()
 local allAces = {}
 
-RegisterNetEvent("fivem-appearance:server:GetPlayerAces", function()
+lib.callback.register("fivem-appearance:server:GetPlayerAces", function()
     local src = source
     local allowedAces = {}
     for k in pairs(allAces) do
@@ -9,7 +9,7 @@ RegisterNetEvent("fivem-appearance:server:GetPlayerAces", function()
             allowedAces[#allowedAces + 1] = k
         end
     end
-    TriggerClientEvent("fivem-appearance:client:SetPlayerAces", src, allowedAces)
+    return allowedAces
 end)
 
 local function findAceFromSecurityMessage(message)

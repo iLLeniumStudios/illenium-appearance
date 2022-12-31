@@ -8,8 +8,6 @@ local inZone = false
 local MenuItemId = nil
 
 local PlayerData = {}
-local PlayerJob = {}
-local PlayerGang = {}
 
 local ManagementItemIDs = {
     Gang = nil,
@@ -167,11 +165,8 @@ end
 
 local function InitAppearance()
     PlayerData = QBCore.Functions.GetPlayerData()
-    PlayerJob = PlayerData.job
-    PlayerGang = PlayerData.gang
-
-    TriggerEvent("updateJob", PlayerJob.name)
-    TriggerEvent("updateGang", PlayerGang.name)
+    client.job = PlayerData.job
+    client.gang = PlayerData.gang
 
     lib.callback("fivem-appearance:server:getAppearance", false, function(appearance)
         if not appearance then
@@ -191,7 +186,7 @@ local function InitAppearance()
             end
         end
     end)
-    ResetBlips(PlayerJob.name, PlayerGang.name)
+    ResetBlips()
     if Config.BossManagedOutfits then
         AddManagementMenuItems()
     end
@@ -219,68 +214,28 @@ end)
 
 RegisterNetEvent("QBCore:Client:OnJobUpdate", function(JobInfo)
     PlayerData.job = JobInfo
-    PlayerJob = JobInfo
-    TriggerEvent("updateJob", PlayerJob.name)
-    ResetBlips(PlayerJob.name, PlayerGang.name)
+    client.job = JobInfo
+    ResetBlips()
 end)
 
 RegisterNetEvent("QBCore:Client:OnGangUpdate", function(GangInfo)
     PlayerData.gang = GangInfo
-    PlayerGang = GangInfo
-    TriggerEvent("updateGang", PlayerGang.name)
-    ResetBlips(PlayerJob.name, PlayerGang.name)
+    client.gang = GangInfo
+    ResetBlips()
 end)
 
 RegisterNetEvent("QBCore:Client:SetDuty", function(duty)
-    PlayerJob.onduty = duty
+    client.job.onduty = duty
 end)
 
 RegisterNetEvent("QBCore:Client:OnPlayerLoaded", function()
     InitAppearance()
 end)
 
-local function getComponentConfig()
-    return {
-        masks = not Config.DisableComponents.Masks,
-        upperBody = not Config.DisableComponents.UpperBody,
-        lowerBody = not Config.DisableComponents.LowerBody,
-        bags = not Config.DisableComponents.Bags,
-        shoes = not Config.DisableComponents.Shoes,
-        scarfAndChains = not Config.DisableComponents.ScarfAndChains,
-        bodyArmor = not Config.DisableComponents.BodyArmor,
-        shirts = not Config.DisableComponents.Shirts,
-        decals = not Config.DisableComponents.Decals,
-        jackets = not Config.DisableComponents.Jackets
-    }
-end
 
-local function getPropConfig()
-    return {
-        hats = not Config.DisableProps.Hats,
-        glasses = not Config.DisableProps.Glasses,
-        ear = not Config.DisableProps.Ear,
-        watches = not Config.DisableProps.Watches,
-        bracelets = not Config.DisableProps.Bracelets
-    }
-end
-
-function getDefaultConfig()
-    return {
-        ped = false,
-        headBlend = false,
-        faceFeatures = false,
-        headOverlays = false,
-        components = false,
-        componentConfig = getComponentConfig(),
-        props = false,
-        propConfig = getPropConfig(),
-        tattoos = false,
-        enableExit = true,
-    }
-end
 
 local function getNewCharacterConfig()
-    local config = getDefaultConfig()
+    local config = GetDefaultConfig()
     config.enableExit   = false
 
     config.ped          = Config.NewCharacterSections.Ped
@@ -351,7 +306,7 @@ function OpenShop(config, isPedMenu, shopType)
 end
 
 local function OpenClothingShop(isPedMenu)
-    local config = getDefaultConfig()
+    local config = GetDefaultConfig()
     config.components = true
     config.props = true
 
@@ -366,19 +321,19 @@ local function OpenClothingShop(isPedMenu)
 end
 
 local function OpenBarberShop()
-    local config = getDefaultConfig()
+    local config = GetDefaultConfig()
     config.headOverlays = true
     OpenShop(config, false, "barber")
 end
 
 local function OpenTattooShop()
-    local config = getDefaultConfig()
+    local config = GetDefaultConfig()
     config.tattoos = true
     OpenShop(config, false, "tattoo")
 end
 
 local function OpenSurgeonShop()
-    local config = getDefaultConfig()
+    local config = GetDefaultConfig()
     config.headBlend = true
     config.faceFeatures = true
     OpenShop(config, false, "surgeon")
@@ -544,12 +499,12 @@ RegisterNetEvent("fivem-appearance:client:SaveManagementOutfit", function(mType)
     local rankValues
     
     if mType == "Job" then
-        outfitData.JobName = PlayerJob.name
-        rankValues = getRankInputValues(QBCore.Shared.Jobs[PlayerJob.name].grades)
+        outfitData.JobName = client.job.name
+        rankValues = getRankInputValues(QBCore.Shared.Jobs[client.job.name].grades)
         
     else
-        outfitData.JobName = PlayerGang.name
-        rankValues = getRankInputValues(QBCore.Shared.Gangs[PlayerGang.name].grades)
+        outfitData.JobName = client.gang.name
+        rankValues = getRankInputValues(QBCore.Shared.Gangs[client.gang.name].grades)
     end
 
     local dialogResponse = lib.inputDialog("Management Outfit Details", {
@@ -897,8 +852,8 @@ end
 local function getPlayerJobOutfits(clothingRoom)
     local outfits = {}
     local gender = getGender()
-    local gradeLevel = clothingRoom.job and PlayerJob.grade.level or PlayerGang.grade.level
-    local jobName = clothingRoom.job and PlayerJob.name or PlayerGang.name
+    local gradeLevel = clothingRoom.job and client.job.grade.level or client.gang.grade.level
+    local jobName = clothingRoom.job and client.job.name or client.gang.name
 
     if Config.BossManagedOutfits then
         local mType = clothingRoom.job and "Job" or "Gang"
@@ -940,7 +895,7 @@ RegisterNetEvent("fivem-appearance:client:OpenPlayerOutfitRoom", function()
 end)
 
 local function CheckDuty()
-    return not Config.OnDutyOnlyClothingRooms or (Config.OnDutyOnlyClothingRooms and PlayerJob.onduty)
+    return not Config.OnDutyOnlyClothingRooms or (Config.OnDutyOnlyClothingRooms and client.job.onduty)
 end
 
 local function SetupStoreZones()
@@ -971,7 +926,7 @@ local function SetupStoreZones()
             local matches = {zone.name:match("([^_]+)_([^_]+)_([^_]+)")}
             zoneName = matches[2]
             local currentStore = Config.Stores[tonumber(matches[3])]
-            local jobName = (currentStore.job and PlayerJob.name) or (currentStore.gang and PlayerGang.name)
+            local jobName = (currentStore.job and client.job.name) or (currentStore.gang and client.gang.name)
             if jobName == (currentStore.job or currentStore.gang) then
                 inZone = true
                 local prefix = Config.UseRadialMenu and "" or "[E] "
@@ -1019,7 +974,7 @@ local function SetupClothingRoomZones()
         if isPointInside then
             zoneName = zone.name
             local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zone.name, 15))]
-            local jobName = clothingRoom.job and PlayerJob.name or PlayerGang.name
+            local jobName = clothingRoom.job and client.job.name or client.gang.name
             if jobName == (clothingRoom.job or clothingRoom.gang) then
                 if CheckDuty() or clothingRoom.gang then
                     inZone = true

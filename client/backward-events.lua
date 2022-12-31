@@ -18,7 +18,7 @@ end
 -- Backwards Compatible Events
 
 RegisterNetEvent("qb-clothing:client:openMenu", function()
-    local config = getDefaultConfig()
+    local config = GetDefaultConfig()
     config.ped = true
     config.headBlend = true
     config.faceFeatures = true
