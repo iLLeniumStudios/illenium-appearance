@@ -21,7 +21,12 @@ local function MigrateFivemAppearance(source)
             1
         })
     end
-    TriggerClientEvent("QBCore:Notify", source, "Migration finished. " .. tostring(#playerSkins) .. " skins migrated", "success")
+    lib.notify(source, {
+        title = "Success",
+        description = "Migration finished. " .. tostring(#playerSkins) .. " skins migrated",
+        type = "success",
+        position = Config.NotifyOptions.position
+    })
 end
 
 local function MigrateQBClothing(source)
@@ -29,7 +34,12 @@ local function MigrateQBClothing(source)
     local migrated = 0
     for i=1, #allPlayerSkins, 1 do
         if not tonumber(allPlayerSkins[i].model) then
-            TriggerClientEvent("QBCore:Notify", source, "Skipped skin")
+            lib.notify(source, {
+                title = "Information",
+                description = "Skipped skin",
+                type = "inform",
+                position = Config.NotifyOptions.position
+            })
         else
             TriggerClientEvent("fivem-appearance:client:migration:load-qb-clothing-skin", source, allPlayerSkins[i])
             while not continue do
@@ -40,7 +50,13 @@ local function MigrateQBClothing(source)
         end
     end
     TriggerClientEvent("fivem-appearance:client:reloadSkin", source)
-    TriggerClientEvent("QBCore:Notify", source, "Migration finished. " .. migrated .. " skins migrated", "success")
+
+    lib.notify(source, {
+        title = "Success",
+        description = "Migration finished. " .. migrated .. " skins migrated",
+        type = "success",
+        position = Config.NotifyOptions.position
+    })
 end
 
 RegisterNetEvent("fivem-appearance:server:migrate-qb-clothing-skin", function(citizenid, appearance)
@@ -53,7 +69,13 @@ RegisterNetEvent("fivem-appearance:server:migrate-qb-clothing-skin", function(ci
             1
         })
         continue = true
-        TriggerClientEvent("QBCore:Notify", src, "Migrated skin", "success")
+        lib.notify(src, {
+            id = "illenium_appearance_skin_migrated",
+            title = "Success",
+            description = "Migrated skin",
+            type = "success",
+            position = Config.NotifyOptions.position
+        })
     end)
 end)
 
@@ -66,6 +88,11 @@ QBCore.Commands.Add('migrateskins', 'Migrate skins to fivem-appearance', {{name=
             MigrateQBClothing(source)
         end)
     else
-        TriggerClientEvent("QBCore:Notify", source, "Invalid type", "error")
+        lib.notify(source, {
+            title = "Error",
+            description = "Invalid type",
+            type = "error",
+            position = Config.NotifyOptions.position
+        })
     end
 end, 'god')

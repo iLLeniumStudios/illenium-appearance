@@ -34,7 +34,7 @@ end
 
 -- Callback(s)
 
-QBCore.Functions.CreateCallback('fivem-appearance:server:getAppearance', function(source, cb, model)
+lib.callback.register('fivem-appearance:server:getAppearance', function(source, model)
     local Player = QBCore.Functions.GetPlayer(source)
     local query = 'SELECT skin FROM playerskins WHERE citizenid = ?'
     local queryArgs = {Player.PlayerData.citizenid}
@@ -47,19 +47,17 @@ QBCore.Functions.CreateCallback('fivem-appearance:server:getAppearance', functio
     end
     local result = MySQL.Sync.fetchAll(query, queryArgs)
     if result[1] ~= nil then
-        cb(json.decode(result[1].skin))
-    else
-        cb(nil)
+        return json.decode(result[1].skin)
     end
 end)
 
-QBCore.Functions.CreateCallback('fivem-appearance:server:hasMoney', function(source, cb, shopType)
+lib.callback.register('fivem-appearance:server:hasMoney', function(source, shopType)
     local Player = QBCore.Functions.GetPlayer(source)
     local money = getMoneyForShop(shopType)
     if Player.PlayerData.money.cash >= money then
-        cb(true, money)
+        return true, money
     else
-        cb(false, money)
+        return false, money
     end
 end)
 
@@ -107,9 +105,9 @@ lib.callback.register("fivem-appearance:server:getManagementOutfits", function(s
     return managementOutfits
 end)
 
-QBCore.Functions.CreateCallback("fivem-appearance:server:getUniform", function(source, cb)
+lib.callback.register("fivem-appearance:server:getUniform", function(source)
     local Player = QBCore.Functions.GetPlayer(source)
-    cb(uniformCache[Player.PlayerData.citizenid])
+    return uniformCache[Player.PlayerData.citizenid]
 end)
 
 RegisterServerEvent("fivem-appearance:server:saveAppearance", function(appearance)
@@ -130,9 +128,19 @@ RegisterServerEvent("fivem-appearance:server:chargeCustomer", function(shopType)
     local Player = QBCore.Functions.GetPlayer(src)
     local money = getMoneyForShop(shopType)
     if Player.Functions.RemoveMoney('cash', money) then
-        TriggerClientEvent("QBCore:Notify", src, "Gave $" .. money .. " to " .. shopType .. "!", "success")
+        lib.notify(src, {
+            title = "Success",
+            description = "Gave $" .. money .. " to " .. shopType .. "!",
+            type = "success",
+            position = Config.NotifyOptions.position
+        })
     else
-        TriggerClientEvent("QBCore:Notify", src, "You didn't have enough money! Tried to exploit the system!", "error")
+        lib.notify(src, {
+            title = "Exploit!",
+            description = "You didn't have enough money! Tried to exploit the system!",
+            type = "error",
+            position = Config.NotifyOptions.position
+        })
     end
 end)
 
@@ -153,7 +161,12 @@ RegisterNetEvent('fivem-appearance:server:saveOutfit', function(name, model, com
                     components = components,
                     props = props
                 }
-                TriggerClientEvent('QBCore:Notify', src, 'Outfit ' .. name .. ' has been saved', 'success')
+                lib.notify(src, {
+                    title = "Success",
+                    description = 'Outfit ' .. name .. ' has been saved',
+                    type = "success",
+                    position = Config.NotifyOptions.position
+                })
             end)
     end
 end)
@@ -173,7 +186,12 @@ RegisterNetEvent("fivem-appearance:server:saveManagementOutfit", function(outfit
             json.encode(outfitData.Components)
         },
         function()
-            TriggerClientEvent('QBCore:Notify', src, 'Outfit ' .. outfitData.Name .. ' has been saved', 'success')
+            lib.notify(src, {
+                title = "Success",
+                description = 'Outfit ' .. outfitData.Name .. ' has been saved',
+                type = "success",
+                position = Config.NotifyOptions.position
+            })
         end)
 end)
 
@@ -220,7 +238,12 @@ if Config.EnablePedMenu then
             if Player then
                 src = playerId
             else
-                TriggerClientEvent('QBCore:Notify', src, "Player not online", 'error')
+                lib.notify(src, {
+                    title = "Error",
+                    description = "Player not online",
+                    type = "error",
+                    position = Config.NotifyOptions.position
+                })
                 return
             end
         end
