@@ -376,68 +376,20 @@ end
 
 RegisterNetEvent('fivem-appearance:client:openClothingShop', OpenClothingShop)
 
-local inputTypeToOXTypeMap = {
-    text = "input",
-    radio = "select",
-    select = "select"
-}
-
-local function ShowInputDialog(data)
-    if Config.InputResource == "qb-input" then
-        local result = exports['qb-input']:ShowInput({
-            header = data.heading,
-            submitText = data.buttonText,
-            inputs = data.inputs
-        })
-        return result
-    elseif Config.InputResource == "ox_lib" then
-        local inputs = {}
-        for i = 1, #data.inputs do
-            local input = {
-                type = inputTypeToOXTypeMap[data.inputs[i].type],
-                label = data.inputs[i].text,
-                default = data.inputs[i].default
-            }
-            if data.inputs[i].type == "radio" or data.inputs[i].type == "select" then
-                local options = {}
-                for _, v in pairs(data.inputs[i].options) do
-                    options[#options + 1] = {
-                        value = v.value,
-                        label =v.text
-                    }
-                end
-                input.options = options
-            end
-            inputs[#inputs + 1] = input
-        end
-        local result = lib.inputDialog(data.heading, inputs)
-        local response = {}
-        if result then
-            for k, v in pairs(result) do
-                response[data.inputs[k].name] = v
-            end
-            return response
-        end
-    end
-end
-
 RegisterNetEvent('fivem-appearance:client:saveOutfit', function()
-    local response = ShowInputDialog({
-        heading = "Name your outfit",
-        buttonText = "Save Outfit",
-        inputs = {{
-            text = "Outfit Name",
-            name = "outfitName",
-            type = "text",
-            isRequired = true
-        }}
+    local response = lib.inputDialog("Name your outfit", {
+        {
+            type = "input",
+            label = "Outfit Name",
+            placeholder = "Very cool outfit"
+        }
     })
 
     if not response then
         return
     end
 
-    local outfitName = response.outfitName
+    local outfitName = response[1]
     if outfitName ~= nil then
         Wait(500)
         lib.callback("fivem-appearance:server:getOutfits", false, function(outfits)
@@ -558,7 +510,7 @@ local function getRankInputValues(rankList)
     local rankValues = {}
     for k, v in pairs(rankList) do
         rankValues[#rankValues + 1] = {
-            text = v.name,
+            label = v.name,
             value = k
         }
     end
@@ -585,48 +537,40 @@ RegisterNetEvent("fivem-appearance:client:SaveManagementOutfit", function(mType)
         rankValues = getRankInputValues(QBCore.Shared.Gangs[PlayerGang.name].grades)
     end
 
-    local dialogResponse = ShowInputDialog({
-        heading = "Management Outfit Details",
-        buttonText = "Save Outfit",
-        inputs = {
+    local dialogResponse = lib.inputDialog("Management Outfit Details", {
             {
-                text = "Outfit Name",
-                name = "outfitName",
-                type = "text",
-                isRequired = true
+                label = "Outfit Name",
+                type = "input",
             },
             {
-                text = "Gender",
-                name = "gender",
-                type = "radio",
+                label = "Gender",
+                type = "select",
                 options = {
                     {
-                        text = "Male", value = "male"
+                        label = "Male", value = "male"
                     },
                     {
-                        text = "Female", value = "female"
+                        label = "Female", value = "female"
                     }
                 },
                 default = "male"
             },
             {
-                text = "Minimum Rank",
-                name = "minRank",
+                label = "Minimum Rank",
                 type = "select",
                 options = rankValues,
                 default = '0'
             }
-        }
-    })
+        })
 
     if not dialogResponse then
         return
     end
 
 
-    outfitData.Name = dialogResponse.outfitName
-    outfitData.Gender = dialogResponse.gender
-    outfitData.MinRank = tonumber(dialogResponse.minRank)
+    outfitData.Name = dialogResponse[1]
+    outfitData.Gender = dialogResponse[2]
+    outfitData.MinRank = tonumber(dialogResponse[3])
 
     TriggerServerEvent("fivem-appearance:server:saveManagementOutfit", outfitData)
 

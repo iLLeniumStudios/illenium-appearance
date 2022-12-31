@@ -27,7 +27,7 @@ server_scripts {
   'server/server.lua',
   'server/permissions.lua',
   '@oxmysql/lib/MySQL.lua',
-  'migrate/server/server.lua',
+  'migrate/server/server.lua'
 }
 
 shared_scripts {
@@ -44,12 +44,12 @@ shared_scripts {
   'locales/fr.lua',
   'locales/pt-BR.lua',
   'locales/ro-RO.lua',
-  --'@ox_lib/init.lua', -- Uncomment if you want to use ox_lib
+  '@ox_lib/init.lua'
 }
 
 files {
   'web/dist/index.html',
-  'web/dist/assets/*.js',
+  'web/dist/assets/*.js'
 }
 
 ui_page 'web/dist/index.html'
