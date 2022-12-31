@@ -109,7 +109,7 @@ RegisterNUICallback("appearance_save", function(appearance, cb)
 	cb(1)
 	client.wearClothes(appearance, "head")
 	client.wearClothes(appearance, "body")
-	client.wearClothes(appearance, "body")
+	client.wearClothes(appearance, "bottom")
 	client.exitPlayerCustomization(appearance)
 end)
 
