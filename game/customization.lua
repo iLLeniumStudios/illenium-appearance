@@ -76,6 +76,21 @@ local function filterPedModelsForPlayer(pedConfigs)
     return playerPeds
 end
 
+local function filterTattoosByGender(tattoos)
+	local filtered = {}
+	local gender = client.getPedDecorationType()
+	for k, v in pairs(tattoos) do
+		filtered[k] = {}
+		for i = 1, #v do
+			local tattoo = v[i]
+			if tattoo["hash" .. gender:gsub("^%l", string.upper)] ~= "" then
+				filtered[k][#filtered[k] + 1] = tattoo
+			end
+		end
+	end
+	return filtered
+end
+
 local function filterBlacklistSettings(items, drawableId)
 	local blacklistSettings = {
 		drawables = {},
@@ -242,7 +257,7 @@ local function getAppearanceSettings()
 	}
 
 	local tattoos = {
-		items = Config.Tattoos
+		items = filterTattoosByGender(Config.Tattoos)
 	}
 
 	local components = {}
