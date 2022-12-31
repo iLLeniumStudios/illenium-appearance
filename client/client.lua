@@ -72,7 +72,7 @@ local function RemoveTargets()
 end
 
 local function LoadPlayerUniform()
-    QBCore.Functions.TriggerCallback("fivem-appearance:server:getUniform", function(uniformData)
+    lib.callback("fivem-appearance:server:getUniform", false, function(uniformData)
         if not uniformData then
             return
         end
@@ -173,7 +173,7 @@ local function InitAppearance()
     TriggerEvent("updateJob", PlayerJob.name)
     TriggerEvent("updateGang", PlayerGang.name)
 
-    QBCore.Functions.TriggerCallback('fivem-appearance:server:getAppearance', function(appearance)
+    lib.callback('fivem-appearance:server:getAppearance', false, function(appearance)
         if not appearance then
             return
         end
@@ -321,9 +321,14 @@ RegisterNetEvent('qb-clothes:client:CreateFirstCharacter', function()
 end)
 
 function OpenShop(config, isPedMenu, shopType)
-    QBCore.Functions.TriggerCallback("fivem-appearance:server:hasMoney", function(hasMoney, money)
+    lib.callback("fivem-appearance:server:hasMoney", false, function(hasMoney, money)
         if not hasMoney and not isPedMenu then
-            QBCore.Functions.Notify("Not enough cash. Need $" .. money, "error")
+            lib.notify({
+                title = "Cannot Enter Shop",
+                description = "Not enough cash. Need $" .. money,
+                type = "error",
+                position = Config.NotifyOptions.position
+            })
             return
         end
 
@@ -334,7 +339,12 @@ function OpenShop(config, isPedMenu, shopType)
                 end
                 TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
             else
-                QBCore.Functions.Notify("Cancelled Customization")
+                lib.notify({
+                    title = "Cancelled Customization",
+                    description = "Customization not saved",
+                    type = "inform",
+                    position = Config.NotifyOptions.position
+                })
             end
         end, config)
     end, shopType)
@@ -402,7 +412,12 @@ RegisterNetEvent('fivem-appearance:client:saveOutfit', function()
             end
 
             if outfitExists then
-                QBCore.Functions.Notify("Outfit with this name already exists.", "error")
+                lib.notify({
+                    title = "Save Failed",
+                    description = "Outfit with this name already exists",
+                    type = "error",
+                    position = Config.NotifyOptions.position
+                })
                 return
             end
 
@@ -697,14 +712,17 @@ RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
     local appearanceDB
     if pedModel ~= data.model then
         local p = promise.new()
-        QBCore.Functions.TriggerCallback("fivem-appearance:server:getAppearance", function(appearance)
+        lib.callback("fivem-appearance:server:getAppearance", false, function(appearance)
             if appearance then
                 client.setPlayerAppearance(appearance)
                 ResetRechargeMultipliers()
             else
-                QBCore.Functions.Notify(
-                    "Something went wrong. The outfit that you're trying to change to, does not have a base appearance.",
-                    "error")
+                lib.notify({
+                    title = "Something went wrong",
+                    description = "The outfit that you're trying to change to, does not have a base appearance",
+                    type = "error",
+                    position = Config.NotifyOptions.position
+                })
             end
             p:resolve(appearance)
         end, data.model)
@@ -732,12 +750,22 @@ end)
 
 RegisterNetEvent("fivem-appearance:client:DeleteManagementOutfit", function(id)
     TriggerServerEvent("fivem-appearance:server:deleteManagementOutfit", id)
-    QBCore.Functions.Notify('Outfit Deleted', 'error')
+    lib.notify({
+        title = "Success",
+        description = "Outfit Deleted",
+        type = "success",
+        position = Config.NotifyOptions.position
+    })
 end)
 
 RegisterNetEvent('fivem-appearance:client:deleteOutfit', function(id)
     TriggerServerEvent('fivem-appearance:server:deleteOutfit', id)
-    QBCore.Functions.Notify('Outfit Deleted', 'error')
+    lib.notify({
+        title = "Success",
+        description = "Outfit Deleted",
+        type = "success",
+        position = Config.NotifyOptions.position
+    })
 end)
 
 RegisterNetEvent('fivem-appearance:client:openJobOutfitsMenu', function(outfitsToShow)
@@ -756,7 +784,12 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
     local playerPed = PlayerPedId()
 
     if InCooldown() or CheckPlayerMeta() or IsPedInAnyVehicle(playerPed, true) or IsPedFalling(playerPed) then
-        QBCore.Functions.Notify("You cannot use reloadskin right now", "error")
+        lib.notify({
+            title = "Error",
+            description = "You cannot use reloadskin right now",
+            type = "error",
+            position = Config.NotifyOptions.position
+        })
         return
     end
 
@@ -766,7 +799,7 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
     local maxhealth = GetEntityMaxHealth(playerPed)
     local armour = GetPedArmour(playerPed)
 
-    QBCore.Functions.TriggerCallback('fivem-appearance:server:getAppearance', function(appearance)
+    lib.callback('fivem-appearance:server:getAppearance', false, function(appearance)
         if not appearance then
             return
         end
@@ -785,7 +818,12 @@ end)
 
 RegisterNetEvent("fivem-appearance:client:ClearStuckProps", function()
     if InCooldown() or CheckPlayerMeta() then
-        QBCore.Functions.Notify("You cannot use clearstuckprops right now", "error")
+        lib.notify({
+            title = "Error",
+            description = "You cannot use clearstuckprops right now",
+            type = "error",
+            position = Config.NotifyOptions.position
+        })
         return
     end
 
@@ -938,18 +976,18 @@ local function SetupStoreZones()
                 inZone = true
                 local prefix = Config.UseRadialMenu and '' or '[E] '
                 if zoneName == 'clothing' then
-                    exports['qb-core']:DrawText(prefix .. 'Clothing Store<br>Price: $' .. Config.ClothingCost)
+                    lib.showTextUI(prefix .. 'Clothing Store - Price: $' .. Config.ClothingCost, Config.TextUIOptions)
                 elseif zoneName == 'barber' then
-                    exports['qb-core']:DrawText(prefix .. 'Barber<br>Price: $' .. Config.BarberCost)
+                    lib.showTextUI(prefix .. 'Barber - Price: $' .. Config.BarberCost, Config.TextUIOptions)
                 elseif zoneName == 'tattoo' then
-                    exports['qb-core']:DrawText(prefix .. 'Tattoo Shop<br>Price: $' .. Config.TattooCost)
+                    lib.showTextUI(prefix .. 'Tattoo Shop - Price: $' .. Config.TattooCost, Config.TextUIOptions)
                 elseif zoneName == 'surgeon' then
-                    exports['qb-core']:DrawText(prefix .. 'Plastic Surgeon<br>Price: $' .. Config.SurgeonCost)
+                    lib.showTextUI(prefix .. 'Plastic Surgeon - Price: $' .. Config.SurgeonCost, Config.TextUIOptions)
                 end
             end
         else
             inZone = false
-            exports['qb-core']:HideText()
+            lib.hideTextUI()
         end
     end)
 end
@@ -986,12 +1024,12 @@ local function SetupClothingRoomZones()
                 if CheckDuty() or clothingRoom.gang then
                     inZone = true
                     local prefix = Config.UseRadialMenu and '' or '[E] '
-                    exports['qb-core']:DrawText(prefix .. 'Clothing Room')
+                    lib.showTextUI(prefix .. 'Clothing Room', Config.TextUIOptions)
                 end
             end
         else
             inZone = false
-            exports['qb-core']:HideText()
+            lib.hideTextUI()
         end
     end)
 end
@@ -1026,11 +1064,11 @@ local function SetupPlayerOutfitRoomZones()
             if isAllowed then
                 inZone = true
                 local prefix = Config.UseRadialMenu and '' or '[E] '
-                exports['qb-core']:DrawText(prefix .. 'Outfits')
+                lib.showTextUI(prefix .. 'Outfits', Config.TextUIOptions)
             end
         else
             inZone = false
-            exports['qb-core']:HideText()
+            lib.hideTextUI()
         end
     end)
 end

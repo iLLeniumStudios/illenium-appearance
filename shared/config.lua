@@ -7,7 +7,15 @@ Config.BarberCost = 100
 Config.TattooCost = 100
 Config.SurgeonCost = 100
 
-Config.UseTarget = true
+Config.UseTarget = false
+
+Config.TextUIOptions = {
+    position = "left-center"
+}
+
+Config.NotifyOptions = {
+    position = "top-right"
+}
 
 Config.UseRadialMenu = false
 
