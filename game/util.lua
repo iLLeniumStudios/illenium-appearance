@@ -1,37 +1,10 @@
 local hashesComputed = false
-local playerAces = {}
-local playerJob
-local playerGang
 local PED_TATTOOS = {}
 local pedModelsByHash = {}
 
 local function isPedFreemodeModel(ped)
 	local model = GetEntityModel(ped)
 	return model == `mp_m_freemode_01` or model == `mp_f_freemode_01`
-end
-
-RegisterNetEvent("fivem-appearance:client:SetPlayerAces", function(aces)
-	playerAces = aces
-end)
-
-AddEventHandler("updateJob", function(job)
-	playerJob = job
-end)
-
-AddEventHandler("updateGang", function(gang)
-	playerGang = gang
-end)
-
-local function getPlayerJob()
-	return playerJob
-end
-
-local function getPlayerGang()
-	return playerGang
-end
-
-local function getPlayerAces()
-	return playerAces
 end
 
 local function computePedModelsByHash()
@@ -414,9 +387,6 @@ client = {
 	setPedComponent = setPedComponent,
 	setPedProp = setPedProp,
 	setPlayerAppearance = setPlayerAppearance,
-	getPlayerJob = getPlayerJob,
-	getPlayerGang = getPlayerGang,
-	getPlayerAces = getPlayerAces,
 	getPedDecorationType = getPedDecorationType,
 	isPedFreemodeModel = isPedFreemodeModel,
 	setPreviewTattoo = setPreviewTattoo,

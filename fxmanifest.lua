@@ -13,6 +13,7 @@ client_scripts {
   'game/util.lua',
   'game/customization.lua',
   'game/nui.lua',
+  'client/defaults.lua',
   'client/blips.lua',
   'client/props.lua',
   'client/client.lua',

@@ -57,25 +57,23 @@ local function listContainsAny(items, containedItems)
 	return false
 end
 
+local function allowedForPlayer(item, allowedAces)
+    return (item.jobs and listContains(item.jobs, client.job.name)) or (item.gangs and listContains(item.gangs, client.gang.name)) or (item.aces and listContainsAny(item.aces, allowedAces))
+end
+
 local function filterPedModelsForPlayer(pedConfigs)
     local playerPeds = {}
-	local job = client.getPlayerJob()
-	local gang = client.getPlayerGang()
-	local allowedAces = client.getPlayerAces()
+	local allowedAces = lib.callback.await("fivem-appearance:server:GetPlayerAces", false)
 
     for i = 1, #pedConfigs do
         local config = pedConfigs[i]
-        if (not config.jobs and not config.gangs and not config.aces) or (config.jobs and listContains(config.jobs, job)) or (config.gangs and listContains(config.gangs, gang)) or (config.aces and listContainsAny(config.aces, allowedAces)) then
-            for j = 1, #config.peds do
+		if (not config.jobs and not config.gangs and not config.aces) or allowedForPlayer(config, allowedAces) then
+			for j = 1, #config.peds do
                 playerPeds[#playerPeds + 1] = config.peds[j]
             end
-        end
+		end
     end
     return playerPeds
-end
-
-local function allowedForPlayer(item, job, gang, allowedAces)
-    return (item.jobs and listContains(item.jobs, job)) or (item.gangs and listContains(item.gangs, gang)) or (item.aces and listContainsAny(item.aces, allowedAces))
 end
 
 local function filterBlacklistSettings(items, drawableId)
@@ -84,13 +82,11 @@ local function filterBlacklistSettings(items, drawableId)
 		textures = {}
 	}
 
-	local job = client.getPlayerJob()
-	local gang = client.getPlayerGang()
-	local allowedAces = client.getPlayerAces()
+	local allowedAces = lib.callback.await("fivem-appearance:server:GetPlayerAces", false)
 
 	for i = 1, #items do
 		local item = items[i]
-		if not allowedForPlayer(item, job, gang, allowedAces) and item.drawables then
+		if not allowedForPlayer(item, allowedAces) and item.drawables then
 			for j = 0, #item.drawables do
 				addToBlacklist(item, item.drawables[j], drawableId, blacklistSettings)
 			end
