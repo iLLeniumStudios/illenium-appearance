@@ -30,7 +30,7 @@ RegisterNetEvent('qb-clothing:client:openMenu', function()
 end)
 
 RegisterNetEvent('qb-clothing:client:openOutfitMenu', function()
-    OpenMenu(nil, "qb-clothing:client:openOutfitMenu", "outfit")
+    OpenMenu(nil, "outfit")
 end)
 
 RegisterNetEvent('qb-clothing:client:loadOutfit', function(oData)
