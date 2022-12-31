@@ -1,4 +1,4 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+local QBCore = exports["qb-core"]:GetCoreObject()
 
 local resourceName = GetCurrentResourceName()
 
@@ -17,7 +17,7 @@ end
 
 -- Backwards Compatible Events
 
-RegisterNetEvent('qb-clothing:client:openMenu', function()
+RegisterNetEvent("qb-clothing:client:openMenu", function()
     local config = getDefaultConfig()
     config.ped = true
     config.headBlend = true
@@ -26,14 +26,14 @@ RegisterNetEvent('qb-clothing:client:openMenu', function()
     config.components = true
     config.props = true
     config.tattoos = true
-    OpenShop(config, true, 'all')
+    OpenShop(config, true, "all")
 end)
 
-RegisterNetEvent('qb-clothing:client:openOutfitMenu', function()
+RegisterNetEvent("qb-clothing:client:openOutfitMenu", function()
     OpenMenu(nil, "outfit")
 end)
 
-RegisterNetEvent('qb-clothing:client:loadOutfit', function(oData)
+RegisterNetEvent("qb-clothing:client:loadOutfit", function(oData)
     local ped = PlayerPedId()
 
     local data = oData.outfitData

@@ -372,7 +372,7 @@ local currentCamera
 local cameraHandle
 local function setCamera(key)
 	if not isCameraInterpolating then
-		if key ~= 'current' then
+		if key ~= "current" then
 			currentCamera = key
 		end
 
@@ -383,7 +383,7 @@ local function setCamera(key)
 		if cameraHandle then
 			local camCoords = GetOffsetFromEntityInWorldCoords(playerPed, coords.x * reverseFactor, coords.y * reverseFactor, coords.z * reverseFactor)
 			local camPoint = GetOffsetFromEntityInWorldCoords(playerPed, point.x, point.y, point.z)
-			local tmpCamera = CreateCameraWithParams('DEFAULT_SCRIPTED_CAMERA', camCoords.x, camCoords.y, camCoords.z, 0.0, 0.0, 0.0, 49.0, false, 0)
+			local tmpCamera = CreateCameraWithParams("DEFAULT_SCRIPTED_CAMERA", camCoords.x, camCoords.y, camCoords.z, 0.0, 0.0, 0.0, 49.0, false, 0)
 
 			PointCamAtCoord(tmpCamera, camPoint.x, camPoint.y, camPoint.z)
 			SetCamActiveWithInterp(tmpCamera, cameraHandle, 1000, 1, 1)
@@ -400,7 +400,7 @@ local function setCamera(key)
 		else
 			local camCoords = GetOffsetFromEntityInWorldCoords(playerPed, coords.x, coords.y, coords.z)
 			local camPoint = GetOffsetFromEntityInWorldCoords(playerPed, point.x, point.y, point.z)
-			cameraHandle = CreateCameraWithParams('DEFAULT_SCRIPTED_CAMERA', camCoords.x, camCoords.y, camCoords.z, 0.0, 0.0, 0.0, 49.0, false, 0)
+			cameraHandle = CreateCameraWithParams("DEFAULT_SCRIPTED_CAMERA", camCoords.x, camCoords.y, camCoords.z, 0.0, 0.0, 0.0, 49.0, false, 0)
 
 			PointCamAtCoord(cameraHandle, camPoint.x, camPoint.y, camPoint.z)
 			SetCamActive(cameraHandle, true)
@@ -413,7 +413,7 @@ function client.rotateCamera(direction)
 	if not isCameraInterpolating then
 		local coords, point = table.unpack(constants.CAMERAS[currentCamera])
 		local offset = constants.OFFSETS[currentCamera]
-		local sideFactor = direction == 'left' and 1 or -1
+		local sideFactor = direction == "left" and 1 or -1
 		local reverseFactor = reverseCamera and -1 or 1
 		local playerPed = PlayerPedId()
 
@@ -425,7 +425,7 @@ function client.rotateCamera(direction)
 		)
 
 		local camPoint = GetOffsetFromEntityInWorldCoords(playerPed, point.x, point.y, point.z)
-		local tmpCamera = CreateCameraWithParams('DEFAULT_SCRIPTED_CAMERA', camCoords.x, camCoords.y, camCoords.z, 0.0, 0.0, 0.0, 49.0, false, 0)
+		local tmpCamera = CreateCameraWithParams("DEFAULT_SCRIPTED_CAMERA", camCoords.x, camCoords.y, camCoords.z, 0.0, 0.0, 0.0, 49.0, false, 0)
 
 		PointCamAtCoord(tmpCamera, camPoint.x, camPoint.y, camPoint.z)
 		SetCamActiveWithInterp(tmpCamera, cameraHandle, 1000, 1, 1)
@@ -526,7 +526,7 @@ function client.getHeading() return playerHeading end
 local playerArmour
 
 
-local toggleRadar = GetConvarInt('fivem-appearance:radar', 1) == 1
+local toggleRadar = GetConvarInt("fivem-appearance:radar", 1) == 1
 local callback
 function client.startPlayerCustomization(cb, conf)
 	local playerPed = PlayerPedId()
@@ -540,7 +540,7 @@ function client.startPlayerCustomization(cb, conf)
 	reverseCamera = false
 	isCameraInterpolating = false
 
-	setCamera('default')
+	setCamera("default")
 	SetNuiFocus(true, true)
 	SetNuiFocusKeepInput(false)
 	RenderScriptCams(true, false, 0, true, true)
@@ -550,7 +550,7 @@ function client.startPlayerCustomization(cb, conf)
 	if toggleRadar then DisplayRadar(false) end
 
 	SendNuiMessage(json.encode({
-		type = 'appearance_display',
+		type = "appearance_display",
 		payload = {}
 	}))
 end
@@ -568,7 +568,7 @@ function client.exitPlayerCustomization(appearance)
 	SetEntityInvincible(playerPed, false)
 
 	SendNuiMessage(json.encode({
-		type = 'appearance_hide',
+		type = "appearance_hide",
 		payload = {}
 	}))
 
@@ -595,11 +595,11 @@ function client.exitPlayerCustomization(appearance)
 
 end
 
-AddEventHandler('onResourceStop', function(resource)
+AddEventHandler("onResourceStop", function(resource)
 	if resource == GetCurrentResourceName() then
 		SetNuiFocus(false, false)
 		SetNuiFocusKeepInput(false)
 	end
 end)
 
-exports('startPlayerCustomization', client.startPlayerCustomization)
+exports("startPlayerCustomization", client.startPlayerCustomization)
