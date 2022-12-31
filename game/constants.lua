@@ -361,7 +361,11 @@ constants.DATA_CLOTHES = {
                 {4, 15},
                 {6, 35}
             }
-        }
+        },
+		props = {
+			male = {},
+			female = {}
+		}
     }
 }
 
