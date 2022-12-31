@@ -725,7 +725,6 @@ function OpenMenu(isPedMenu, menuType, menuData)
     mainMenu.options = menuItems
 
     lib.registerContext(mainMenu)
-    print(json.encode(mainMenu, {indent = true}))
     lib.showContext(mainMenuID)
 end
 
@@ -798,7 +797,6 @@ RegisterNetEvent('fivem-appearance:client:deleteOutfit', function(id)
 end)
 
 RegisterNetEvent('fivem-appearance:client:openJobOutfitsMenu', function(outfitsToShow)
-    print("Open")
     OpenMenu(nil, "job-outfit", outfitsToShow)
 end)
 
@@ -950,7 +948,6 @@ end
 
 RegisterNetEvent("fivem-appearance:client:OpenClothingRoom", function()
     local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zoneName, 15))]
-    print(clothingRoom)
     local outfits = getPlayerJobOutfits(clothingRoom)
     TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', outfits)
 end)

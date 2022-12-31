@@ -19,7 +19,6 @@ local function getMoneyForShop(shopType)
 end
 
 local function getOutfitsForPlayer(citizenid)
-    print("Hello")
     outfitCache[citizenid] = {}
     local result = MySQL.Sync.fetchAll('SELECT * FROM player_outfits WHERE citizenid = ?', {citizenid})
     for i = 1, #result, 1 do
