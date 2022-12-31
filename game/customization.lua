@@ -81,7 +81,6 @@ local function filterTattoosByGender(tattoos)
 	local gender = client.getPedDecorationType()
 	for k, v in pairs(tattoos) do
 		filtered[k] = {}
-		print(#v)
 		for i = 1, #v do
 			local tattoo = v[i]
 			if tattoo["hash" .. gender:gsub("^%l", string.upper)] ~= "" then
