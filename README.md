@@ -1,14 +1,14 @@
-# fivem-appearance
+# illenium-appearance
 
-[![Lint](https://github.com/iLLeniumStudios/fivem-appearance/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/iLLeniumStudios/fivem-appearance/actions/workflows/lint.yml)
+[![Lint](https://github.com/iLLeniumStudios/illenium-appearance/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/iLLeniumStudios/illenium-appearance/actions/workflows/lint.yml)
 
 A replacement for qb-clothing and other clothing resources for qb-core
 
-<img src="https://i.imgur.com/ltLSMmh.png" alt="fivem-appearance with Tattoos" />
+<img src="https://i.imgur.com/ltLSMmh.png" alt="illenium-appearance with Tattoos" />
 
 Discord: https://discord.illenium.dev
 
-**Note:** Do **NOT** use the `main` branch as it will most likely be broken for you. NO SUPPORT WILL BE PROVIDED IF YOU USE IT. Only use the [latest release](https://github.com/iLLeniumStudios/fivem-appearance/releases/latest)
+**Note:** Do **NOT** use the `main` branch as it will most likely be broken for you. NO SUPPORT WILL BE PROVIDED IF YOU USE IT. Only use the [latest release](https://github.com/iLLeniumStudios/illenium-appearance/releases/latest)
 
 ## Dependencies
 

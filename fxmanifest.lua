@@ -3,7 +3,7 @@ game "gta5"
 
 author "snakewiz & iLLeniumStudios"
 description "A flexible player customization script for FiveM qb-core servers."
-repository "https://github.com/iLLeniumStudios/fivem-appearance"
+repository "https://github.com/iLLeniumStudios/illenium-appearance"
 version "main"
 
 lua54 "yes"

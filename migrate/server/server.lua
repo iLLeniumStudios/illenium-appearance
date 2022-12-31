@@ -41,7 +41,7 @@ local function MigrateQBClothing(source)
                 position = Config.NotifyOptions.position
             })
         else
-            TriggerClientEvent("fivem-appearance:client:migration:load-qb-clothing-skin", source, allPlayerSkins[i])
+            TriggerClientEvent("illenium-appearance:client:migration:load-qb-clothing-skin", source, allPlayerSkins[i])
             while not continue do
                 Wait(10)
             end
@@ -49,7 +49,7 @@ local function MigrateQBClothing(source)
             migrated = migrated + 1
         end
     end
-    TriggerClientEvent("fivem-appearance:client:reloadSkin", source)
+    TriggerClientEvent("illenium-appearance:client:reloadSkin", source)
 
     lib.notify(source, {
         title = "Success",
@@ -59,7 +59,7 @@ local function MigrateQBClothing(source)
     })
 end
 
-RegisterNetEvent("fivem-appearance:server:migrate-qb-clothing-skin", function(citizenid, appearance)
+RegisterNetEvent("illenium-appearance:server:migrate-qb-clothing-skin", function(citizenid, appearance)
     local src = source
     MySQL.Async.execute("DELETE FROM playerskins WHERE citizenid = ?", { citizenid }, function()
         MySQL.Async.insert("INSERT INTO playerskins (citizenid, model, skin, active) VALUES (?, ?, ?, ?)", {
@@ -79,7 +79,7 @@ RegisterNetEvent("fivem-appearance:server:migrate-qb-clothing-skin", function(ci
     end)
 end)
 
-QBCore.Commands.Add("migrateskins", "Migrate skins to fivem-appearance", {{name="type", help="fivem-appearance / qb-clothing"}}, false, function(source, args)
+QBCore.Commands.Add("migrateskins", "Migrate skins to illenium-appearance", {{name="type", help="fivem-appearance / qb-clothing"}}, false, function(source, args)
     local type = tostring(args[1])
     if type == "fivem-appearance" then
         MigrateFivemAppearance(source)

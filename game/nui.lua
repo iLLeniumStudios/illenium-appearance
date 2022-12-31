@@ -1,11 +1,11 @@
 local client = client
 
 RegisterNUICallback("appearance_get_locales", function(_, cb)
-	cb(Locales[GetConvar("fivem-appearance:locale", "en")])
+	cb(Locales[GetConvar("illenium-appearance:locale", "en")])
 end)
 
 RegisterNUICallback("appearance_get_settings_and_data", function(_, cb)
-    TriggerEvent("fivem-appearance:server:GetPlayerAces")
+    TriggerEvent("illenium-appearance:server:GetPlayerAces")
     Wait(250)
     local appearanceData = client.getAppearance()
     if appearanceData.tattoos then

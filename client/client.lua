@@ -70,12 +70,12 @@ local function RemoveTargets()
 end
 
 local function LoadPlayerUniform()
-    lib.callback("fivem-appearance:server:getUniform", false, function(uniformData)
+    lib.callback("illenium-appearance:server:getUniform", false, function(uniformData)
         if not uniformData then
             return
         end
         if Config.BossManagedOutfits then
-            local result = lib.callback.await("fivem-appearance:server:getManagementOutfits", false, uniformData.type, getGender())
+            local result = lib.callback.await("illenium-appearance:server:getManagementOutfits", false, uniformData.type, getGender())
             local uniform = nil
             for i = 1, #result, 1 do
                 if result[i].name == uniformData.name then
@@ -92,11 +92,11 @@ local function LoadPlayerUniform()
             end
 
             if not uniform then
-                TriggerServerEvent("fivem-appearance:server:syncUniform", nil) -- Uniform doesn't exist anymore
+                TriggerServerEvent("illenium-appearance:server:syncUniform", nil) -- Uniform doesn't exist anymore
                 return
             end
     
-            TriggerEvent("fivem-appearance:client:changeOutfit", uniform)
+            TriggerEvent("illenium-appearance:client:changeOutfit", uniform)
         else
             local outfits = Config.Outfits[uniformData.jobName][uniformData.gender]
             local uniform = nil
@@ -108,7 +108,7 @@ local function LoadPlayerUniform()
             end
 
             if not uniform then
-                TriggerServerEvent("fivem-appearance:server:syncUniform", nil) -- Uniform doesn't exist anymore
+                TriggerServerEvent("illenium-appearance:server:syncUniform", nil) -- Uniform doesn't exist anymore
                 return
             end
 
@@ -136,7 +136,7 @@ local function RemoveManagementMenuItems()
 end
 
 local function AddManagementMenuItems()
-    local eventName = "fivem-appearance:client:OutfitManagementMenu"
+    local eventName = "illenium-appearance:client:OutfitManagementMenu"
     local menuItem = {
         header = "Outfit Management",
         icon = "fa-solid fa-shirt",
@@ -168,7 +168,7 @@ local function InitAppearance()
     client.job = PlayerData.job
     client.gang = PlayerData.gang
 
-    lib.callback("fivem-appearance:server:getAppearance", false, function(appearance)
+    lib.callback("illenium-appearance:server:getAppearance", false, function(appearance)
         if not appearance then
             return
         end
@@ -268,7 +268,7 @@ RegisterNetEvent("qb-clothes:client:CreateFirstCharacter", function()
         local config = getNewCharacterConfig()
         client.startPlayerCustomization(function(appearance)
             if (appearance) then
-                TriggerServerEvent("fivem-appearance:server:saveAppearance", appearance)
+                TriggerServerEvent("illenium-appearance:server:saveAppearance", appearance)
                 ResetRechargeMultipliers()
             end
         end, config)
@@ -276,7 +276,7 @@ RegisterNetEvent("qb-clothes:client:CreateFirstCharacter", function()
 end)
 
 function OpenShop(config, isPedMenu, shopType)
-    lib.callback("fivem-appearance:server:hasMoney", false, function(hasMoney, money)
+    lib.callback("illenium-appearance:server:hasMoney", false, function(hasMoney, money)
         if not hasMoney and not isPedMenu then
             lib.notify({
                 title = "Cannot Enter Shop",
@@ -290,9 +290,9 @@ function OpenShop(config, isPedMenu, shopType)
         client.startPlayerCustomization(function(appearance)
             if appearance then
                 if not isPedMenu then
-                    TriggerServerEvent("fivem-appearance:server:chargeCustomer", shopType)
+                    TriggerServerEvent("illenium-appearance:server:chargeCustomer", shopType)
                 end
-                TriggerServerEvent("fivem-appearance:server:saveAppearance", appearance)
+                TriggerServerEvent("illenium-appearance:server:saveAppearance", appearance)
             else
                 lib.notify({
                     title = "Cancelled Customization",
@@ -339,9 +339,9 @@ local function OpenSurgeonShop()
     OpenShop(config, false, "surgeon")
 end
 
-RegisterNetEvent("fivem-appearance:client:openClothingShop", OpenClothingShop)
+RegisterNetEvent("illenium-appearance:client:openClothingShop", OpenClothingShop)
 
-RegisterNetEvent("fivem-appearance:client:saveOutfit", function()
+RegisterNetEvent("illenium-appearance:client:saveOutfit", function()
     local response = lib.inputDialog("Name your outfit", {
         {
             type = "input",
@@ -357,7 +357,7 @@ RegisterNetEvent("fivem-appearance:client:saveOutfit", function()
     local outfitName = response[1]
     if outfitName ~= nil then
         Wait(500)
-        lib.callback("fivem-appearance:server:getOutfits", false, function(outfits)
+        lib.callback("illenium-appearance:server:getOutfits", false, function(outfits)
             local outfitExists = false
             for i = 1, #outfits, 1 do
                 if outfits[i].name == outfitName then
@@ -381,7 +381,7 @@ RegisterNetEvent("fivem-appearance:client:saveOutfit", function()
             local pedComponents = client.getPedComponents(playerPed)
             local pedProps = client.getPedProps(playerPed)
 
-            TriggerServerEvent("fivem-appearance:server:saveOutfit", outfitName, pedModel, pedComponents, pedProps)
+            TriggerServerEvent("illenium-appearance:server:saveOutfit", outfitName, pedModel, pedComponents, pedProps)
         end)
     end
 end)
@@ -397,7 +397,7 @@ local function RegisterChangeOutfitMenu(id, parent, outfits, mType)
         changeOutfitMenu.options[#changeOutfitMenu.options + 1] = {
             title = outfits[i].name,
             description = outfits[i].model,
-            event = "fivem-appearance:client:changeOutfit",
+            event = "illenium-appearance:client:changeOutfit",
             args = {
                 type = mType,
                 name = outfits[i].name,
@@ -431,19 +431,19 @@ local function RegisterDeleteOutfitMenu(id, parent, outfits, deleteEvent)
     lib.registerContext(deleteOutfitMenu)
 end
 
-RegisterNetEvent("fivem-appearance:client:OutfitManagementMenu", function(args)
+RegisterNetEvent("illenium-appearance:client:OutfitManagementMenu", function(args)
     local bossMenuEvent = "qb-bossmenu:client:OpenMenu"
     if args.type == "Gang" then
         bossMenuEvent = "qb-gangmenu:client:OpenMenu"
     end
 
-    local outfits = lib.callback.await("fivem-appearance:server:getManagementOutfits", false, args.type, getGender())
+    local outfits = lib.callback.await("illenium-appearance:server:getManagementOutfits", false, args.type, getGender())
     local managementMenuID = "illenium_appearance_outfit_management_menu"
     local changeManagementOutfitMenuID = "illenium_appearance_change_management_outfit_menu"
     local deleteManagementOutfitMenuID = "illenium_appearance_delete_management_outfit_menu"
 
     RegisterChangeOutfitMenu(changeManagementOutfitMenuID, managementMenuID, outfits, args.type)
-    RegisterDeleteOutfitMenu(deleteManagementOutfitMenuID, managementMenuID, outfits, "fivem-appearance:client:DeleteManagementOutfit")
+    RegisterDeleteOutfitMenu(deleteManagementOutfitMenuID, managementMenuID, outfits, "illenium-appearance:client:DeleteManagementOutfit")
     local managementMenu = {
         id = managementMenuID,
         title = "👔 | Manage " .. args.type .. " Outfits",
@@ -456,7 +456,7 @@ RegisterNetEvent("fivem-appearance:client:OutfitManagementMenu", function(args)
             {
                 title = "Save current Outfit",
                 description = "Save your current outfit as " .. args.type .. " outfit",
-                event = "fivem-appearance:client:SaveManagementOutfit",
+                event = "illenium-appearance:client:SaveManagementOutfit",
                 args = args.type
             },
             {
@@ -487,7 +487,7 @@ local function getRankInputValues(rankList)
     return rankValues
 end
 
-RegisterNetEvent("fivem-appearance:client:SaveManagementOutfit", function(mType)
+RegisterNetEvent("illenium-appearance:client:SaveManagementOutfit", function(mType)
     local playerPed = PlayerPedId()
     local outfitData = {
         Type = mType,
@@ -542,7 +542,7 @@ RegisterNetEvent("fivem-appearance:client:SaveManagementOutfit", function(mType)
     outfitData.Gender = dialogResponse[2]
     outfitData.MinRank = tonumber(dialogResponse[3])
 
-    TriggerServerEvent("fivem-appearance:server:saveManagementOutfit", outfitData)
+    TriggerServerEvent("illenium-appearance:server:saveManagementOutfit", outfitData)
 
 end)
 
@@ -555,7 +555,7 @@ local function RegisterWorkOutfitsListMenu(id, parent, menuData)
     }
     local event = "qb-clothing:client:loadOutfit"
     if Config.BossManagedOutfits then
-        event = "fivem-appearance:client:changeOutfit"
+        event = "illenium-appearance:client:changeOutfit"
     end
     if menuData then
         for _, v in pairs(menuData) do
@@ -576,12 +576,12 @@ function OpenMenu(isPedMenu, menuType, menuData)
     }
     local menuItems = {}
 
-    local outfits = lib.callback.await("fivem-appearance:server:getOutfits", false)
+    local outfits = lib.callback.await("illenium-appearance:server:getOutfits", false)
     local changeOutfitMenuID = "illenium_appearance_change_outfit_menu"
     local deleteOutfitMenuID = "illenium_appearance_delete_outfit_menu"
 
     RegisterChangeOutfitMenu(changeOutfitMenuID, mainMenuID, outfits)
-    RegisterDeleteOutfitMenu(deleteOutfitMenuID, mainMenuID, outfits, "fivem-appearance:client:deleteOutfit")
+    RegisterDeleteOutfitMenu(deleteOutfitMenuID, mainMenuID, outfits, "illenium-appearance:client:deleteOutfit")
     local outfitMenuItems = {
         {
             title = "Change Outfit",
@@ -591,7 +591,7 @@ function OpenMenu(isPedMenu, menuType, menuData)
         {
             title = "Save New Outfit",
             description = "Save a new outfit you can use later on",
-            event = "fivem-appearance:client:saveOutfit"
+            event = "illenium-appearance:client:saveOutfit"
         },
         {
             title = "Delete Outfit",
@@ -608,7 +608,7 @@ function OpenMenu(isPedMenu, menuType, menuData)
         menuItems[#menuItems + 1] = {
             title = header,
             description = "Pick from a wide range of items to wear",
-            event = "fivem-appearance:client:openClothingShop",
+            event = "illenium-appearance:client:openClothingShop",
             args = isPedMenu
         }
         for i = 0, #outfitMenuItems, 1 do
@@ -624,7 +624,7 @@ function OpenMenu(isPedMenu, menuType, menuData)
         menuItems[#menuItems + 1] = {
             title = "Civilian Outfit",
             description = "Put on your clothes",
-            event = "fivem-appearance:client:reloadSkin"
+            event = "illenium-appearance:client:reloadSkin"
         }
 
         local workOutfitsMenuID = "illenium_appearance_work_outfits_menu"
@@ -642,32 +642,32 @@ function OpenMenu(isPedMenu, menuType, menuData)
     lib.showContext(mainMenuID)
 end
 
-RegisterNetEvent("fivem-appearance:client:openClothingShopMenu", function(isPedMenu)
+RegisterNetEvent("illenium-appearance:client:openClothingShopMenu", function(isPedMenu)
     if type(isPedMenu) == "table" then
         isPedMenu = false
     end
     OpenMenu(isPedMenu, "default")
 end)
 
-RegisterNetEvent("fivem-appearance:client:OpenBarberShop", function()
+RegisterNetEvent("illenium-appearance:client:OpenBarberShop", function()
     OpenBarberShop()
 end)
 
-RegisterNetEvent("fivem-appearance:client:OpenTattooShop", function()
+RegisterNetEvent("illenium-appearance:client:OpenTattooShop", function()
     OpenTattooShop()
 end)
 
-RegisterNetEvent("fivem-appearance:client:OpenSurgeonShop", function()
+RegisterNetEvent("illenium-appearance:client:OpenSurgeonShop", function()
     OpenSurgeonShop()
 end)
 
-RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
+RegisterNetEvent("illenium-appearance:client:changeOutfit", function(data)
     local playerPed = PlayerPedId()
     local pedModel = client.getPedModel(playerPed)
     local appearanceDB
     if pedModel ~= data.model then
         local p = promise.new()
-        lib.callback("fivem-appearance:server:getAppearance", false, function(appearance)
+        lib.callback("illenium-appearance:server:getAppearance", false, function(appearance)
             if appearance then
                 client.setPlayerAppearance(appearance)
                 ResetRechargeMultipliers()
@@ -692,19 +692,19 @@ RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
         client.setPedHair(playerPed, appearanceDB.hair)
 
         if data.disableSave then
-            TriggerServerEvent("fivem-appearance:server:syncUniform", {
+            TriggerServerEvent("illenium-appearance:server:syncUniform", {
                 type = data.type,
                 name = data.name
             }) -- Is a uniform
         else
             local appearance = client.getPedAppearance(playerPed)
-            TriggerServerEvent("fivem-appearance:server:saveAppearance", appearance)
+            TriggerServerEvent("illenium-appearance:server:saveAppearance", appearance)
         end
     end
 end)
 
-RegisterNetEvent("fivem-appearance:client:DeleteManagementOutfit", function(id)
-    TriggerServerEvent("fivem-appearance:server:deleteManagementOutfit", id)
+RegisterNetEvent("illenium-appearance:client:DeleteManagementOutfit", function(id)
+    TriggerServerEvent("illenium-appearance:server:deleteManagementOutfit", id)
     lib.notify({
         title = "Success",
         description = "Outfit Deleted",
@@ -713,8 +713,8 @@ RegisterNetEvent("fivem-appearance:client:DeleteManagementOutfit", function(id)
     })
 end)
 
-RegisterNetEvent("fivem-appearance:client:deleteOutfit", function(id)
-    TriggerServerEvent("fivem-appearance:server:deleteOutfit", id)
+RegisterNetEvent("illenium-appearance:client:deleteOutfit", function(id)
+    TriggerServerEvent("illenium-appearance:server:deleteOutfit", id)
     lib.notify({
         title = "Success",
         description = "Outfit Deleted",
@@ -723,7 +723,7 @@ RegisterNetEvent("fivem-appearance:client:deleteOutfit", function(id)
     })
 end)
 
-RegisterNetEvent("fivem-appearance:client:openJobOutfitsMenu", function(outfitsToShow)
+RegisterNetEvent("illenium-appearance:client:openJobOutfitsMenu", function(outfitsToShow)
     OpenMenu(nil, "job-outfit", outfitsToShow)
 end)
 
@@ -735,7 +735,7 @@ local function CheckPlayerMeta()
     return PlayerData.metadata["isdead"] or PlayerData.metadata["inlaststand"] or PlayerData.metadata["ishandcuffed"]
 end
 
-RegisterNetEvent("fivem-appearance:client:reloadSkin", function()
+RegisterNetEvent("illenium-appearance:client:reloadSkin", function()
     local playerPed = PlayerPedId()
 
     if InCooldown() or CheckPlayerMeta() or IsPedInAnyVehicle(playerPed, true) or IsPedFalling(playerPed) then
@@ -754,13 +754,13 @@ RegisterNetEvent("fivem-appearance:client:reloadSkin", function()
     local maxhealth = GetEntityMaxHealth(playerPed)
     local armour = GetPedArmour(playerPed)
 
-    lib.callback("fivem-appearance:server:getAppearance", false, function(appearance)
+    lib.callback("illenium-appearance:server:getAppearance", false, function(appearance)
         if not appearance then
             return
         end
         client.setPlayerAppearance(appearance)
         if Config.PersistUniforms then
-            TriggerServerEvent("fivem-appearance:server:syncUniform", nil)
+            TriggerServerEvent("illenium-appearance:server:syncUniform", nil)
         end
         playerPed = PlayerPedId()
         SetPedMaxHealth(playerPed, maxhealth)
@@ -771,7 +771,7 @@ RegisterNetEvent("fivem-appearance:client:reloadSkin", function()
     end)
 end)
 
-RegisterNetEvent("fivem-appearance:client:ClearStuckProps", function()
+RegisterNetEvent("illenium-appearance:client:ClearStuckProps", function()
     if InCooldown() or CheckPlayerMeta() then
         lib.notify({
             title = "Error",
@@ -801,22 +801,22 @@ RegisterNetEvent("qb-radialmenu:client:onRadialmenuOpen", function()
     end
     local event, title
     if string.find(zoneName, "ClothingRooms_") then
-        event = "fivem-appearance:client:OpenClothingRoom"
+        event = "illenium-appearance:client:OpenClothingRoom"
         title = "Clothing Room"
     elseif string.find(zoneName, "PlayerOutfitRooms_") then
-        event = "fivem-appearance:client:OpenPlayerOutfitRoom"
+        event = "illenium-appearance:client:OpenPlayerOutfitRoom"
         title = "Player Outfits"
     elseif zoneName == "clothing" then
-        event = "fivem-appearance:client:openClothingShopMenu"
+        event = "illenium-appearance:client:openClothingShopMenu"
         title = "Clothing Shop"
     elseif zoneName == "barber" then
-        event = "fivem-appearance:client:OpenBarberShop"
+        event = "illenium-appearance:client:OpenBarberShop"
         title = "Barber Shop"
     elseif zoneName == "tattoo" then
-        event = "fivem-appearance:client:OpenTattooShop"
+        event = "illenium-appearance:client:OpenTattooShop"
         title = "Tattoo Shop"
     elseif zoneName == "surgeon" then
-        event = "fivem-appearance:client:OpenSurgeonShop"
+        event = "illenium-appearance:client:OpenSurgeonShop"
         title = "Surgeon Shop"
     end
 
@@ -857,7 +857,7 @@ local function getPlayerJobOutfits(clothingRoom)
 
     if Config.BossManagedOutfits then
         local mType = clothingRoom.job and "Job" or "Gang"
-        local result = lib.callback.await("fivem-appearance:server:getManagementOutfits", false, mType, gender)
+        local result = lib.callback.await("illenium-appearance:server:getManagementOutfits", false, mType, gender)
         for i = 1, #result, 1 do
             outfits[#outfits + 1] = {
                 type = mType,
@@ -883,13 +883,13 @@ local function getPlayerJobOutfits(clothingRoom)
     return outfits
 end
 
-RegisterNetEvent("fivem-appearance:client:OpenClothingRoom", function()
+RegisterNetEvent("illenium-appearance:client:OpenClothingRoom", function()
     local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zoneName, 15))]
     local outfits = getPlayerJobOutfits(clothingRoom)
-    TriggerEvent("fivem-appearance:client:openJobOutfitsMenu", outfits)
+    TriggerEvent("illenium-appearance:client:openJobOutfitsMenu", outfits)
 end)
 
-RegisterNetEvent("fivem-appearance:client:OpenPlayerOutfitRoom", function()
+RegisterNetEvent("illenium-appearance:client:OpenPlayerOutfitRoom", function()
     local outfitRoom = Config.PlayerOutfitRooms[tonumber(string.sub(zoneName, 19))]
     OpenOutfitRoom(outfitRoom)
 end)
@@ -1063,7 +1063,7 @@ local function SetupStoreTargets()
             action = OpenBarberShop
         elseif v.shopType == "clothing" then
             action = function()
-                TriggerEvent("fivem-appearance:client:openClothingShopMenu")
+                TriggerEvent("illenium-appearance:client:openClothingShopMenu")
             end
         elseif v.shopType == "tattoo" then
             action = OpenTattooShop
@@ -1101,7 +1101,7 @@ local function SetupClothingRoomTargets()
         local targetConfig = Config.TargetConfig["clothingroom"]
         local action = function()
             local outfits = getPlayerJobOutfits(v)
-            TriggerEvent("fivem-appearance:client:openJobOutfitsMenu", outfits)
+            TriggerEvent("illenium-appearance:client:openJobOutfitsMenu", outfits)
         end
 
         local parameters = {
@@ -1183,12 +1183,12 @@ local function ZonesLoop()
                 if string.find(zoneName, "ClothingRooms_") then
                     local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zoneName, 15))]
                     local outfits = getPlayerJobOutfits(clothingRoom)
-                    TriggerEvent("fivem-appearance:client:openJobOutfitsMenu", outfits)
+                    TriggerEvent("illenium-appearance:client:openJobOutfitsMenu", outfits)
                 elseif string.find(zoneName, "PlayerOutfitRooms_") then
                     local outfitRoom = Config.PlayerOutfitRooms[tonumber(string.sub(zoneName, 19))]
                     OpenOutfitRoom(outfitRoom)
                 elseif zoneName == "clothing" then
-                    TriggerEvent("fivem-appearance:client:openClothingShopMenu")
+                    TriggerEvent("illenium-appearance:client:openClothingShopMenu")
                 elseif zoneName == "barber" then
                     OpenBarberShop()
                 elseif zoneName == "tattoo" then

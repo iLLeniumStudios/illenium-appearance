@@ -1,7 +1,7 @@
 local resetTimer = GetGameTimer()
 local allAces = {}
 
-lib.callback.register("fivem-appearance:server:GetPlayerAces", function()
+lib.callback.register("illenium-appearance:server:GetPlayerAces", function()
     local src = source
     local allowedAces = {}
     for k in pairs(allAces) do

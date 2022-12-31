@@ -63,7 +63,7 @@ end
 
 local function filterPedModelsForPlayer(pedConfigs)
     local playerPeds = {}
-	local allowedAces = lib.callback.await("fivem-appearance:server:GetPlayerAces", false)
+	local allowedAces = lib.callback.await("illenium-appearance:server:GetPlayerAces", false)
 
     for i = 1, #pedConfigs do
         local config = pedConfigs[i]
@@ -97,7 +97,7 @@ local function filterBlacklistSettings(items, drawableId)
 		textures = {}
 	}
 
-	local allowedAces = lib.callback.await("fivem-appearance:server:GetPlayerAces", false)
+	local allowedAces = lib.callback.await("illenium-appearance:server:GetPlayerAces", false)
 
 	for i = 1, #items do
 		local item = items[i]
@@ -537,7 +537,7 @@ function client.getHeading() return playerHeading end
 local playerArmour
 
 
-local toggleRadar = GetConvarInt("fivem-appearance:radar", 1) == 1
+local toggleRadar = GetConvarInt("illenium-appearance:radar", 1) == 1
 local callback
 function client.startPlayerCustomization(cb, conf)
 	local playerPed = PlayerPedId()

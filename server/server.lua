@@ -34,7 +34,7 @@ end
 
 -- Callback(s)
 
-lib.callback.register("fivem-appearance:server:getAppearance", function(source, model)
+lib.callback.register("illenium-appearance:server:getAppearance", function(source, model)
     local Player = QBCore.Functions.GetPlayer(source)
     local query = "SELECT skin FROM playerskins WHERE citizenid = ?"
     local queryArgs = {Player.PlayerData.citizenid}
@@ -51,7 +51,7 @@ lib.callback.register("fivem-appearance:server:getAppearance", function(source, 
     end
 end)
 
-lib.callback.register("fivem-appearance:server:hasMoney", function(source, shopType)
+lib.callback.register("illenium-appearance:server:hasMoney", function(source, shopType)
     local Player = QBCore.Functions.GetPlayer(source)
     local money = getMoneyForShop(shopType)
     if Player.PlayerData.money.cash >= money then
@@ -61,7 +61,7 @@ lib.callback.register("fivem-appearance:server:hasMoney", function(source, shopT
     end
 end)
 
-lib.callback.register("fivem-appearance:server:getOutfits", function(source)
+lib.callback.register("illenium-appearance:server:getOutfits", function(source)
     local Player = QBCore.Functions.GetPlayer(source)
     if outfitCache[Player.PlayerData.citizenid] == nil then
         getOutfitsForPlayer(Player.PlayerData.citizenid)
@@ -69,7 +69,7 @@ lib.callback.register("fivem-appearance:server:getOutfits", function(source)
     return outfitCache[Player.PlayerData.citizenid]
 end)
 
-lib.callback.register("fivem-appearance:server:getManagementOutfits", function(source, mType, gender)
+lib.callback.register("illenium-appearance:server:getManagementOutfits", function(source, mType, gender)
     local Player = QBCore.Functions.GetPlayer(source)
     local jobName = Player.PlayerData.job.name
     local grade = Player.PlayerData.job.grade.level
@@ -105,12 +105,12 @@ lib.callback.register("fivem-appearance:server:getManagementOutfits", function(s
     return managementOutfits
 end)
 
-lib.callback.register("fivem-appearance:server:getUniform", function(source)
+lib.callback.register("illenium-appearance:server:getUniform", function(source)
     local Player = QBCore.Functions.GetPlayer(source)
     return uniformCache[Player.PlayerData.citizenid]
 end)
 
-RegisterServerEvent("fivem-appearance:server:saveAppearance", function(appearance)
+RegisterServerEvent("illenium-appearance:server:saveAppearance", function(appearance)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if appearance ~= nil then
@@ -123,7 +123,7 @@ RegisterServerEvent("fivem-appearance:server:saveAppearance", function(appearanc
     end
 end)
 
-RegisterServerEvent("fivem-appearance:server:chargeCustomer", function(shopType)
+RegisterServerEvent("illenium-appearance:server:chargeCustomer", function(shopType)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local money = getMoneyForShop(shopType)
@@ -144,7 +144,7 @@ RegisterServerEvent("fivem-appearance:server:chargeCustomer", function(shopType)
     end
 end)
 
-RegisterNetEvent("fivem-appearance:server:saveOutfit", function(name, model, components, props)
+RegisterNetEvent("illenium-appearance:server:saveOutfit", function(name, model, components, props)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if outfitCache[Player.PlayerData.citizenid] == nil then
@@ -171,7 +171,7 @@ RegisterNetEvent("fivem-appearance:server:saveOutfit", function(name, model, com
     end
 end)
 
-RegisterNetEvent("fivem-appearance:server:saveManagementOutfit", function(outfitData)
+RegisterNetEvent("illenium-appearance:server:saveManagementOutfit", function(outfitData)
     local src = source
 
     MySQL.Async.insert("INSERT INTO management_outfits (job_name, type, minrank, name, gender, model, props, components) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
@@ -195,17 +195,17 @@ RegisterNetEvent("fivem-appearance:server:saveManagementOutfit", function(outfit
         end)
 end)
 
-RegisterNetEvent("fivem-appearance:server:deleteManagementOutfit", function(id)
+RegisterNetEvent("illenium-appearance:server:deleteManagementOutfit", function(id)
     MySQL.query("DELETE FROM management_outfits WHERE id = ?", {id})
 end)
 
-RegisterNetEvent("fivem-appearance:server:syncUniform", function(uniform)
+RegisterNetEvent("illenium-appearance:server:syncUniform", function(uniform)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     uniformCache[Player.PlayerData.citizenid] = uniform
 end)
 
-RegisterNetEvent("fivem-appearance:server:deleteOutfit", function(id)
+RegisterNetEvent("illenium-appearance:server:deleteOutfit", function(id)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     MySQL.query("DELETE FROM player_outfits WHERE id = ?", {id})
@@ -218,7 +218,7 @@ RegisterNetEvent("fivem-appearance:server:deleteOutfit", function(id)
     end
 end)
 
-RegisterNetEvent("fivem-appearance:server:resetOutfitCache", function()
+RegisterNetEvent("illenium-appearance:server:resetOutfitCache", function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if Player then
@@ -248,14 +248,14 @@ if Config.EnablePedMenu then
             end
         end
 
-        TriggerClientEvent("fivem-appearance:client:openClothingShopMenu", src, true)
+        TriggerClientEvent("illenium-appearance:client:openClothingShopMenu", src, true)
     end, Config.PedMenuGroup)
 end
 
 QBCore.Commands.Add("reloadskin", "Reloads your character", {}, false, function(source, _)
-    TriggerClientEvent("fivem-appearance:client:reloadSkin", source)
+    TriggerClientEvent("illenium-appearance:client:reloadSkin", source)
 end)
 
 QBCore.Commands.Add("clearstuckprops", "Removes all the props attached to the entity", {}, false, function(source, _)
-    TriggerClientEvent("fivem-appearance:client:ClearStuckProps", source)
+    TriggerClientEvent("illenium-appearance:client:ClearStuckProps", source)
 end)

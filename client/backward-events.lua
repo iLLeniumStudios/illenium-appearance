@@ -140,7 +140,7 @@ RegisterNetEvent("qb-clothing:client:loadOutfit", function(oData)
     end
 
     if Config.PersistUniforms and length > 1 then
-        TriggerServerEvent("fivem-appearance:server:syncUniform", {
+        TriggerServerEvent("illenium-appearance:server:syncUniform", {
             jobName = oData.jobName,
             gender = oData.gender,
             label = oData.name
@@ -153,5 +153,5 @@ RegisterNetEvent("qb-multicharacter:client:chooseChar", function()
     exports[resourceName]:setPedTattoos(ped, {})
     ClearPedDecorations(ped)
 
-    TriggerServerEvent("fivem-appearance:server:resetOutfitCache")
+    TriggerServerEvent("illenium-appearance:server:resetOutfitCache")
 end)

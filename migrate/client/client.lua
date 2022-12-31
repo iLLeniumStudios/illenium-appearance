@@ -15,7 +15,7 @@ local skinData = {
 
 local resourceName = GetCurrentResourceName()
 
-RegisterNetEvent("fivem-appearance:client:migration:load-qb-clothing-skin", function(playerSkin)
+RegisterNetEvent("illenium-appearance:client:migration:load-qb-clothing-skin", function(playerSkin)
     local model = playerSkin.model
     model = model ~= nil and tonumber(model) or false
     Citizen.CreateThread(function()
@@ -26,11 +26,11 @@ RegisterNetEvent("fivem-appearance:client:migration:load-qb-clothing-skin", func
         end
         SetPlayerModel(PlayerId(), model)
         SetPedComponentVariation(PlayerPedId(), 0, 0, 0, 2)
-        TriggerEvent("fivem-appearance:client:migration:load-qb-clothing-clothes", playerSkin, PlayerPedId())
+        TriggerEvent("illenium-appearance:client:migration:load-qb-clothing-clothes", playerSkin, PlayerPedId())
     end)
 end)
 
-RegisterNetEvent("fivem-appearance:client:migration:load-qb-clothing-clothes", function(playerSkin, ped)
+RegisterNetEvent("illenium-appearance:client:migration:load-qb-clothing-clothes", function(playerSkin, ped)
     local data = json.decode(playerSkin.skin)
     if ped == nil then ped = PlayerPedId() end
 
@@ -186,5 +186,5 @@ RegisterNetEvent("fivem-appearance:client:migration:load-qb-clothing-clothes", f
     
     local appearance = exports[resourceName]:getPedAppearance(ped)
 
-    TriggerServerEvent("fivem-appearance:server:migrate-qb-clothing-skin", playerSkin.citizenid, appearance)
+    TriggerServerEvent("illenium-appearance:server:migrate-qb-clothing-skin", playerSkin.citizenid, appearance)
 end)
