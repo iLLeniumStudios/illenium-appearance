@@ -8,17 +8,19 @@ A replacement for qb-clothing and other clothing resources for qb-core
 
 Discord: https://discord.illenium.dev
 
+**Note:** Do **NOT** use the `main` branch as it will most likely be broken for you. NO SUPPORT WILL BE PROVIDED IF YOU USE IT. Only use the [latest release](https://github.com/iLLeniumStudios/fivem-appearance/releases/latest)
+
 ## Dependencies
 
 - [PolyZone](https://github.com/mkafrin/PolyZone)
 - [qb-core](https://github.com/qbcore-framework/qb-core) (Latest)
-- [qb-menu](https://github.com/qbcore-framework/qb-menu)
-- [qb-input](https://github.com/qbcore-framework/qb-input)
+- [ox_lib](https://github.com/overextended/ox_lib)
 - [qb-target](https://github.com/BerkieBb/qb-target) (Optional)
 
 ## Features
 
 - Everything from standalone fivem-appearance
+- UI from OX Lib
 - Player outfits
 - Rank based Clothing Rooms for Jobs / Gangs
 - Job / Gang locked Stores
