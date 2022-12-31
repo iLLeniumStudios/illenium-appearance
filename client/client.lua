@@ -77,29 +77,28 @@ local function LoadPlayerUniform()
             return
         end
         if Config.BossManagedOutfits then
-            QBCore.Functions.TriggerCallback("fivem-appearance:server:getManagementOutfits", function(result)
-                local uniform = nil
-                for i = 1, #result, 1 do
-                    if result[i].name == uniformData.name then
-                        uniform = {
-                            type = uniformData.type,
-                            name = result[i].name,
-                            model = result[i].model,
-                            components = result[i].components,
-                            props = result[i].props,
-                            disableSave = true,
-                        }
-                        break
-                    end
+            local result = lib.callback.await("fivem-appearance:server:getManagementOutfits", false, uniformData.type, getGender())
+            local uniform = nil
+            for i = 1, #result, 1 do
+                if result[i].name == uniformData.name then
+                    uniform = {
+                        type = uniformData.type,
+                        name = result[i].name,
+                        model = result[i].model,
+                        components = result[i].components,
+                        props = result[i].props,
+                        disableSave = true,
+                    }
+                    break
                 end
+            end
 
-                if not uniform then
-                    TriggerServerEvent("fivem-appearance:server:syncUniform", nil) -- Uniform doesn't exist anymore
-                    return
-                end
+            if not uniform then
+                TriggerServerEvent("fivem-appearance:server:syncUniform", nil) -- Uniform doesn't exist anymore
+                return
+            end
     
-                TriggerEvent("fivem-appearance:client:changeOutfit", uniform)
-            end, uniformData.type, getGender())
+            TriggerEvent("fivem-appearance:client:changeOutfit", uniform)
         else
             local outfits = Config.Outfits[uniformData.jobName][uniformData.gender]
             local uniform = nil
@@ -410,7 +409,6 @@ local function ShowInputDialog(data)
                 input.options = options
             end
             inputs[#inputs + 1] = input
-            print(json.encode(inputs, {indent = true}))
         end
         local result = lib.inputDialog(data.heading, inputs)
         local response = {}
@@ -442,10 +440,10 @@ RegisterNetEvent('fivem-appearance:client:saveOutfit', function()
     local outfitName = response.outfitName
     if outfitName ~= nil then
         Wait(500)
-        QBCore.Functions.TriggerCallback("fivem-appearance:server:getOutfits", function(outfits)
+        lib.callback("fivem-appearance:server:getOutfits", false, function(outfits)
             local outfitExists = false
             for i = 1, #outfits, 1 do
-                if outfits[i].outfitname == outfitName then
+                if outfits[i].name == outfitName then
                     outfitExists = true
                     break
                 end
@@ -466,57 +464,94 @@ RegisterNetEvent('fivem-appearance:client:saveOutfit', function()
     end
 end)
 
+local function RegisterChangeOutfitMenu(id, parent, outfits, mType)
+    local changeOutfitMenu = {
+        id = id,
+        title = "Change Outfit",
+        menu = parent,
+        options = {}
+    }
+    for i = 1, #outfits, 1 do
+        changeOutfitMenu.options[#changeOutfitMenu.options + 1] = {
+            title = outfits[i].name,
+            description = outfits[i].model,
+            event = 'fivem-appearance:client:changeOutfit',
+            args = {
+                type = mType,
+                name = outfits[i].name,
+                model = outfits[i].model,
+                components = outfits[i].components,
+                props = outfits[i].props,
+                disableSave = mType and true or false
+            }
+        }
+    end
+
+    lib.registerContext(changeOutfitMenu)
+end
+
+local function RegisterDeleteOutfitMenu(id, parent, outfits, deleteEvent)
+    local deleteOutfitMenu = {
+        id = id,
+        title = "Delete Outfit",
+        menu = parent,
+        options = {}
+    }
+    for i = 1, #outfits, 1 do
+        deleteOutfitMenu.options[#deleteOutfitMenu.options + 1] = {
+            title = 'Delete "' .. outfits[i].name .. '"',
+            description = "Model: " .. outfits[i].model .. (outfits[i].gender and (" - Gender: " .. outfits[i].gender) or ""),
+            event = deleteEvent,
+            args = outfits[i].id
+        }
+    end
+
+    lib.registerContext(deleteOutfitMenu)
+end
+
 RegisterNetEvent("fivem-appearance:client:OutfitManagementMenu", function(args)
     local bossMenuEvent = "qb-bossmenu:client:OpenMenu"
     if args.type == "Gang" then
         bossMenuEvent = "qb-gangmenu:client:OpenMenu"
     end
-    local menuItems = {
-        {
-            header = "👔 | Manage " .. args.type .. " Outfits",
-            isMenuHeader = true
-        },
-        {
-            header = "Change Outfit",
-            txt = "Pick from any of your currently saved "  .. args.type .. " outfits",
-            params = {
-                event = "fivem-appearance:client:ChangeManagementOutfitMenu",
-                args = {
-                    backEvent = args.backEvent,
-                    type = args.type,
-                }
-            }
-        },
-        {
-            header = "Save current Outfit",
-            txt = "Save your current outfit as " .. args.type .. " outfit",
-            params = {
+
+    local outfits = lib.callback.await("fivem-appearance:server:getManagementOutfits", false, args.type, getGender())
+    local managementMenuID = "illenium_appearance_outfit_management_menu"
+    local changeManagementOutfitMenuID = "illenium_appearance_change_management_outfit_menu"
+    local deleteManagementOutfitMenuID = "illenium_appearance_delete_management_outfit_menu"
+
+    RegisterChangeOutfitMenu(changeManagementOutfitMenuID, managementMenuID, outfits, args.type)
+    RegisterDeleteOutfitMenu(deleteManagementOutfitMenuID, managementMenuID, outfits, "fivem-appearance:client:DeleteManagementOutfit")
+    local managementMenu = {
+        id = managementMenuID,
+        title = "👔 | Manage " .. args.type .. " Outfits",
+        options = {
+            {
+                title = "Change Outfit",
+                description = "Pick from any of your currently saved "  .. args.type .. " outfits",
+                menu = changeManagementOutfitMenuID,
+            },
+            {
+                title = "Save current Outfit",
+                description = "Save your current outfit as " .. args.type .. " outfit",
                 event = "fivem-appearance:client:SaveManagementOutfit",
                 args = args.type
-            }
-        },
-        {
-            header = "Delete Outfit",
-            txt = "Delete a saved " .. args.type .. " outfit",
-            params = {
-                event = "fivem-appearance:client:DeleteManagementOutfitMenu",
-                args = {
-                    backEvent = args.backEvent,
-                    type = args.type,
-                }
-            }
-        },
-        {
-            header = "Return",
-            icon = "fa-solid fa-angle-left",
-            params = {
-                event = bossMenuEvent,
+            },
+            {
+                title = "Delete Outfit",
+                description = "Delete a saved " .. args.type .. " outfit",
+                menu = deleteManagementOutfitMenuID,
+            },
+            {
+                title = "Return",
+                icon = "fa-solid fa-angle-left",
+                event = bossMenuEvent
             }
         }
     }
 
-    exports["qb-menu"]:openMenu(menuItems)
-
+    lib.registerContext(managementMenu)
+    lib.showContext(managementMenuID)
 end)
 
 local function getRankInputValues(rankList)
@@ -588,7 +623,6 @@ RegisterNetEvent("fivem-appearance:client:SaveManagementOutfit", function(mType)
         return
     end
 
-    print(json.encode(dialogResponse))
 
     outfitData.Name = dialogResponse.outfitName
     outfitData.Gender = dialogResponse.gender
@@ -598,185 +632,108 @@ RegisterNetEvent("fivem-appearance:client:SaveManagementOutfit", function(mType)
 
 end)
 
-RegisterNetEvent("fivem-appearance:client:DeleteManagementOutfitMenu", function(args)
-    QBCore.Functions.TriggerCallback('fivem-appearance:server:getManagementOutfits', function(result)
-        local outfitMenu = {}
-        for i = 1, #result, 1 do
-            outfitMenu[#outfitMenu + 1] = {
-                header = 'Delete "' .. result[i].name .. '"',
-                txt = "Model: " .. result[i].model .. " - Gender: " .. result[i].gender,
-                params = {
-                    event = 'fivem-appearance:client:DeleteManagementOutfit',
-                    args = result[i].id
-                }
+local function RegisterWorkOutfitsListMenu(id, parent, menuData)
+    local menu = {
+        id = id,
+        menu = parent,
+        title = "Work Outfits",
+        options = {}
+    }
+    local event = "qb-clothing:client:loadOutfit"
+    if Config.BossManagedOutfits then
+        event = "fivem-appearance:client:changeOutfit"
+    end
+    if menuData then
+        for _, v in pairs(menuData) do
+            menu.options[#menu.options + 1] = {
+                title = v.name,
+                event = event,
+                args = v
             }
         end
-        outfitMenu[#outfitMenu + 1] = {
-            header = "Return",
-            icon = "fa-solid fa-angle-left",
-            params = {
-                event = "fivem-appearance:client:OutfitManagementMenu",
-                args = {
-                    backEvent = args.backEvent,
-                    type = args.type,
-                }
-            }
-        }
-        exports['qb-menu']:openMenu(outfitMenu)
-    end, args.type)
-end)
+    end
+    lib.registerContext(menu)
+end
 
-RegisterNetEvent("fivem-appearance:client:ChangeManagementOutfitMenu", function(args)
-    QBCore.Functions.TriggerCallback('fivem-appearance:server:getManagementOutfits', function(result)
-        local outfitMenu = {}
-        for i = 1, #result, 1 do
-            outfitMenu[#outfitMenu + 1] = {
-                header = result[i].name,
-                txt = result[i].model,
-                params = {
-                    event = 'fivem-appearance:client:changeOutfit',
-                    args = {
-                        type = args.type,
-                        name = result[i].name,
-                        model = result[i].model,
-                        components = result[i].components,
-                        props = result[i].props,
-                        disableSave = true,
-                    }
-                }
-            }
-        end
-        outfitMenu[#outfitMenu + 1] = {
-            header = "Return",
-            icon = "fa-solid fa-angle-left",
-            params = {
-                event = "fivem-appearance:client:OutfitManagementMenu",
-                args = {
-                    backEvent = args.backEvent,
-                    type = args.type,
-                }
-            }
-        }
-        exports['qb-menu']:openMenu(outfitMenu)
-    end, args.type, getGender())
-end)
-
-function OpenMenu(isPedMenu, backEvent, menuType, menuData)
+function OpenMenu(isPedMenu, menuType, menuData)
+    local mainMenuID = "illenium_appearance_main_menu"
+    local mainMenu = {
+        id = mainMenuID
+    }
     local menuItems = {}
-    local outfitMenuItems = {{
-        header = "Change Outfit",
-        txt = "Pick from any of your currently saved outfits",
-        params = {
-            event = "fivem-appearance:client:changeOutfitMenu",
-            args = {
-                isPedMenu = isPedMenu,
-                backEvent = backEvent
-            }
-        }
-    }, {
-        header = "Save New Outfit",
-        txt = "Save a new outfit you can use later on",
-        params = {
+
+    local outfits = lib.callback.await("fivem-appearance:server:getOutfits", false)
+    local changeOutfitMenuID = "illenium_appearance_change_outfit_menu"
+    local deleteOutfitMenuID = "illenium_appearance_delete_outfit_menu"
+
+    RegisterChangeOutfitMenu(changeOutfitMenuID, mainMenuID, outfits)
+    RegisterDeleteOutfitMenu(deleteOutfitMenuID, mainMenuID, outfits, "fivem-appearance:client:deleteOutfit")
+    local outfitMenuItems = {
+        {
+            title = "Change Outfit",
+            description = "Pick from any of your currently saved outfits",
+            menu = changeOutfitMenuID
+        },
+        {
+            title = "Save New Outfit",
+            description = "Save a new outfit you can use later on",
             event = "fivem-appearance:client:saveOutfit"
+        },
+        {
+            title = "Delete Outfit",
+            description = "Delete any of your saved outfits",
+            menu = deleteOutfitMenuID
         }
-    }, {
-        header = "Delete Outfit",
-        txt = "Yeah... We didnt like that one either",
-        params = {
-            event = "fivem-appearance:client:deleteOutfitMenu",
-            args = {
-                isPedMenu = isPedMenu,
-                backEvent = backEvent
-            }
-        }
-    }}
+    }
     if menuType == "default" then
         local header = "Buy Clothing - $" .. Config.ClothingCost
         if isPedMenu then
             header = "Change Clothing"
         end
+        mainMenu.title = "👔 | Clothing Store Options"
         menuItems[#menuItems + 1] = {
-            header = "Clothing Store Options",
-            icon = "fas fa-shirt",
-            isMenuHeader = true -- Set to true to make a nonclickable title
-        }
-        menuItems[#menuItems + 1] = {
-            header = header,
-            txt = "Pick from a wide range of items to wear",
-            params = {
-                event = "fivem-appearance:client:openClothingShop",
-                args = isPedMenu
-            }
+            title = header,
+            description = "Pick from a wide range of items to wear",
+            event = "fivem-appearance:client:openClothingShop",
+            args = isPedMenu
         }
         for i = 0, #outfitMenuItems, 1 do
             menuItems[#menuItems + 1] = outfitMenuItems[i]
         end
     elseif menuType == "outfit" then
-        menuItems[#menuItems + 1] = {
-            header = "👔 | Outfit Options",
-            isMenuHeader = true -- Set to true to make a nonclickable title
-        }
+        mainMenu.title = "👔 | Outfit Options"
         for i = 0, #outfitMenuItems, 1 do
             menuItems[#menuItems + 1] = outfitMenuItems[i]
         end
     elseif menuType == "job-outfit" then
+        mainMenu.title = "👔 | Outfit Options"
         menuItems[#menuItems + 1] = {
-            header = "👔 | Outfit Options",
-            isMenuHeader = true -- Set to true to make a nonclickable title
+            title = "Civilian Outfit",
+            description = "Put on your clothes",
+            event = "fivem-appearance:client:reloadSkin"
         }
-        menuItems[#menuItems + 1] = {
-            header = "Civilian Outfit",
-            txt = "Put on your clothes",
-            params = {
-                event = "fivem-appearance:client:reloadSkin"
-            }
-        }
-        menuItems[#menuItems + 1] = {
-            header = "Work Clothes",
-            txt = "Pick from any of your work outfits",
-            params = {
-                event = "fivem-appearance:client:openJobOutfitsListMenu",
-                args = {
-                    backEvent = backEvent,
-                    menuData = menuData
-                }
-            }
-        }
-    end
-    exports['qb-menu']:openMenu(menuItems)
-end
 
-RegisterNetEvent("fivem-appearance:client:openJobOutfitsListMenu", function(data)
-    local menu = {{
-        header = '< Go Back',
-        params = {
-            event = data.backEvent,
-            args = data.menuData
+        local workOutfitsMenuID = "illenium_appearance_work_outfits_menu"
+        RegisterWorkOutfitsListMenu(workOutfitsMenuID, mainMenuID, menuData)
+
+        menuItems[#menuItems + 1] = {
+            title = "Work Outfits",
+            description = "Pick from any of your work outfits",
+            menu = workOutfitsMenuID
         }
-    }}
-    local event = "qb-clothing:client:loadOutfit"
-    if Config.BossManagedOutfits then
-        event = "fivem-appearance:client:changeOutfit"
     end
-    if data.menuData then
-        for _, v in pairs(data.menuData) do
-            menu[#menu + 1] = {
-                header = v.name,
-                params = {
-                    event = event,
-                    args = v
-                }
-            }
-        end
-    end
-    exports['qb-menu']:openMenu(menu)
-end)
+    mainMenu.options = menuItems
+
+    lib.registerContext(mainMenu)
+    print(json.encode(mainMenu, {indent = true}))
+    lib.showContext(mainMenuID)
+end
 
 RegisterNetEvent("fivem-appearance:client:openClothingShopMenu", function(isPedMenu)
     if type(isPedMenu) == "table" then
         isPedMenu = false
     end
-    OpenMenu(isPedMenu, "fivem-appearance:client:openClothingShopMenu", "default")
+    OpenMenu(isPedMenu, "default")
 end)
 
 RegisterNetEvent("fivem-appearance:client:OpenBarberShop", function()
@@ -789,34 +746,6 @@ end)
 
 RegisterNetEvent("fivem-appearance:client:OpenSurgeonShop", function()
     OpenSurgeonShop()
-end)
-
-RegisterNetEvent("fivem-appearance:client:changeOutfitMenu", function(data)
-    QBCore.Functions.TriggerCallback('fivem-appearance:server:getOutfits', function(result)
-        local outfitMenu = {{
-            header = '< Go Back',
-            params = {
-                event = data.backEvent,
-                args = data.isPedMenu
-            }
-        }}
-        for i = 1, #result, 1 do
-            outfitMenu[#outfitMenu + 1] = {
-                header = result[i].outfitname,
-                txt = result[i].model,
-                params = {
-                    event = 'fivem-appearance:client:changeOutfit',
-                    args = {
-                        name = result[i].outfitname,
-                        model = result[i].model,
-                        components = result[i].components,
-                        props = result[i].props
-                    }
-                }
-            }
-        end
-        exports['qb-menu']:openMenu(outfitMenu)
-    end)
 end)
 
 RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
@@ -858,29 +787,6 @@ RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
     end
 end)
 
-RegisterNetEvent("fivem-appearance:client:deleteOutfitMenu", function(data)
-    QBCore.Functions.TriggerCallback('fivem-appearance:server:getOutfits', function(result)
-        local outfitMenu = {{
-            header = '< Go Back',
-            params = {
-                event = data.backEvent,
-                args = data.isPedMenu
-            }
-        }}
-        for i = 1, #result, 1 do
-            outfitMenu[#outfitMenu + 1] = {
-                header = 'Delete "' .. result[i].outfitname .. '"',
-                txt = 'You will never be able to get this back!',
-                params = {
-                    event = 'fivem-appearance:client:deleteOutfit',
-                    args = result[i].id
-                }
-            }
-        end
-        exports['qb-menu']:openMenu(outfitMenu)
-    end)
-end)
-
 RegisterNetEvent("fivem-appearance:client:DeleteManagementOutfit", function(id)
     TriggerServerEvent("fivem-appearance:server:deleteManagementOutfit", id)
     QBCore.Functions.Notify('Outfit Deleted', 'error')
@@ -892,7 +798,8 @@ RegisterNetEvent('fivem-appearance:client:deleteOutfit', function(id)
 end)
 
 RegisterNetEvent('fivem-appearance:client:openJobOutfitsMenu', function(outfitsToShow)
-    OpenMenu(nil, "fivem-appearance:client:openJobOutfitsMenu", "job-outfit", outfitsToShow)
+    print("Open")
+    OpenMenu(nil, "job-outfit", outfitsToShow)
 end)
 
 local function InCooldown()
@@ -1015,21 +922,17 @@ local function getPlayerJobOutfits(clothingRoom)
 
     if Config.BossManagedOutfits then
         local mType = clothingRoom.job and "Job" or "Gang"
-        local p = promise.new()
-        QBCore.Functions.TriggerCallback('fivem-appearance:server:getManagementOutfits', function(result)
-            for i = 1, #result, 1 do
-                outfits[#outfits + 1] = {
-                    type = mType,
-                    model = result[i].model,
-                    components = result[i].components,
-                    props = result[i].props,
-                    disableSave = true,
-                    name = result[i].name
-                }
-            end
-            p:resolve()
-        end, mType, gender)
-        Citizen.Await(p)
+        local result = lib.callback.await('fivem-appearance:server:getManagementOutfits', false, mType, gender)
+        for i = 1, #result, 1 do
+            outfits[#outfits + 1] = {
+                type = mType,
+                model = result[i].model,
+                components = result[i].components,
+                props = result[i].props,
+                disableSave = true,
+                name = result[i].name
+            }
+        end
     else
         for i = 1, #Config.Outfits[jobName][gender], 1 do
             for _, v in pairs(Config.Outfits[jobName][gender][i].grades) do
@@ -1047,6 +950,7 @@ end
 
 RegisterNetEvent("fivem-appearance:client:OpenClothingRoom", function()
     local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zoneName, 15))]
+    print(clothingRoom)
     local outfits = getPlayerJobOutfits(clothingRoom)
     TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', outfits)
 end)

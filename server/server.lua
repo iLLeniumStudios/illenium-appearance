@@ -19,12 +19,13 @@ local function getMoneyForShop(shopType)
 end
 
 local function getOutfitsForPlayer(citizenid)
+    print("Hello")
     outfitCache[citizenid] = {}
     local result = MySQL.Sync.fetchAll('SELECT * FROM player_outfits WHERE citizenid = ?', {citizenid})
     for i = 1, #result, 1 do
         outfitCache[citizenid][#outfitCache[citizenid] + 1] = {
             id = result[i].id,
-            outfitname = result[i].outfitname,
+            name = result[i].outfitname,
             model = result[i].model,
             components = json.decode(result[i].components),
             props = json.decode(result[i].props)
@@ -63,15 +64,15 @@ QBCore.Functions.CreateCallback('fivem-appearance:server:hasMoney', function(sou
     end
 end)
 
-QBCore.Functions.CreateCallback('fivem-appearance:server:getOutfits', function(source, cb)
+lib.callback.register("fivem-appearance:server:getOutfits", function(source)
     local Player = QBCore.Functions.GetPlayer(source)
     if outfitCache[Player.PlayerData.citizenid] == nil then
         getOutfitsForPlayer(Player.PlayerData.citizenid)
     end
-    cb(outfitCache[Player.PlayerData.citizenid])
+    return outfitCache[Player.PlayerData.citizenid]
 end)
 
-QBCore.Functions.CreateCallback("fivem-appearance:server:getManagementOutfits", function(source, cb, mType, gender)
+lib.callback.register("fivem-appearance:server:getManagementOutfits", function(source, mType, gender)
     local Player = QBCore.Functions.GetPlayer(source)
     local jobName = Player.PlayerData.job.name
     local grade = Player.PlayerData.job.grade.level
@@ -104,7 +105,7 @@ QBCore.Functions.CreateCallback("fivem-appearance:server:getManagementOutfits", 
             }
         end
     end
-    cb(managementOutfits)
+    return managementOutfits
 end)
 
 QBCore.Functions.CreateCallback("fivem-appearance:server:getUniform", function(source, cb)
@@ -148,7 +149,7 @@ RegisterNetEvent('fivem-appearance:server:saveOutfit', function(name, model, com
             {Player.PlayerData.citizenid, name, model, json.encode(components), json.encode(props)}, function(id)
                 outfitCache[Player.PlayerData.citizenid][#outfitCache[Player.PlayerData.citizenid] + 1] = {
                     id = id,
-                    outfitname = name,
+                    name = name,
                     model = model,
                     components = components,
                     props = props
