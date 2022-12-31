@@ -59,7 +59,7 @@ local function ShowNearestShopBlip()
             local closestCoords
 
             for _, shop in pairs(Config.Stores) do
-                if shop.shopType == shopType and ShowBlip(blipConfig, shop, job, gang) then
+                if shop.shopType == shopType and ShowBlip(blipConfig, shop) then
                     local dist = #(coords - vector3(shop.coords.xyz))
                     if dist < closest then
                         closest = dist

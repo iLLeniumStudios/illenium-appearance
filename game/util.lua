@@ -90,7 +90,7 @@ local function getPedProps(ped)
 end
 
 local function round(number, decimalPlaces)
-	return tonumber(string.format('%.' .. (decimalPlaces or 0) .. 'f', number))
+	return tonumber(string.format("%." .. (decimalPlaces or 0) .. "f", number))
 end
 
 ---@param ped number entity id
@@ -182,11 +182,11 @@ local function getPedDecorationType()
 	local decorationType
 
 	if pedModel == `mp_m_freemode_01` then
-		decorationType = 'male'
+		decorationType = "male"
 	elseif pedModel == `mp_f_freemode_01` then
-		decorationType = 'female'
+		decorationType = "female"
 	else
-		decorationType = IsPedMale(playerPed) and 'male' or 'female'
+		decorationType = IsPedMale(playerPed) and "male" or "female"
 	end
 
 	return decorationType
@@ -196,7 +196,7 @@ local function getPedAppearance(ped)
 	local eyeColor = GetPedEyeColor(ped)
 
 	return {
-		model = getPedModel(ped) or 'mp_m_freemode_01',
+		model = getPedModel(ped) or "mp_m_freemode_01",
 		headBlend = getPedHeadBlend(ped),
 		faceFeatures = getPedFaceFeatures(ped),
 		headOverlays = getPedHeadOverlays(ped),
@@ -211,7 +211,7 @@ end
 local function setPlayerModel(model)
 	local playerPed = PlayerId()
 
-	if type(model) == 'string' then model = joaat(model) end
+	if type(model) == "string" then model = joaat(model) end
 
 	if IsModelInCdimage(model) then
 		RequestModel(model)
@@ -254,7 +254,7 @@ local function setPedHeadOverlays(ped, headOverlays)
 
 			if headOverlay.color then
 				local colorType = 1
-				if v == 'blush' or v == 'lipstick' or v == 'makeUp' then
+				if v == "blush" or v == "lipstick" or v == "makeUp" then
 					colorType = 2
 				end
 
@@ -380,28 +380,28 @@ local function setPlayerAppearance(appearance)
 	end
 end
 
-exports('getPedModel', getPedModel)
-exports('getPedComponents', getPedComponents)
-exports('getPedProps', getPedProps)
-exports('getPedHeadBlend', getPedHeadBlend)
-exports('getPedFaceFeatures', getPedFaceFeatures)
-exports('getPedHeadOverlays', getPedHeadOverlays)
-exports('getPedHair', getPedHair)
-exports('getPedAppearance', getPedAppearance)
+exports("getPedModel", getPedModel)
+exports("getPedComponents", getPedComponents)
+exports("getPedProps", getPedProps)
+exports("getPedHeadBlend", getPedHeadBlend)
+exports("getPedFaceFeatures", getPedFaceFeatures)
+exports("getPedHeadOverlays", getPedHeadOverlays)
+exports("getPedHair", getPedHair)
+exports("getPedAppearance", getPedAppearance)
 
-exports('setPlayerModel', setPlayerModel)
-exports('setPedHeadBlend', setPedHeadBlend)
-exports('setPedFaceFeatures', setPedFaceFeatures)
-exports('setPedHeadOverlays', setPedHeadOverlays)
-exports('setPedHair', setPedHair)
-exports('setPedEyeColor', setPedEyeColor)
-exports('setPedComponent', setPedComponent)
-exports('setPedComponents', setPedComponents)
-exports('setPedProp', setPedProp)
-exports('setPedProps', setPedProps)
-exports('setPlayerAppearance', setPlayerAppearance)
-exports('setPedAppearance', setPedAppearance)
-exports('setPedTattoos', setPedTattoos)
+exports("setPlayerModel", setPlayerModel)
+exports("setPedHeadBlend", setPedHeadBlend)
+exports("setPedFaceFeatures", setPedFaceFeatures)
+exports("setPedHeadOverlays", setPedHeadOverlays)
+exports("setPedHair", setPedHair)
+exports("setPedEyeColor", setPedEyeColor)
+exports("setPedComponent", setPedComponent)
+exports("setPedComponents", setPedComponents)
+exports("setPedProp", setPedProp)
+exports("setPedProps", setPedProps)
+exports("setPlayerAppearance", setPlayerAppearance)
+exports("setPedAppearance", setPedAppearance)
+exports("setPedTattoos", setPedTattoos)
 
 client = {
 	getPedAppearance = getPedAppearance,

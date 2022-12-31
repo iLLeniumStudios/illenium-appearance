@@ -26,11 +26,11 @@ RegisterNetEvent("fivem-appearance:client:migration:load-qb-clothing-skin", func
         end
         SetPlayerModel(PlayerId(), model)
         SetPedComponentVariation(PlayerPedId(), 0, 0, 0, 2)
-        TriggerEvent('fivem-appearance:client:migration:load-qb-clothing-clothes', playerSkin, PlayerPedId())
+        TriggerEvent("fivem-appearance:client:migration:load-qb-clothing-clothes", playerSkin, PlayerPedId())
     end)
 end)
 
-RegisterNetEvent('fivem-appearance:client:migration:load-qb-clothing-clothes', function(playerSkin, ped)
+RegisterNetEvent("fivem-appearance:client:migration:load-qb-clothing-clothes", function(playerSkin, ped)
     local data = json.decode(playerSkin.skin)
     if ped == nil then ped = PlayerPedId() end
 
@@ -156,33 +156,33 @@ RegisterNetEvent('fivem-appearance:client:migration:load-qb-clothing-clothes', f
     end
 
     if data["eye_color"].item ~= -1 and data["eye_color"].item ~= 0 then
-        SetPedEyeColor(ped, data['eye_color'].item)
+        SetPedEyeColor(ped, data["eye_color"].item)
     end
 
     if data["moles"].item ~= -1 and data["moles"].item ~= 0 then
-        SetPedHeadOverlay(ped, 9, data['moles'].item, (data['moles'].texture / 10))
+        SetPedHeadOverlay(ped, 9, data["moles"].item, (data["moles"].texture / 10))
     end
 
-    SetPedFaceFeature(ped, 0, (data['nose_0'].item / 10))
-    SetPedFaceFeature(ped, 1, (data['nose_1'].item / 10))
-    SetPedFaceFeature(ped, 2, (data['nose_2'].item / 10))
-    SetPedFaceFeature(ped, 3, (data['nose_3'].item / 10))
-    SetPedFaceFeature(ped, 4, (data['nose_4'].item / 10))
-    SetPedFaceFeature(ped, 5, (data['nose_5'].item / 10))
-    SetPedFaceFeature(ped, 6, (data['eyebrown_high'].item / 10))
-    SetPedFaceFeature(ped, 7, (data['eyebrown_forward'].item / 10))
-    SetPedFaceFeature(ped, 8, (data['cheek_1'].item / 10))
-    SetPedFaceFeature(ped, 9, (data['cheek_2'].item / 10))
-    SetPedFaceFeature(ped, 10,(data['cheek_3'].item / 10))
-    SetPedFaceFeature(ped, 11, (data['eye_opening'].item / 10))
-    SetPedFaceFeature(ped, 12, (data['lips_thickness'].item / 10))
-    SetPedFaceFeature(ped, 13, (data['jaw_bone_width'].item / 10))
-    SetPedFaceFeature(ped, 14, (data['jaw_bone_back_lenght'].item / 10))
-    SetPedFaceFeature(ped, 15, (data['chimp_bone_lowering'].item / 10))
-    SetPedFaceFeature(ped, 16, (data['chimp_bone_lenght'].item / 10))
-    SetPedFaceFeature(ped, 17, (data['chimp_bone_width'].item / 10))
-    SetPedFaceFeature(ped, 18, (data['chimp_hole'].item / 10))
-    SetPedFaceFeature(ped, 19, (data['neck_thikness'].item / 10))
+    SetPedFaceFeature(ped, 0, (data["nose_0"].item / 10))
+    SetPedFaceFeature(ped, 1, (data["nose_1"].item / 10))
+    SetPedFaceFeature(ped, 2, (data["nose_2"].item / 10))
+    SetPedFaceFeature(ped, 3, (data["nose_3"].item / 10))
+    SetPedFaceFeature(ped, 4, (data["nose_4"].item / 10))
+    SetPedFaceFeature(ped, 5, (data["nose_5"].item / 10))
+    SetPedFaceFeature(ped, 6, (data["eyebrown_high"].item / 10))
+    SetPedFaceFeature(ped, 7, (data["eyebrown_forward"].item / 10))
+    SetPedFaceFeature(ped, 8, (data["cheek_1"].item / 10))
+    SetPedFaceFeature(ped, 9, (data["cheek_2"].item / 10))
+    SetPedFaceFeature(ped, 10,(data["cheek_3"].item / 10))
+    SetPedFaceFeature(ped, 11, (data["eye_opening"].item / 10))
+    SetPedFaceFeature(ped, 12, (data["lips_thickness"].item / 10))
+    SetPedFaceFeature(ped, 13, (data["jaw_bone_width"].item / 10))
+    SetPedFaceFeature(ped, 14, (data["jaw_bone_back_lenght"].item / 10))
+    SetPedFaceFeature(ped, 15, (data["chimp_bone_lowering"].item / 10))
+    SetPedFaceFeature(ped, 16, (data["chimp_bone_lenght"].item / 10))
+    SetPedFaceFeature(ped, 17, (data["chimp_bone_width"].item / 10))
+    SetPedFaceFeature(ped, 18, (data["chimp_hole"].item / 10))
+    SetPedFaceFeature(ped, 19, (data["neck_thikness"].item / 10))
     
     local appearance = exports[resourceName]:getPedAppearance(ped)
 

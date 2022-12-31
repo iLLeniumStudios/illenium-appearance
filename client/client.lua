@@ -1,4 +1,4 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+local QBCore = exports["qb-core"]:GetCoreObject()
 
 local client = client
 
@@ -50,7 +50,7 @@ local function RemoveTargets()
         RemoveTargetPeds(TargetPeds.Store)
     else
         for k, v in pairs(Config.Stores) do
-            exports['qb-target']:RemoveZone(v.shopType .. k)
+            exports["qb-target"]:RemoveZone(v.shopType .. k)
         end
     end
 
@@ -58,7 +58,7 @@ local function RemoveTargets()
         RemoveTargetPeds(TargetPeds.ClothingRoom)
     else
         for k, v in pairs(Config.ClothingRooms) do
-            exports['qb-target']:RemoveZone('clothing_' .. (v.job or v.gang) .. k)
+            exports["qb-target"]:RemoveZone("clothing_" .. (v.job or v.gang) .. k)
         end
     end
 
@@ -66,7 +66,7 @@ local function RemoveTargets()
         RemoveTargetPeds(TargetPeds.PlayerOutfitRoom)
     else
         for k in pairs(Config.PlayerOutfitRooms) do
-            exports['qb-target']:RemoveZone('playeroutfitroom_' .. k)
+            exports["qb-target"]:RemoveZone("playeroutfitroom_" .. k)
         end
     end
 end
@@ -160,7 +160,7 @@ end
 
 local function RemoveRadialMenuOption()
     if MenuItemId then
-        exports['qb-radialmenu']:RemoveOption(MenuItemId)
+        exports["qb-radialmenu"]:RemoveOption(MenuItemId)
         MenuItemId = nil
     end
 end
@@ -173,7 +173,7 @@ local function InitAppearance()
     TriggerEvent("updateJob", PlayerJob.name)
     TriggerEvent("updateGang", PlayerGang.name)
 
-    lib.callback('fivem-appearance:server:getAppearance', false, function(appearance)
+    lib.callback("fivem-appearance:server:getAppearance", false, function(appearance)
         if not appearance then
             return
         end
@@ -187,7 +187,7 @@ local function InitAppearance()
             Wait(5000)
             if GetEntityModel(PlayerPedId()) == `player_zero` then
                 print('Player detected as "player_zero", Starting CreateFirstCharacter event')
-                TriggerEvent('qb-clothes:client:CreateFirstCharacter')
+                TriggerEvent("qb-clothes:client:CreateFirstCharacter")
             end
         end
     end)
@@ -197,13 +197,13 @@ local function InitAppearance()
     end
 end
 
-AddEventHandler('onResourceStart', function(resource)
+AddEventHandler("onResourceStart", function(resource)
     if resource == GetCurrentResourceName() then
         InitAppearance()
     end
 end)
 
-AddEventHandler('onResourceStop', function(resource)
+AddEventHandler("onResourceStop", function(resource)
     if resource == GetCurrentResourceName() then
         if Config.UseTarget and GetResourceState("qb-target") == "started" then
             RemoveTargets()
@@ -217,25 +217,25 @@ AddEventHandler('onResourceStop', function(resource)
     end
 end)
 
-RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
+RegisterNetEvent("QBCore:Client:OnJobUpdate", function(JobInfo)
     PlayerData.job = JobInfo
     PlayerJob = JobInfo
     TriggerEvent("updateJob", PlayerJob.name)
     ResetBlips(PlayerJob.name, PlayerGang.name)
 end)
 
-RegisterNetEvent('QBCore:Client:OnGangUpdate', function(GangInfo)
+RegisterNetEvent("QBCore:Client:OnGangUpdate", function(GangInfo)
     PlayerData.gang = GangInfo
     PlayerGang = GangInfo
     TriggerEvent("updateGang", PlayerGang.name)
     ResetBlips(PlayerJob.name, PlayerGang.name)
 end)
 
-RegisterNetEvent('QBCore:Client:SetDuty', function(duty)
+RegisterNetEvent("QBCore:Client:SetDuty", function(duty)
     PlayerJob.onduty = duty
 end)
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
+RegisterNetEvent("QBCore:Client:OnPlayerLoaded", function()
     InitAppearance()
 end)
 
@@ -294,10 +294,10 @@ local function getNewCharacterConfig()
     return config
 end
 
-RegisterNetEvent('qb-clothes:client:CreateFirstCharacter', function()
+RegisterNetEvent("qb-clothes:client:CreateFirstCharacter", function()
     QBCore.Functions.GetPlayerData(function(pd)
         local gender = "Male"
-        local skin = 'mp_m_freemode_01'
+        local skin = "mp_m_freemode_01"
         if pd.charinfo.gender == 1 then
             skin = "mp_f_freemode_01"
             gender = "Female"
@@ -313,7 +313,7 @@ RegisterNetEvent('qb-clothes:client:CreateFirstCharacter', function()
         local config = getNewCharacterConfig()
         client.startPlayerCustomization(function(appearance)
             if (appearance) then
-                TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
+                TriggerServerEvent("fivem-appearance:server:saveAppearance", appearance)
                 ResetRechargeMultipliers()
             end
         end, config)
@@ -337,7 +337,7 @@ function OpenShop(config, isPedMenu, shopType)
                 if not isPedMenu then
                     TriggerServerEvent("fivem-appearance:server:chargeCustomer", shopType)
                 end
-                TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
+                TriggerServerEvent("fivem-appearance:server:saveAppearance", appearance)
             else
                 lib.notify({
                     title = "Cancelled Customization",
@@ -362,31 +362,31 @@ local function OpenClothingShop(isPedMenu)
         config.headOverlays = true
         config.tattoos = true
     end
-    OpenShop(config, isPedMenu, 'clothing')
+    OpenShop(config, isPedMenu, "clothing")
 end
 
 local function OpenBarberShop()
     local config = getDefaultConfig()
     config.headOverlays = true
-    OpenShop(config, false, 'barber')
+    OpenShop(config, false, "barber")
 end
 
 local function OpenTattooShop()
     local config = getDefaultConfig()
     config.tattoos = true
-    OpenShop(config, false, 'tattoo')
+    OpenShop(config, false, "tattoo")
 end
 
 local function OpenSurgeonShop()
     local config = getDefaultConfig()
     config.headBlend = true
     config.faceFeatures = true
-    OpenShop(config, false, 'surgeon')
+    OpenShop(config, false, "surgeon")
 end
 
-RegisterNetEvent('fivem-appearance:client:openClothingShop', OpenClothingShop)
+RegisterNetEvent("fivem-appearance:client:openClothingShop", OpenClothingShop)
 
-RegisterNetEvent('fivem-appearance:client:saveOutfit', function()
+RegisterNetEvent("fivem-appearance:client:saveOutfit", function()
     local response = lib.inputDialog("Name your outfit", {
         {
             type = "input",
@@ -426,7 +426,7 @@ RegisterNetEvent('fivem-appearance:client:saveOutfit', function()
             local pedComponents = client.getPedComponents(playerPed)
             local pedProps = client.getPedProps(playerPed)
 
-            TriggerServerEvent('fivem-appearance:server:saveOutfit', outfitName, pedModel, pedComponents, pedProps)
+            TriggerServerEvent("fivem-appearance:server:saveOutfit", outfitName, pedModel, pedComponents, pedProps)
         end)
     end
 end)
@@ -442,7 +442,7 @@ local function RegisterChangeOutfitMenu(id, parent, outfits, mType)
         changeOutfitMenu.options[#changeOutfitMenu.options + 1] = {
             title = outfits[i].name,
             description = outfits[i].model,
-            event = 'fivem-appearance:client:changeOutfit',
+            event = "fivem-appearance:client:changeOutfit",
             args = {
                 type = mType,
                 name = outfits[i].name,
@@ -574,7 +574,7 @@ RegisterNetEvent("fivem-appearance:client:SaveManagementOutfit", function(mType)
                 label = "Minimum Rank",
                 type = "select",
                 options = rankValues,
-                default = '0'
+                default = "0"
             }
         })
 
@@ -743,7 +743,7 @@ RegisterNetEvent("fivem-appearance:client:changeOutfit", function(data)
             }) -- Is a uniform
         else
             local appearance = client.getPedAppearance(playerPed)
-            TriggerServerEvent('fivem-appearance:server:saveAppearance', appearance)
+            TriggerServerEvent("fivem-appearance:server:saveAppearance", appearance)
         end
     end
 end)
@@ -758,8 +758,8 @@ RegisterNetEvent("fivem-appearance:client:DeleteManagementOutfit", function(id)
     })
 end)
 
-RegisterNetEvent('fivem-appearance:client:deleteOutfit', function(id)
-    TriggerServerEvent('fivem-appearance:server:deleteOutfit', id)
+RegisterNetEvent("fivem-appearance:client:deleteOutfit", function(id)
+    TriggerServerEvent("fivem-appearance:server:deleteOutfit", id)
     lib.notify({
         title = "Success",
         description = "Outfit Deleted",
@@ -768,7 +768,7 @@ RegisterNetEvent('fivem-appearance:client:deleteOutfit', function(id)
     })
 end)
 
-RegisterNetEvent('fivem-appearance:client:openJobOutfitsMenu', function(outfitsToShow)
+RegisterNetEvent("fivem-appearance:client:openJobOutfitsMenu", function(outfitsToShow)
     OpenMenu(nil, "job-outfit", outfitsToShow)
 end)
 
@@ -780,7 +780,7 @@ local function CheckPlayerMeta()
     return PlayerData.metadata["isdead"] or PlayerData.metadata["inlaststand"] or PlayerData.metadata["ishandcuffed"]
 end
 
-RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
+RegisterNetEvent("fivem-appearance:client:reloadSkin", function()
     local playerPed = PlayerPedId()
 
     if InCooldown() or CheckPlayerMeta() or IsPedInAnyVehicle(playerPed, true) or IsPedFalling(playerPed) then
@@ -799,7 +799,7 @@ RegisterNetEvent('fivem-appearance:client:reloadSkin', function()
     local maxhealth = GetEntityMaxHealth(playerPed)
     local armour = GetPedArmour(playerPed)
 
-    lib.callback('fivem-appearance:server:getAppearance', false, function(appearance)
+    lib.callback("fivem-appearance:server:getAppearance", false, function(appearance)
         if not appearance then
             return
         end
@@ -830,7 +830,7 @@ RegisterNetEvent("fivem-appearance:client:ClearStuckProps", function()
     reloadSkinTimer = GetGameTimer()
     local playerPed = PlayerPedId()
 
-    for _, v in pairs(GetGamePool('CObject')) do
+    for _, v in pairs(GetGamePool("CObject")) do
       if IsEntityAttachedToEntity(playerPed, v) then
         SetEntityAsMissionEntity(v, true, true)
         DeleteObject(v)
@@ -890,7 +890,7 @@ end
 local function OpenOutfitRoom(outfitRoom)
     local isAllowed = isPlayerAllowedForOutfitRoom(outfitRoom)
     if isAllowed then
-        TriggerEvent('qb-clothing:client:openOutfitMenu')
+        TriggerEvent("qb-clothing:client:openOutfitMenu")
     end
 end
 
@@ -902,7 +902,7 @@ local function getPlayerJobOutfits(clothingRoom)
 
     if Config.BossManagedOutfits then
         local mType = clothingRoom.job and "Job" or "Gang"
-        local result = lib.callback.await('fivem-appearance:server:getManagementOutfits', false, mType, gender)
+        local result = lib.callback.await("fivem-appearance:server:getManagementOutfits", false, mType, gender)
         for i = 1, #result, 1 do
             outfits[#outfits + 1] = {
                 type = mType,
@@ -931,7 +931,7 @@ end
 RegisterNetEvent("fivem-appearance:client:OpenClothingRoom", function()
     local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zoneName, 15))]
     local outfits = getPlayerJobOutfits(clothingRoom)
-    TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', outfits)
+    TriggerEvent("fivem-appearance:client:openJobOutfitsMenu", outfits)
 end)
 
 RegisterNetEvent("fivem-appearance:client:OpenPlayerOutfitRoom", function()
@@ -948,13 +948,13 @@ local function SetupStoreZones()
     for k, v in pairs(Config.Stores) do
         if Config.UseRadialMenu then
             zones[#zones + 1] = PolyZone:Create(v.zone.shape, {
-                name = 'Stores_' .. v.shopType .. '_' .. k,
+                name = "Stores_" .. v.shopType .. "_" .. k,
                 minZ = v.zone.minZ,
                 maxZ = v.zone.maxZ,
             })
         else
             zones[#zones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
-                name = 'Stores_' .. v.shopType .. '_' .. k,
+                name = "Stores_" .. v.shopType .. "_" .. k,
                 minZ = v.coords.z - 1.5,
                 maxZ = v.coords.z + 1.5,
                 heading = v.coords.w
@@ -974,15 +974,15 @@ local function SetupStoreZones()
             local jobName = (currentStore.job and PlayerJob.name) or (currentStore.gang and PlayerGang.name)
             if jobName == (currentStore.job or currentStore.gang) then
                 inZone = true
-                local prefix = Config.UseRadialMenu and '' or '[E] '
-                if zoneName == 'clothing' then
-                    lib.showTextUI(prefix .. 'Clothing Store - Price: $' .. Config.ClothingCost, Config.TextUIOptions)
-                elseif zoneName == 'barber' then
-                    lib.showTextUI(prefix .. 'Barber - Price: $' .. Config.BarberCost, Config.TextUIOptions)
-                elseif zoneName == 'tattoo' then
-                    lib.showTextUI(prefix .. 'Tattoo Shop - Price: $' .. Config.TattooCost, Config.TextUIOptions)
-                elseif zoneName == 'surgeon' then
-                    lib.showTextUI(prefix .. 'Plastic Surgeon - Price: $' .. Config.SurgeonCost, Config.TextUIOptions)
+                local prefix = Config.UseRadialMenu and "" or "[E] "
+                if zoneName == "clothing" then
+                    lib.showTextUI(prefix .. "Clothing Store - Price: $" .. Config.ClothingCost, Config.TextUIOptions)
+                elseif zoneName == "barber" then
+                    lib.showTextUI(prefix .. "Barber - Price: $" .. Config.BarberCost, Config.TextUIOptions)
+                elseif zoneName == "tattoo" then
+                    lib.showTextUI(prefix .. "Tattoo Shop - Price: $" .. Config.TattooCost, Config.TextUIOptions)
+                elseif zoneName == "surgeon" then
+                    lib.showTextUI(prefix .. "Plastic Surgeon - Price: $" .. Config.SurgeonCost, Config.TextUIOptions)
                 end
             end
         else
@@ -997,13 +997,13 @@ local function SetupClothingRoomZones()
     for k, v in pairs(Config.ClothingRooms) do
         if Config.UseRadialMenu then
             roomZones[#roomZones + 1] = PolyZone:Create(v.zone.shape, {
-                name = 'ClothingRooms_' .. k,
+                name = "ClothingRooms_" .. k,
                 minZ = v.zone.minZ,
                 maxZ = v.zone.maxZ,
             })
         else
             roomZones[#roomZones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
-                name = 'ClothingRooms_' .. k,
+                name = "ClothingRooms_" .. k,
                 minZ = v.coords.z - 1.5,
                 maxZ = v.coords.z + 1,
                 heading = v.coords.w
@@ -1023,8 +1023,8 @@ local function SetupClothingRoomZones()
             if jobName == (clothingRoom.job or clothingRoom.gang) then
                 if CheckDuty() or clothingRoom.gang then
                     inZone = true
-                    local prefix = Config.UseRadialMenu and '' or '[E] '
-                    lib.showTextUI(prefix .. 'Clothing Room', Config.TextUIOptions)
+                    local prefix = Config.UseRadialMenu and "" or "[E] "
+                    lib.showTextUI(prefix .. "Clothing Room", Config.TextUIOptions)
                 end
             end
         else
@@ -1039,13 +1039,13 @@ local function SetupPlayerOutfitRoomZones()
     for k, v in pairs(Config.PlayerOutfitRooms) do
         if Config.UseRadialMenu then
             roomZones[#roomZones + 1] = PolyZone:Create(v.zone.shape, {
-                name = 'PlayerOutfitRooms_' .. k,
+                name = "PlayerOutfitRooms_" .. k,
                 minZ = v.zone.minZ,
                 maxZ = v.zone.maxZ,
             })
         else
             roomZones[#roomZones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
-                name = 'PlayerOutfitRooms_' .. k,
+                name = "PlayerOutfitRooms_" .. k,
                 minZ = v.coords.z - 1.5,
                 maxZ = v.coords.z + 1
             })
@@ -1063,8 +1063,8 @@ local function SetupPlayerOutfitRoomZones()
             local isAllowed = isPlayerAllowedForOutfitRoom(outfitRoom)
             if isAllowed then
                 inZone = true
-                local prefix = Config.UseRadialMenu and '' or '[E] '
-                lib.showTextUI(prefix .. 'Outfits', Config.TextUIOptions)
+                local prefix = Config.UseRadialMenu and "" or "[E] "
+                lib.showTextUI(prefix .. "Outfits", Config.TextUIOptions)
             end
         else
             inZone = false
@@ -1104,15 +1104,15 @@ local function SetupStoreTargets()
         local targetConfig = Config.TargetConfig[v.shopType]
         local action
 
-        if v.shopType == 'barber' then
+        if v.shopType == "barber" then
             action = OpenBarberShop
-        elseif v.shopType == 'clothing' then
+        elseif v.shopType == "clothing" then
             action = function()
                 TriggerEvent("fivem-appearance:client:openClothingShopMenu")
             end
-        elseif v.shopType == 'tattoo' then
+        elseif v.shopType == "tattoo" then
             action = OpenTattooShop
-        elseif v.shopType == 'surgeon' then
+        elseif v.shopType == "surgeon" then
             action = OpenSurgeonShop
         end
 
@@ -1128,9 +1128,9 @@ local function SetupStoreTargets()
 
         if Config.EnablePedsForShops then
             TargetPeds.Store[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
-            exports['qb-target']:AddTargetEntity(TargetPeds.Store[k], parameters)
+            exports["qb-target"]:AddTargetEntity(TargetPeds.Store[k], parameters)
         else
-            exports['qb-target']:AddBoxZone(v.shopType .. k, v.coords, v.length, v.width, {
+            exports["qb-target"]:AddBoxZone(v.shopType .. k, v.coords, v.length, v.width, {
                 name = v.shopType .. k,
                 debugPoly = Config.Debug,
                 minZ = v.coords.z - 1,
@@ -1146,7 +1146,7 @@ local function SetupClothingRoomTargets()
         local targetConfig = Config.TargetConfig["clothingroom"]
         local action = function()
             local outfits = getPlayerJobOutfits(v)
-            TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', outfits)
+            TriggerEvent("fivem-appearance:client:openJobOutfitsMenu", outfits)
         end
 
         local parameters = {
@@ -1164,10 +1164,10 @@ local function SetupClothingRoomTargets()
 
         if Config.EnablePedsForClothingRooms then
             TargetPeds.ClothingRoom[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
-            exports['qb-target']:AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
+            exports["qb-target"]:AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
         else
-            local key = 'clothing_' .. (v.job or v.gang) .. k
-            exports['qb-target']:AddBoxZone(key, v.coords, v.length, v.width, {
+            local key = "clothing_" .. (v.job or v.gang) .. k
+            exports["qb-target"]:AddBoxZone(key, v.coords, v.length, v.width, {
                 name = key,
                 debugPoly = Config.Debug,
                 minZ = v.coords.z - 2,
@@ -1199,10 +1199,10 @@ local function SetupPlayerOutfitRoomTargets()
 
         if Config.EnablePedsForPlayerOutfitRooms then
             TargetPeds.PlayerOutfitRoom[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
-            exports['qb-target']:AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
+            exports["qb-target"]:AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
         else
-            exports['qb-target']:AddBoxZone('playeroutfitroom_' .. k, v.coords, v.length, v.width, {
-                name = 'playeroutfitroom_' .. k,
+            exports["qb-target"]:AddBoxZone("playeroutfitroom_" .. k, v.coords, v.length, v.width, {
+                name = "playeroutfitroom_" .. k,
                 debugPoly = Config.Debug,
                 minZ = v.coords.z - 2,
                 maxZ = v.coords.z + 2,
@@ -1225,20 +1225,20 @@ local function ZonesLoop()
         if inZone then
             sleep = 5
             if IsControlJustReleased(0, 38) then
-                if string.find(zoneName, 'ClothingRooms_') then
+                if string.find(zoneName, "ClothingRooms_") then
                     local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zoneName, 15))]
                     local outfits = getPlayerJobOutfits(clothingRoom)
-                    TriggerEvent('fivem-appearance:client:openJobOutfitsMenu', outfits)
-                elseif string.find(zoneName, 'PlayerOutfitRooms_') then
+                    TriggerEvent("fivem-appearance:client:openJobOutfitsMenu", outfits)
+                elseif string.find(zoneName, "PlayerOutfitRooms_") then
                     local outfitRoom = Config.PlayerOutfitRooms[tonumber(string.sub(zoneName, 19))]
                     OpenOutfitRoom(outfitRoom)
-                elseif zoneName == 'clothing' then
+                elseif zoneName == "clothing" then
                     TriggerEvent("fivem-appearance:client:openClothingShopMenu")
-                elseif zoneName == 'barber' then
+                elseif zoneName == "barber" then
                     OpenBarberShop()
-                elseif zoneName == 'tattoo' then
+                elseif zoneName == "tattoo" then
                     OpenTattooShop()
-                elseif zoneName == 'surgeon' then
+                elseif zoneName == "surgeon" then
                     OpenSurgeonShop()
                 end
             end
