@@ -107,6 +107,9 @@ end)
 
 RegisterNUICallback("appearance_save", function(appearance, cb)
 	cb(1)
+	client.wearClothes(appearance, "head")
+	client.wearClothes(appearance, "body")
+	client.wearClothes(appearance, "body")
 	client.exitPlayerCustomization(appearance)
 end)
 
