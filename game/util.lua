@@ -291,7 +291,7 @@ local function setPedProps(ped, props)
 end
 
 local function setTattoos(ped, tattoos)
-	local isMale = client.getPedDecorationType(ped) == "male"
+	local isMale = client.getPedDecorationType() == "male"
 	ClearPedDecorations(ped)
 	for k in pairs(tattoos) do
 		for i = 1, #tattoos[k] do

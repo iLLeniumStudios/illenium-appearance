@@ -2,8 +2,8 @@ local QBCore = exports["qb-core"]:GetCoreObject()
 
 local client = client
 
+local currentZone = nil
 local zoneName = nil
-local inZone = false
 
 local MenuItemId = nil
 
@@ -21,6 +21,8 @@ local TargetPeds = {
     ClothingRoom = {},
     PlayerOutfitRoom = {}
 }
+
+local Zones = {}
 
 local function getGender()
     local gender
@@ -48,7 +50,7 @@ local function RemoveTargets()
         RemoveTargetPeds(TargetPeds.Store)
     else
         for k, v in pairs(Config.Stores) do
-            exports["qb-target"]:RemoveZone(v.shopType .. k)
+            exports["qb-target"]:RemoveZone(v.type .. k)
         end
     end
 
@@ -66,6 +68,18 @@ local function RemoveTargets()
         for k in pairs(Config.PlayerOutfitRooms) do
             exports["qb-target"]:RemoveZone("playeroutfitroom_" .. k)
         end
+    end
+end
+
+local function RemoveZones()
+    for i = 1, #Zones.Store do
+        Zones.Store[i]:remove()
+    end
+    for i = 1, #Zones.ClothingRoom do
+        Zones.ClothingRoom[i]:remove()
+    end
+    for i = 1, #Zones.PlayerOutfitRoom do
+        Zones.PlayerOutfitRoom[i]:remove()
     end
 end
 
@@ -202,6 +216,8 @@ AddEventHandler("onResourceStop", function(resource)
     if resource == GetCurrentResourceName() then
         if Config.UseTarget and GetResourceState("qb-target") == "started" then
             RemoveTargets()
+        else
+            RemoveZones()
         end
         if Config.UseRadialMenu and GetResourceState("qb-radialmenu") == "started" then
             RemoveRadialMenuOption()
@@ -795,7 +811,7 @@ RegisterNetEvent("illenium-appearance:client:ClearStuckProps", function()
 end)
 
 RegisterNetEvent("qb-radialmenu:client:onRadialmenuOpen", function()
-    if not inZone or not zoneName then
+    if not currentZone then
         RemoveRadialMenuOption()
         return
     end
@@ -898,134 +914,112 @@ local function CheckDuty()
     return not Config.OnDutyOnlyClothingRooms or (Config.OnDutyOnlyClothingRooms and client.job.onduty)
 end
 
-local function SetupStoreZones()
-    local zones = {}
-    for k, v in pairs(Config.Stores) do
-        if Config.UseRadialMenu then
-            zones[#zones + 1] = PolyZone:Create(v.zone.shape, {
-                name = "Stores_" .. v.shopType .. "_" .. k,
-                minZ = v.zone.minZ,
-                maxZ = v.zone.maxZ,
-            })
-        else
-            zones[#zones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
-                name = "Stores_" .. v.shopType .. "_" .. k,
-                minZ = v.coords.z - 1.5,
-                maxZ = v.coords.z + 1.5,
-                heading = v.coords.w
-            })
+local function lookupZoneIndexFromID(zones, id)
+    for i = 1, #zones do
+        if zones[i].id == id then
+            return i
         end
     end
+end
 
-    local storeCombo = ComboZone:Create(zones, {
-        name = "storeCombo",
-        debugPoly = Config.Debug
-    })
-    storeCombo:onPlayerInOut(function(isPointInside, _, zone)
-        if isPointInside then
-            local matches = {zone.name:match("([^_]+)_([^_]+)_([^_]+)")}
-            zoneName = matches[2]
-            local currentStore = Config.Stores[tonumber(matches[3])]
-            local jobName = (currentStore.job and client.job.name) or (currentStore.gang and client.gang.name)
-            if jobName == (currentStore.job or currentStore.gang) then
-                inZone = true
-                local prefix = Config.UseRadialMenu and "" or "[E] "
-                if zoneName == "clothing" then
-                    lib.showTextUI(prefix .. "Clothing Store - Price: $" .. Config.ClothingCost, Config.TextUIOptions)
-                elseif zoneName == "barber" then
-                    lib.showTextUI(prefix .. "Barber - Price: $" .. Config.BarberCost, Config.TextUIOptions)
-                elseif zoneName == "tattoo" then
-                    lib.showTextUI(prefix .. "Tattoo Shop - Price: $" .. Config.TattooCost, Config.TextUIOptions)
-                elseif zoneName == "surgeon" then
-                    lib.showTextUI(prefix .. "Plastic Surgeon - Price: $" .. Config.SurgeonCost, Config.TextUIOptions)
-                end
-            end
-        else
-            inZone = false
-            lib.hideTextUI()
+local function onStoreEnter(data)
+    local index = lookupZoneIndexFromID(Zones.Store, data.id)
+    local store = Config.Stores[index]
+    currentZone = {
+        name = store.type,
+        index = index
+    }
+
+    local jobName = (store.job and client.job.name) or (store.gang and client.gang.name)
+    if jobName == (store.job or store.gang) then
+        local prefix = Config.UseRadialMenu and "" or "[E] "
+        if currentZone.name == "clothing" then
+            lib.showTextUI(prefix .. "Clothing Store - Price: $" .. Config.ClothingCost, Config.TextUIOptions)
+        elseif currentZone.name == "barber" then
+            lib.showTextUI(prefix .. "Barber - Price: $" .. Config.BarberCost, Config.TextUIOptions)
+        elseif currentZone.name == "tattoo" then
+            lib.showTextUI(prefix .. "Tattoo Shop - Price: $" .. Config.TattooCost, Config.TextUIOptions)
+        elseif currentZone.name == "surgeon" then
+            lib.showTextUI(prefix .. "Plastic Surgeon - Price: $" .. Config.SurgeonCost, Config.TextUIOptions)
         end
-    end)
+    end
+end
+
+local function onClothingRoomEnter(data)
+    local index = lookupZoneIndexFromID(Zones.ClothingRoom, data.id)
+    local clothingRoom = Config.ClothingRooms[index]
+    currentZone = {
+        name = "clothingRoom",
+        index = index
+    }
+
+    local jobName = clothingRoom.job and client.job.name or client.gang.name
+    if jobName == (clothingRoom.job or clothingRoom.gang) then
+        if CheckDuty() or clothingRoom.gang then
+            local prefix = Config.UseRadialMenu and "" or "[E] "
+            lib.showTextUI(prefix .. "Clothing Room", Config.TextUIOptions)
+        end
+    end
+end
+
+local function onPlayerOutfitRoomEnter(data)
+    local index = lookupZoneIndexFromID(Zones.PlayerOutfitRoom, data.id)
+    local playerOutfitRoom = Config.PlayerOutfitRooms[index]
+    currentZone = {
+        name = "playerOutfitRoom",
+        index = index
+    }
+
+    local isAllowed = isPlayerAllowedForOutfitRoom(playerOutfitRoom)
+    if isAllowed then
+        local prefix = Config.UseRadialMenu and "" or "[E] "
+        lib.showTextUI(prefix .. "Outfits", Config.TextUIOptions)
+    end
+end
+
+local function onZoneExit()
+    currentZone = nil
+    lib.hideTextUI()
+end
+
+local function SetupZone(store, onEnter, onExit)
+    if Config.UseRadialMenu or store.usePoly then
+        return lib.zones.poly({
+            points = store.points,
+            debug = Config.Debug,
+            onEnter = onEnter,
+            onExit = onExit
+        })
+    end
+
+    return lib.zones.box({
+        coords = store.coords,
+        size = store.size,
+        debug = Config.Debug,
+        onEnter = onEnter,
+        onExit = onExit
+    })
+end
+
+local function SetupStoreZones()
+    Zones.Store = {}
+    for _, v in pairs(Config.Stores) do
+        Zones.Store[#Zones.Store + 1] = SetupZone(v, onStoreEnter, onZoneExit)
+    end
 end
 
 local function SetupClothingRoomZones()
-    local roomZones = {}
-    for k, v in pairs(Config.ClothingRooms) do
-        if Config.UseRadialMenu then
-            roomZones[#roomZones + 1] = PolyZone:Create(v.zone.shape, {
-                name = "ClothingRooms_" .. k,
-                minZ = v.zone.minZ,
-                maxZ = v.zone.maxZ,
-            })
-        else
-            roomZones[#roomZones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
-                name = "ClothingRooms_" .. k,
-                minZ = v.coords.z - 1.5,
-                maxZ = v.coords.z + 1,
-                heading = v.coords.w
-            })
-        end
+    Zones.ClothingRoom = {}
+    for _, v in pairs(Config.ClothingRooms) do
+        Zones.ClothingRoom[#Zones.ClothingRoom + 1] = SetupZone(v, onClothingRoomEnter, onZoneExit)
     end
-
-    local clothingRoomsCombo = ComboZone:Create(roomZones, {
-        name = "clothingRoomsCombo",
-        debugPoly = Config.Debug
-    })
-    clothingRoomsCombo:onPlayerInOut(function(isPointInside, _, zone)
-        if isPointInside then
-            zoneName = zone.name
-            local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zone.name, 15))]
-            local jobName = clothingRoom.job and client.job.name or client.gang.name
-            if jobName == (clothingRoom.job or clothingRoom.gang) then
-                if CheckDuty() or clothingRoom.gang then
-                    inZone = true
-                    local prefix = Config.UseRadialMenu and "" or "[E] "
-                    lib.showTextUI(prefix .. "Clothing Room", Config.TextUIOptions)
-                end
-            end
-        else
-            inZone = false
-            lib.hideTextUI()
-        end
-    end)
 end
 
 local function SetupPlayerOutfitRoomZones()
-    local roomZones = {}
-    for k, v in pairs(Config.PlayerOutfitRooms) do
-        if Config.UseRadialMenu then
-            roomZones[#roomZones + 1] = PolyZone:Create(v.zone.shape, {
-                name = "PlayerOutfitRooms_" .. k,
-                minZ = v.zone.minZ,
-                maxZ = v.zone.maxZ,
-            })
-        else
-            roomZones[#roomZones + 1] = BoxZone:Create(v.coords, v.length, v.width, {
-                name = "PlayerOutfitRooms_" .. k,
-                minZ = v.coords.z - 1.5,
-                maxZ = v.coords.z + 1
-            })
-        end
+    Zones.PlayerOutfitRoom = {}
+    for _, v in pairs(Config.PlayerOutfitRooms) do
+        Zones.PlayerOutfitRoom[#Zones.PlayerOutfitRoom + 1] = SetupZone(v, onPlayerOutfitRoomEnter, onZoneExit)
     end
-
-    local playerOutfitRoomsCombo = ComboZone:Create(roomZones, {
-        name = "playerOutfitRoomsCombo",
-        debugPoly = Config.Debug
-    })
-    playerOutfitRoomsCombo:onPlayerInOut(function(isPointInside, _, zone)
-        if isPointInside then
-            zoneName = zone.name
-            local outfitRoom = Config.PlayerOutfitRooms[tonumber(string.sub(zone.name, 19))]
-            local isAllowed = isPlayerAllowedForOutfitRoom(outfitRoom)
-            if isAllowed then
-                inZone = true
-                local prefix = Config.UseRadialMenu and "" or "[E] "
-                lib.showTextUI(prefix .. "Outfits", Config.TextUIOptions)
-            end
-        else
-            inZone = false
-            lib.hideTextUI()
-        end
-    end)
 end
 
 local function SetupZones()
@@ -1056,18 +1050,18 @@ end
 
 local function SetupStoreTargets()
     for k, v in pairs(Config.Stores) do
-        local targetConfig = Config.TargetConfig[v.shopType]
+        local targetConfig = Config.TargetConfig[v.type]
         local action
 
-        if v.shopType == "barber" then
+        if v.type == "barber" then
             action = OpenBarberShop
-        elseif v.shopType == "clothing" then
+        elseif v.type == "clothing" then
             action = function()
                 TriggerEvent("illenium-appearance:client:openClothingShopMenu")
             end
-        elseif v.shopType == "tattoo" then
+        elseif v.type == "tattoo" then
             action = OpenTattooShop
-        elseif v.shopType == "surgeon" then
+        elseif v.type == "surgeon" then
             action = OpenSurgeonShop
         end
 
@@ -1085,8 +1079,8 @@ local function SetupStoreTargets()
             TargetPeds.Store[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
             exports["qb-target"]:AddTargetEntity(TargetPeds.Store[k], parameters)
         else
-            exports["qb-target"]:AddBoxZone(v.shopType .. k, v.coords, v.length, v.width, {
-                name = v.shopType .. k,
+            exports["qb-target"]:AddBoxZone(v.type .. k, v.coords, v.length, v.width, {
+                name = v.type .. k,
                 debugPoly = Config.Debug,
                 minZ = v.coords.z - 1,
                 maxZ = v.coords.z + 1,
@@ -1177,23 +1171,23 @@ local function ZonesLoop()
     Wait(1000)
     while true do
         local sleep = 1000
-        if inZone then
+        if currentZone then
             sleep = 5
             if IsControlJustReleased(0, 38) then
-                if string.find(zoneName, "ClothingRooms_") then
-                    local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zoneName, 15))]
+                if currentZone.name == "clothingRoom" then
+                    local clothingRoom = Config.ClothingRooms[currentZone.index]
                     local outfits = getPlayerJobOutfits(clothingRoom)
                     TriggerEvent("illenium-appearance:client:openJobOutfitsMenu", outfits)
-                elseif string.find(zoneName, "PlayerOutfitRooms_") then
-                    local outfitRoom = Config.PlayerOutfitRooms[tonumber(string.sub(zoneName, 19))]
+                elseif currentZone.name == "playerOutfitRoom" then
+                    local outfitRoom = Config.PlayerOutfitRooms[currentZone.index]
                     OpenOutfitRoom(outfitRoom)
-                elseif zoneName == "clothing" then
+                elseif currentZone.name == "clothing" then
                     TriggerEvent("illenium-appearance:client:openClothingShopMenu")
-                elseif zoneName == "barber" then
+                elseif currentZone.name == "barber" then
                     OpenBarberShop()
-                elseif zoneName == "tattoo" then
+                elseif currentZone.name == "tattoo" then
                     OpenTattooShop()
-                elseif zoneName == "surgeon" then
+                elseif currentZone.name == "surgeon" then
                     OpenSurgeonShop()
                 end
             end
