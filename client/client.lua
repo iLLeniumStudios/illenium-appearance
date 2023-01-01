@@ -1079,7 +1079,7 @@ local function SetupStoreTargets()
             TargetPeds.Store[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
             exports["qb-target"]:AddTargetEntity(TargetPeds.Store[k], parameters)
         else
-            exports["qb-target"]:AddBoxZone(v.type .. k, v.coords, v.length, v.width, {
+            exports["qb-target"]:AddBoxZone(v.type .. k, v.coords, v.size.x, v.size.y, {
                 name = v.type .. k,
                 debugPoly = Config.Debug,
                 minZ = v.coords.z - 1,
@@ -1116,7 +1116,7 @@ local function SetupClothingRoomTargets()
             exports["qb-target"]:AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
         else
             local key = "clothing_" .. (v.job or v.gang) .. k
-            exports["qb-target"]:AddBoxZone(key, v.coords, v.length, v.width, {
+            exports["qb-target"]:AddBoxZone(key, v.coords, v.size.x, v.size.y, {
                 name = key,
                 debugPoly = Config.Debug,
                 minZ = v.coords.z - 2,
@@ -1150,7 +1150,7 @@ local function SetupPlayerOutfitRoomTargets()
             TargetPeds.PlayerOutfitRoom[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
             exports["qb-target"]:AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
         else
-            exports["qb-target"]:AddBoxZone("playeroutfitroom_" .. k, v.coords, v.length, v.width, {
+            exports["qb-target"]:AddBoxZone("playeroutfitroom_" .. k, v.coords, v.size.x, v.size.y, {
                 name = "playeroutfitroom_" .. k,
                 debugPoly = Config.Debug,
                 minZ = v.coords.z - 2,
