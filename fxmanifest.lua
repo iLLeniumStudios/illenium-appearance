@@ -37,14 +37,7 @@ shared_scripts {
   "shared/peds.lua",
   "shared/tattoos.lua",
   "shared/theme.lua",
-  "locales/en.lua",
-  "locales/ar.lua",
-  "locales/bg.lua",
-  "locales/de.lua",
-  "locales/es-ES.lua",
-  "locales/fr.lua",
-  "locales/pt-BR.lua",
-  "locales/ro-RO.lua",
+  "locales/*.lua",
   "@ox_lib/init.lua"
 }
 
