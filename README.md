@@ -12,7 +12,6 @@ Discord: https://discord.illenium.dev
 
 ## Dependencies
 
-- [PolyZone](https://github.com/mkafrin/PolyZone)
 - [qb-core](https://github.com/qbcore-framework/qb-core) (Latest)
 - [ox_lib](https://github.com/overextended/ox_lib)
 - [qb-target](https://github.com/BerkieBb/qb-target) (Optional)
