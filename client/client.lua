@@ -3,7 +3,6 @@ local QBCore = exports["qb-core"]:GetCoreObject()
 local client = client
 
 local currentZone = nil
-local zoneName = nil
 
 local MenuItemId = nil
 
@@ -816,22 +815,22 @@ RegisterNetEvent("qb-radialmenu:client:onRadialmenuOpen", function()
         return
     end
     local event, title
-    if string.find(zoneName, "ClothingRooms_") then
+    if currentZone.name == "clothingRoom" then
         event = "illenium-appearance:client:OpenClothingRoom"
         title = "Clothing Room"
-    elseif string.find(zoneName, "PlayerOutfitRooms_") then
+    elseif currentZone.name == "playerOutfitRoom" then
         event = "illenium-appearance:client:OpenPlayerOutfitRoom"
         title = "Player Outfits"
-    elseif zoneName == "clothing" then
+    elseif currentZone.name == "clothing" then
         event = "illenium-appearance:client:openClothingShopMenu"
         title = "Clothing Shop"
-    elseif zoneName == "barber" then
+    elseif currentZone.name == "barber" then
         event = "illenium-appearance:client:OpenBarberShop"
         title = "Barber Shop"
-    elseif zoneName == "tattoo" then
+    elseif currentZone.name == "tattoo" then
         event = "illenium-appearance:client:OpenTattooShop"
         title = "Tattoo Shop"
-    elseif zoneName == "surgeon" then
+    elseif currentZone.name == "surgeon" then
         event = "illenium-appearance:client:OpenSurgeonShop"
         title = "Surgeon Shop"
     end
@@ -900,13 +899,13 @@ local function getPlayerJobOutfits(clothingRoom)
 end
 
 RegisterNetEvent("illenium-appearance:client:OpenClothingRoom", function()
-    local clothingRoom = Config.ClothingRooms[tonumber(string.sub(zoneName, 15))]
+    local clothingRoom = Config.ClothingRooms[currentZone.index]
     local outfits = getPlayerJobOutfits(clothingRoom)
     TriggerEvent("illenium-appearance:client:openJobOutfitsMenu", outfits)
 end)
 
 RegisterNetEvent("illenium-appearance:client:OpenPlayerOutfitRoom", function()
-    local outfitRoom = Config.PlayerOutfitRooms[tonumber(string.sub(zoneName, 19))]
+    local outfitRoom = Config.PlayerOutfitRooms[currentZone.index]
     OpenOutfitRoom(outfitRoom)
 end)
 
