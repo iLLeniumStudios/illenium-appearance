@@ -160,7 +160,7 @@ Config.Stores = {
         coords = vector4(1693.2, 4828.11, 42.07, 188.66),
         size = vector3(4, 4, 4),
         rotation = 45,
-        usePoly = false,
+        usePoly = false, -- false => uses the size + rotation to create the zone | true => uses points to create the zone
         showBlip = true, -- overrides the blip visibilty configured above for the group
         --targetModel = "s_m_m_doctor_01", -- overrides the target ped configured for the group
         --targetScenario = "" -- overrides the target scenario configure for the group
