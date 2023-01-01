@@ -227,18 +227,14 @@ RegisterNetEvent("illenium-appearance:server:resetOutfitCache", function()
 end)
 
 if Config.EnablePedMenu then
-    QBCore.Commands.Add("pedmenu", "Open Ped Menu", {{
-        name = "id",
-        help = "[Optional] ID of player (Gives you the ped menu if not provided)"
-    }}, false, function(source, args)
-        local src = source
-        local playerId = tonumber(args[1])
-        if playerId then
-            local Player = QBCore.Functions.GetPlayer(playerId)
+    lib.addCommand(Config.PedMenuGroup, "pedmenu", function(source, args)
+        local target = source
+        if args.playerID then
+            local Player = QBCore.Functions.GetPlayer(args.playerID)
             if Player then
-                src = playerId
+                target = args.playerID
             else
-                lib.notify(src, {
+                lib.notify(source, {
                     title = "Error",
                     description = "Player not online",
                     type = "error",
@@ -247,17 +243,16 @@ if Config.EnablePedMenu then
                 return
             end
         end
-
-        TriggerClientEvent("illenium-appearance:client:openClothingShopMenu", src, true)
-    end, Config.PedMenuGroup)
+        TriggerClientEvent("illenium-appearance:client:openClothingShopMenu", target, true)
+    end, {"playerID:?number"}, "Open / Give Clothing Menu")
 end
 
-QBCore.Commands.Add("reloadskin", "Reloads your character", {}, false, function(source, _)
+lib.addCommand(false, "reloadskin", function(source)
     TriggerClientEvent("illenium-appearance:client:reloadSkin", source)
-end)
+end, nil, "Reloads your character")
 
-QBCore.Commands.Add("clearstuckprops", "Removes all the props attached to the entity", {}, false, function(source, _)
+lib.addCommand(false, "clearstuckprops", function(source)
     TriggerClientEvent("illenium-appearance:client:ClearStuckProps", source)
-end)
+end, nil, "Removes all the props attached to the entity")
 
 lib.versionCheck('iLLeniumStudios/illenium-appearance')
