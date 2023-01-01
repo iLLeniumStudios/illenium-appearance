@@ -2,6 +2,10 @@ local hashesComputed = false
 local PED_TATTOOS = {}
 local pedModelsByHash = {}
 
+local function tofloat(num)
+	return num + 0.0
+end
+
 local function isPedFreemodeModel(ped)
 	local model = GetEntityModel(ped)
 	return model == `mp_m_freemode_01` or model == `mp_f_freemode_01`
@@ -214,7 +218,7 @@ end
 local function setPedFaceFeatures(ped, faceFeatures)
 	if faceFeatures then
 		for k, v in pairs(constants.FACE_FEATURES) do
-			SetPedFaceFeature(ped, k-1, faceFeatures[v])
+			SetPedFaceFeature(ped, k-1, tofloat(faceFeatures[v]))
 		end
 	end
 end
@@ -223,7 +227,7 @@ local function setPedHeadOverlays(ped, headOverlays)
 	if headOverlays then
 		for k, v in pairs(constants.HEAD_OVERLAYS) do
 			local headOverlay = headOverlays[v]
-			SetPedHeadOverlay(ped, k-1, headOverlay.style, headOverlay.opacity)
+			SetPedHeadOverlay(ped, k-1, headOverlay.style, tofloat(headOverlay.opacity))
 
 			if headOverlay.color then
 				local colorType = 1
