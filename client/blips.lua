@@ -24,8 +24,8 @@ local function CreateBlip(blipConfig, coords)
 end
 
 local function SetupBlips()
-    for k, _ in pairs (Config.Stores) do
-        local blipConfig = Config.Blips[Config.Stores[k].shopType]
+    for k, _ in pairs(Config.Stores) do
+        local blipConfig = Config.Blips[Config.Stores[k].type]
         if ShowBlip(blipConfig, Config.Stores[k]) then
             local blip = CreateBlip(blipConfig, Config.Stores[k].coords)
             Blips[#Blips + 1] = blip
@@ -56,7 +56,7 @@ local function ShowNearestShopBlip()
             local closestCoords
 
             for _, shop in pairs(Config.Stores) do
-                if shop.shopType == shopType and ShowBlip(blipConfig, shop) then
+                if shop.type == shopType and ShowBlip(blipConfig, shop) then
                     local dist = #(coords - vector3(shop.coords.xyz))
                     if dist < closest then
                         closest = dist
