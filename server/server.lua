@@ -259,3 +259,5 @@ end)
 QBCore.Commands.Add("clearstuckprops", "Removes all the props attached to the entity", {}, false, function(source, _)
     TriggerClientEvent("illenium-appearance:client:ClearStuckProps", source)
 end)
+
+lib.versionCheck('iLLeniumStudios/illenium-appearance')
