@@ -31,6 +31,8 @@ Config.NearestShopBlipUpdateDelay = 10000
 
 Config.InvincibleDuringCustomization = true
 
+Config.PreventTrackerRemoval = true -- Disables "Scarf and Chains" section if the player has tracker
+
 Config.NewCharacterSections = {
     Ped = true,
     HeadBlend = true,
