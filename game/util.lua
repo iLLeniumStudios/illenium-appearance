@@ -203,6 +203,7 @@ local function setPlayerModel(model)
             SetPedHeadBlendData(playerPed, 0, 0, 0, 0, 0, 0, 0, 0, 0, false)
         end
 
+        PED_TATTOOS = {}
         return playerPed
     end
 
@@ -211,7 +212,7 @@ end
 
 local function setPedHeadBlend(ped, headBlend)
     if headBlend and isPedFreemodeModel(ped) then
-        SetPedHeadBlendData(ped, headBlend.shapeFirst, headBlend.shapeSecond, headBlend.shapeThird, headBlend.skinFirst, headBlend.skinSecond, headBlend.skinThird, headBlend.shapeMix, headBlend.skinMix, headBlend.thirdMix, false)
+        SetPedHeadBlendData(ped, headBlend.shapeFirst, headBlend.shapeSecond, headBlend.shapeThird, headBlend.skinFirst, headBlend.skinSecond, headBlend.skinThird, tofloat(headBlend.shapeMix), tofloat(headBlend.skinMix), tofloat(headBlend.thirdMix), false)
     end
 end
 
@@ -341,7 +342,7 @@ local function setPedAppearance(ped, appearance)
         setPedComponents(ped, appearance.components)
         setPedProps(ped, appearance.props)
 
-        if appearance.headBlend then setPedHeadBlend(ped, appearance.headBlend) end
+        if appearance.headBlend and isPedFreemodeModel(ped) then setPedHeadBlend(ped, appearance.headBlend) end
         if appearance.faceFeatures then setPedFaceFeatures(ped, appearance.faceFeatures) end
         if appearance.headOverlays then setPedHeadOverlays(ped, appearance.headOverlays) end
         if appearance.hair then setPedHair(ped, appearance.hair) end
