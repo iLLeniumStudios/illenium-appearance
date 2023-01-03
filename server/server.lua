@@ -61,6 +61,29 @@ lib.callback.register("illenium-appearance:server:hasMoney", function(source, sh
     end
 end)
 
+lib.callback.register("illenium-appearance:server:payForTattoo", function(source, tattoo)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local cost = tattoo.cost or Config.TattooCost
+    if Player.Functions.RemoveMoney("cash", cost) then
+        lib.notify(src, {
+            title = "Success",
+            description = "Purchased " .. tattoo.label .. " tattoo for " .. cost .. "$",
+            type = "success",
+            position = Config.NotifyOptions.position
+        })
+        return true
+    else
+        lib.notify(src, {
+            title = "Tattoo apply failed",
+            description = "You don't have enough money!",
+            type = "error",
+            position = Config.NotifyOptions.position
+        })
+        return false
+    end
+end)
+
 lib.callback.register("illenium-appearance:server:getOutfits", function(source)
     local Player = QBCore.Functions.GetPlayer(source)
     if outfitCache[Player.PlayerData.citizenid] == nil then
