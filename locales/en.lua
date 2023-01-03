@@ -123,7 +123,8 @@ Locales["en"] = {
         shirt = "Shirt",
         bodyArmor = "Body armor",
         decals = "Decals",
-        jackets = "Jackets"
+        jackets = "Jackets",
+        head = "Head"
     },
     props = {
         title = "Props",
