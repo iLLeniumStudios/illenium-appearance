@@ -122,7 +122,7 @@ Locales["ar"] = {
       bodyArmor = "الدروع الواقية",
       decals = "شارات",
       jackets = "السترات",
-      hair = "رأس"
+      head = "رأس"
   },
   props = {
       title = "الاضافات",

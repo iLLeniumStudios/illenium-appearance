@@ -122,7 +122,7 @@ Locales["bg"] = {
       bodyArmor = "Бронежилетка",
       decals = "Ваденки",
       jackets = "Якета",
-      hair = "Глава"
+      head = "Глава"
   },
   props = {
       title = "Обекти",
