@@ -9,13 +9,12 @@ end
 function BackupPlayerStats()
     local playerPed = PlayerPedId()
     stats.health = GetEntityHealth(playerPed)
-    stats.maxhealth = GetEntityMaxHealth(playerPed)
     stats.armour = GetPedArmour(playerPed)
 end
 
 function RestorePlayerStats()
     local playerPed = PlayerPedId()
-    SetPedMaxHealth(playerPed, stats.maxhealth)
+    SetEntityMaxHealth(playerPed, 200)
     Wait(1000) -- Safety Delay
     SetEntityHealth(playerPed, stats.health)
     SetPedArmour(playerPed, stats.armour)
