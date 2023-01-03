@@ -121,7 +121,8 @@ Locales["ro-RO"] = {
       shirt = "Tricou",
       bodyArmor = "Veste antiglont",
       decals = "Imprimeuri",
-      jackets = "Jachete"
+      jackets = "Jachete",
+      head = "Cap"
   },
   props = {
       title = "Optiuni recuzita",

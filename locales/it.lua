@@ -121,7 +121,8 @@ Locales["it"] = {
         shirt = "Maglia",
         bodyArmor = "Giubbotto",
         decals = "Decalcomanie",
-        jackets = "Giacca"
+        jackets = "Giacca",
+        head = "Capo"
     },
     props = {
         title = "Accessori",

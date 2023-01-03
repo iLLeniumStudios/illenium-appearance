@@ -121,7 +121,8 @@ Locales["pt-BR"] = {
       shirt = "Camisa",
       bodyArmor = "Colete",
       decals = "Decalques",
-      jackets = "Jaquetas"
+      jackets = "Jaquetas",
+      head = "Cabeça"
   },
   props = {
       title = "Acessórios",

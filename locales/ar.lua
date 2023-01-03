@@ -121,7 +121,8 @@ Locales["ar"] = {
       shirt = "قميص",
       bodyArmor = "الدروع الواقية",
       decals = "شارات",
-      jackets = "السترات"
+      jackets = "السترات",
+      hair = "رأس"
   },
   props = {
       title = "الاضافات",
