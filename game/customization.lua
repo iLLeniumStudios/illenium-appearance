@@ -534,9 +534,6 @@ client.removeClothes = removeClothes
 local playerHeading
 function client.getHeading() return playerHeading end
 
-local playerArmour
-
-
 local toggleRadar = GetConvarInt("illenium-appearance:radar", 1) == 1
 local callback
 function client.startPlayerCustomization(cb, conf)
@@ -544,7 +541,8 @@ function client.startPlayerCustomization(cb, conf)
     playerAppearance = client.getPedAppearance(playerPed)
     playerCoords = GetEntityCoords(playerPed, true)
     playerHeading = GetEntityHeading(playerPed)
-    playerArmour = GetPedArmour(playerPed)
+    
+    BackupPlayerStats()
 
     callback = cb
     config = conf
@@ -589,7 +587,7 @@ function client.exitPlayerCustomization(appearance)
         client.setPedTattoos(playerPed, appearance.tattoos)
     end
 
-    SetPedArmour(PlayerPedId(), playerArmour)
+    RestorePlayerStats()
 
     if callback then
         callback(appearance)

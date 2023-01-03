@@ -133,12 +133,6 @@ local function LoadPlayerUniform()
     end)
 end
 
-local function ResetRechargeMultipliers()
-    local player = PlayerId()
-    SetPlayerHealthRechargeMultiplier(player, 0.0)
-    SetPlayerHealthRechargeLimit(player, 0.0)
-end
-
 local function RemoveManagementMenuItems()
     if ManagementItemIDs.Boss then
         exports["qb-management"]:RemoveBossMenuItem(ManagementItemIDs.Boss)
@@ -185,11 +179,14 @@ local function InitAppearance()
         if not appearance then
             return
         end
+
+        BackupPlayerStats()
+
         client.setPlayerAppearance(appearance)
         if Config.PersistUniforms then
             LoadPlayerUniform()
         end
-        ResetRechargeMultipliers()
+        RestorePlayerStats()
 
         if Config.Debug then -- This will detect if the player model is set as "player_zero" aka michael. Will then set the character as a freemode ped based on gender.
             Wait(5000)
@@ -284,7 +281,6 @@ RegisterNetEvent("qb-clothes:client:CreateFirstCharacter", function()
         client.startPlayerCustomization(function(appearance)
             if (appearance) then
                 TriggerServerEvent("illenium-appearance:server:saveAppearance", appearance)
-                ResetRechargeMultipliers()
             end
         end, config)
     end)
@@ -683,9 +679,10 @@ RegisterNetEvent("illenium-appearance:client:changeOutfit", function(data)
     if pedModel ~= data.model then
         local p = promise.new()
         lib.callback("illenium-appearance:server:getAppearance", false, function(appearance)
+            BackupPlayerStats()
             if appearance then
                 client.setPlayerAppearance(appearance)
-                ResetRechargeMultipliers()
+                RestorePlayerStats()
             else
                 lib.notify({
                     title = "Something went wrong",
@@ -764,10 +761,7 @@ RegisterNetEvent("illenium-appearance:client:reloadSkin", function()
     end
 
     reloadSkinTimer = GetGameTimer()
-
-    local health = GetEntityHealth(playerPed)
-    local maxhealth = GetEntityMaxHealth(playerPed)
-    local armour = GetPedArmour(playerPed)
+    BackupPlayerStats()
 
     lib.callback("illenium-appearance:server:getAppearance", false, function(appearance)
         if not appearance then
@@ -777,12 +771,7 @@ RegisterNetEvent("illenium-appearance:client:reloadSkin", function()
         if Config.PersistUniforms then
             TriggerServerEvent("illenium-appearance:server:syncUniform", nil)
         end
-        playerPed = PlayerPedId()
-        SetPedMaxHealth(playerPed, maxhealth)
-        Wait(1000) -- Safety Delay
-        SetEntityHealth(playerPed, health)
-        SetPedArmour(playerPed, armour)
-        ResetRechargeMultipliers()
+        RestorePlayerStats()
     end)
 end)
 
