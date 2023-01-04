@@ -146,6 +146,7 @@ Locales["it"] = {
         },
         apply = "Applica",
         delete = "Rimuovi",
-        deleteAll = "Rimuovi tutti i Tatuaggi"
+        deleteAll = "Rimuovi tutti i Tatuaggi",
+        opacity = "Opacità"
     }
 }

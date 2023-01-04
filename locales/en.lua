@@ -148,6 +148,7 @@ Locales["en"] = {
         },
         apply = "Apply",
         delete = "Remove",
-        deleteAll = "Remove all Tattoos"
+        deleteAll = "Remove all Tattoos",
+        opacity = "Opacity"
     }
 }
