@@ -257,7 +257,12 @@ local function getAppearanceSettings()
     }
 
     local tattoos = {
-        items = filterTattoosByGender(Config.Tattoos)
+        items = filterTattoosByGender(Config.Tattoos),
+        opacity = {
+            min = 0.1,
+            max = 1,
+            factor = 0.1,
+        }
     }
 
     local components = {}

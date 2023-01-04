@@ -298,7 +298,9 @@ local function setTattoos(ped, tattoos)
         for i = 1, #tattoos[k] do
             local tattoo = tattoos[k][i]
             local tattooGender = isMale and tattoo.hashMale or tattoo.hashFemale
-            AddPedDecorationFromHashes(ped, joaat(tattoo.collection), joaat(tattooGender))
+            for _ = 1, (tattoo.opacity or 0.1) * 10 do
+                AddPedDecorationFromHashes(ped, joaat(tattoo.collection), joaat(tattooGender))
+            end
         end
     end
 end
@@ -325,13 +327,17 @@ local function setPreviewTattoo(ped, tattoos, tattoo)
     local tattooGender = isMale and tattoo.hashMale or tattoo.hashFemale
 
     ClearPedDecorations(ped)
-    AddPedDecorationFromHashes(ped, joaat(tattoo.collection), tattooGender)
+    for _ = 1, (tattoo.opacity or 0.1) * 10 do
+        AddPedDecorationFromHashes(ped, joaat(tattoo.collection), tattooGender)
+    end
     for k in pairs(tattoos) do
         for i = 1, #tattoos[k] do
             local aTattoo = tattoos[k][i]
             if aTattoo.name ~= tattoo.name then
                 local aTattooGender = isMale and aTattoo.hashMale or aTattoo.hashFemale
-                AddPedDecorationFromHashes(ped, joaat(aTattoo.collection), joaat(aTattooGender))
+                for _ = 1, (aTattoo.opacity or 0.1) * 10 do
+                    AddPedDecorationFromHashes(ped, joaat(aTattoo.collection), joaat(aTattooGender))
+                end
             end
         end
     end
