@@ -149,5 +149,4 @@ Locales["pt-BR"] = {
         deleteAll = "Apagar tudo",
         opacity = "Opacidade"
     }
-  }
-  
+}

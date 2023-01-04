@@ -149,5 +149,4 @@ Locales["fr"] = {
         deleteAll = "Supprimer tous les tatouages",
         opacity = "Opacité"
     }
-  }
-  
+}

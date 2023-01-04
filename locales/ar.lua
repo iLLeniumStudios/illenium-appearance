@@ -149,5 +149,4 @@ Locales["ar"] = {
         deleteAll = "حدف كل الوشم",
         opacity = "الغضب"
     }
-  }
-  
+}

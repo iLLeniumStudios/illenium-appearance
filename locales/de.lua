@@ -149,5 +149,4 @@ Locales["de"] = {
         deleteAll = "Alle Tattoos entfernen",
         opacity = "Deckkraft"
     }
-  }
-  
+}

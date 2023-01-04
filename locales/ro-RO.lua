@@ -149,5 +149,4 @@ Locales["ro-RO"] = {
         deleteAll = "Sterge toate tatuajele",
         opacity = "Opacitate"
     }
-  }
-  
+}
