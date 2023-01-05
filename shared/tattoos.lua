@@ -2263,6 +2263,174 @@ Config.Tattoos = {
             hashFemale = "FM_Tat_F_045",
             zone = "ZONE_TORSO",
             collection = "multiplayer_overlays"
+        },
+        {
+            name = "TAT_SB_057",
+            label = "Gray Demon",
+            hashMale = "MP_Sum2_Tat_057_M",
+            hashFemale = "MP_Sum2_Tat_057_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_058",
+            label = "Shrieking Dragon",
+            hashMale = "MP_Sum2_Tat_058_M",
+            hashFemale = "MP_Sum2_Tat_058_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_059",
+            label = "Swords & City",
+            hashMale = "MP_Sum2_Tat_059_M",
+            hashFemale = "MP_Sum2_Tat_059_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_060",
+            label = "Blaine County",
+            hashMale = "MP_Sum2_Tat_060_M",
+            hashFemale = "MP_Sum2_Tat_060_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_061",
+            label = "Angry Possum",
+            hashMale = "MP_Sum2_Tat_061_M",
+            hashFemale = "MP_Sum2_Tat_061_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_062",
+            label = "Floral Demon",
+            hashMale = "MP_Sum2_Tat_062_M",
+            hashFemale = "MP_Sum2_Tat_062_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_003",
+            label = "Bullet Mouth",
+            hashMale = "MP_Sum2_Tat_003_M",
+            hashFemale = "MP_Sum2_Tat_003_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_004",
+            label = "Smoking Barrel",
+            hashMale = "MP_Sum2_Tat_004_M",
+            hashFemale = "MP_Sum2_Tat_004_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_005",
+            label = "Concealed",
+            hashMale = "MP_Sum2_Tat_005_M",
+            hashFemale = "MP_Sum2_Tat_005_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_006",
+            label = "Painted Micro SMG",
+            hashMale = "MP_Sum2_Tat_006_M",
+            hashFemale = "MP_Sum2_Tat_006_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_007",
+            label = "Weapon King",
+            hashMale = "MP_Sum2_Tat_007_M",
+            hashFemale = "MP_Sum2_Tat_007_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_035",
+            label = "Sniff Sniff",
+            hashMale = "MP_Sum2_Tat_035_M",
+            hashFemale = "MP_Sum2_Tat_035_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_036",
+            label = "Charm Pattern",
+            hashMale = "MP_Sum2_Tat_036_M",
+            hashFemale = "MP_Sum2_Tat_036_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_037",
+            label = "Witch & Skull",
+            hashMale = "MP_Sum2_Tat_037_M",
+            hashFemale = "MP_Sum2_Tat_037_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_038",
+            label = "Pumpkin Bug",
+            hashMale = "MP_Sum2_Tat_038_M",
+            hashFemale = "MP_Sum2_Tat_038_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_039",
+            label = "Sinner",
+            hashMale = "MP_Sum2_Tat_039_M",
+            hashFemale = "MP_Sum2_Tat_039_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_040",
+            label = "Carved Pumpkin",
+            hashMale = "MP_Sum2_Tat_040_M",
+            hashFemale = "MP_Sum2_Tat_040_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_041",
+            label = "Branched Werewolf",
+            hashMale = "MP_Sum2_Tat_041_M",
+            hashFemale = "MP_Sum2_Tat_041_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_042",
+            label = "Winged Skull",
+            hashMale = "MP_Sum2_Tat_042_M",
+            hashFemale = "MP_Sum2_Tat_042_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_043",
+            label = "Cursed Saki",
+            hashMale = "MP_Sum2_Tat_043_M",
+            hashFemale = "MP_Sum2_Tat_043_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_044",
+            label = "Smouldering Bat & Skull",
+            hashMale = "MP_Sum2_Tat_044_M",
+            hashFemale = "MP_Sum2_Tat_044_F",
+            zone = "ZONE_TORSO",
+            collection = "mpsum2_overlays"
         }
     },
     ZONE_LEFT_ARM = {
@@ -3009,6 +3177,54 @@ Config.Tattoos = {
             hashFemale = "FM_Tat_F_041",
             zone = "ZONE_LEFT_ARM",
             collection = "multiplayer_overlays"
+        },
+        {
+            name = "TAT_SB_008",
+            label = "Bigness Chimp",
+            hashMale = "MP_Sum2_Tat_008_M",
+            hashFemale = "MP_Sum2_Tat_008_F",
+            zone = "ZONE_LEFT_ARM",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_009",
+            label = "Up-n-Atomizer Design",
+            hashMale = "MP_Sum2_Tat_009_M",
+            hashFemale = "MP_Sum2_Tat_009_F",
+            zone = "ZONE_LEFT_ARM",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_010",
+            label = "Rocket Launcher Girl",
+            hashMale = "MP_Sum2_Tat_010_M",
+            hashFemale = "MP_Sum2_Tat_010_F",
+            zone = "ZONE_LEFT_ARM",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_028",
+            label = "Laser Eyes Skull",
+            hashMale = "MP_Sum2_Tat_028_M",
+            hashFemale = "MP_Sum2_Tat_028_F",
+            zone = "ZONE_LEFT_ARM",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_029",
+            label = "Classic Vampire",
+            hashMale = "MP_Sum2_Tat_029_M",
+            hashFemale = "MP_Sum2_Tat_029_F",
+            zone = "ZONE_LEFT_ARM",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_049",
+            label = "Demon Drummer",
+            hashMale = "MP_Sum2_Tat_049_M",
+            hashFemale = "MP_Sum2_Tat_049_F",
+            zone = "ZONE_LEFT_ARM",
+            collection = "mpsum2_overlays"
         }
     },
     ZONE_HEAD = {
@@ -3483,6 +3699,102 @@ Config.Tattoos = {
             hashFemale = "FM_Tat_Award_F_000",
             zone = "ZONE_HEAD",
             collection = "multiplayer_overlays"
+        },
+        {
+            name = "TAT_SB_000",
+            label = "Live Fast Mono",
+            hashMale = "MP_Sum2_Tat_000_M",
+            hashFemale = "MP_Sum2_Tat_000_F",
+            zone = "ZONE_HEAD",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_001",
+            label = "Live Fast Color",
+            hashMale = "MP_Sum2_Tat_001_M",
+            hashFemale = "MP_Sum2_Tat_001_F",
+            zone = "ZONE_HEAD",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_018",
+            label = "Branched Skull",
+            hashMale = "MP_Sum2_Tat_018_M",
+            hashFemale = "MP_Sum2_Tat_018_F",
+            zone = "ZONE_HEAD",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_019",
+            label = "Scythed Corpse",
+            hashMale = "MP_Sum2_Tat_019_M",
+            hashFemale = "MP_Sum2_Tat_019_F",
+            zone = "ZONE_HEAD",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_020",
+            label = "Scythed Corpse & Reaper",
+            hashMale = "MP_Sum2_Tat_020_M",
+            hashFemale = "MP_Sum2_Tat_020_F",
+            zone = "ZONE_HEAD",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_021",
+            label = "Third Eye",
+            hashMale = "MP_Sum2_Tat_021_M",
+            hashFemale = "MP_Sum2_Tat_021_F",
+            zone = "ZONE_HEAD",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_022",
+            label = "Pierced Third Eye",
+            hashMale = "MP_Sum2_Tat_022_M",
+            hashFemale = "MP_Sum2_Tat_022_F",
+            zone = "ZONE_HEAD",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_023",
+            label = "Lip Drip",
+            hashMale = "MP_Sum2_Tat_023_M",
+            hashFemale = "MP_Sum2_Tat_023_F",
+            zone = "ZONE_HEAD",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_024",
+            label = "Skin Mask",
+            hashMale = "MP_Sum2_Tat_024_M",
+            hashFemale = "MP_Sum2_Tat_024_F",
+            zone = "ZONE_HEAD",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_025",
+            label = "Webbed Scythe",
+            hashMale = "MP_Sum2_Tat_025_M",
+            hashFemale = "MP_Sum2_Tat_025_F",
+            zone = "ZONE_HEAD",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_026",
+            label = "Oni Demon",
+            hashMale = "MP_Sum2_Tat_026_M",
+            hashFemale = "MP_Sum2_Tat_026_F",
+            zone = "ZONE_HEAD",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_027",
+            label = "Bat Wings",
+            hashMale = "MP_Sum2_Tat_027_M",
+            hashFemale = "MP_Sum2_Tat_027_F",
+            zone = "ZONE_HEAD",
+            collection = "mpsum2_overlays"
         }
     },
     ZONE_LEFT_LEG = {
@@ -3877,6 +4189,78 @@ Config.Tattoos = {
             hashFemale = "FM_Tat_F_037",
             zone = "ZONE_LEFT_LEG",
             collection = "multiplayer_overlays"
+        },
+        {
+            name = "TAT_SB_053",
+            label = "Mobster Skull",
+            hashMale = "MP_Sum2_Tat_053_M",
+            hashFemale = "MP_Sum2_Tat_053_F",
+            zone = "ZONE_LEFT_LEG",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_054",
+            label = "Wounded Head",
+            hashMale = "MP_Sum2_Tat_054_M",
+            hashFemale = "MP_Sum2_Tat_054_F",
+            zone = "ZONE_LEFT_LEG",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_055",
+            label = "Stabbed Skull",
+            hashMale = "MP_Sum2_Tat_055_M",
+            hashFemale = "MP_Sum2_Tat_055_F",
+            zone = "ZONE_LEFT_LEG",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_056",
+            label = "Tiger Blade",
+            hashMale = "MP_Sum2_Tat_056_M",
+            hashFemale = "MP_Sum2_Tat_056_F",
+            zone = "ZONE_LEFT_LEG",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_002",
+            label = "Cobra Biker",
+            hashMale = "MP_Sum2_Tat_002_M",
+            hashFemale = "MP_Sum2_Tat_002_F",
+            zone = "ZONE_LEFT_LEG",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_014",
+            label = "Minimal SMG",
+            hashMale = "MP_Sum2_Tat_014_M",
+            hashFemale = "MP_Sum2_Tat_014_F",
+            zone = "ZONE_LEFT_LEG",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_015",
+            label = "Minimal Advanced Rifle",
+            hashMale = "MP_Sum2_Tat_015_M",
+            hashFemale = "MP_Sum2_Tat_015_F",
+            zone = "ZONE_LEFT_LEG",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_016",
+            label = "Minimal Sniper Rifle",
+            hashMale = "MP_Sum2_Tat_016_M",
+            hashFemale = "MP_Sum2_Tat_016_F",
+            zone = "ZONE_LEFT_LEG",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_032",
+            label = "Many-eyed Goat",
+            hashMale = "MP_Sum2_Tat_032_M",
+            hashFemale = "MP_Sum2_Tat_032_F",
+            zone = "ZONE_LEFT_LEG",
+            collection = "mpsum2_overlays"
         }
     },
     ZONE_RIGHT_LEG = {
@@ -4199,6 +4583,54 @@ Config.Tattoos = {
             hashFemale = "FM_Tat_F_043",
             zone = "ZONE_RIGHT_LEG",
             collection = "multiplayer_overlays"
+        },
+        {
+            name = "TAT_SB_050",
+            label = "Gold Gun",
+            hashMale = "MP_Sum2_Tat_050_M",
+            hashFemale = "MP_Sum2_Tat_050_F",
+            zone = "ZONE_RIGHT_LEG",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_051",
+            label = "Blue Serpent",
+            hashMale = "MP_Sum2_Tat_051_M",
+            hashFemale = "MP_Sum2_Tat_051_F",
+            zone = "ZONE_RIGHT_LEG",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_052",
+            label = "Night Demon",
+            hashMale = "MP_Sum2_Tat_052_M",
+            hashFemale = "MP_Sum2_Tat_052_F",
+            zone = "ZONE_RIGHT_LEG",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_033",
+            label = "Three-eyed Demon",
+            hashMale = "MP_Sum2_Tat_033_M",
+            hashFemale = "MP_Sum2_Tat_033_F",
+            zone = "ZONE_RIGHT_LEG",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_034",
+            label = "Smoldering Reaper",
+            hashMale = "MP_Sum2_Tat_034_M",
+            hashFemale = "MP_Sum2_Tat_034_F",
+            zone = "ZONE_RIGHT_LEG",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_017",
+            label = "Skull Grenade",
+            hashMale = "MP_Sum2_Tat_017_M",
+            hashFemale = "MP_Sum2_Tat_017_F",
+            zone = "ZONE_RIGHT_LEG",
+            collection = "mpsum2_overlays"
         }
     },
     ZONE_RIGHT_ARM = {
@@ -5033,6 +5465,78 @@ Config.Tattoos = {
             hashFemale = "FM_Tat_F_047",
             zone = "ZONE_RIGHT_ARM",
             collection = "multiplayer_overlays"
+        },
+        {
+            name = "TAT_SB_011",
+            label = "Nothing Mini About It",
+            hashMale = "MP_Sum2_Tat_011_M",
+            hashFemale = "MP_Sum2_Tat_011_F",
+            zone = "ZONE_RIGHT_ARM",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_012",
+            label = "Snake Revolver",
+            hashMale = "MP_Sum2_Tat_012_M",
+            hashFemale = "MP_Sum2_Tat_012_F",
+            zone = "ZONE_RIGHT_ARM",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_013",
+            label = "Weapon Sleeve",
+            hashMale = "MP_Sum2_Tat_013_M",
+            hashFemale = "MP_Sum2_Tat_013_F",
+            zone = "ZONE_RIGHT_ARM",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_030",
+            label = "Centipede",
+            hashMale = "MP_Sum2_Tat_030_M",
+            hashFemale = "MP_Sum2_Tat_030_F",
+            zone = "ZONE_RIGHT_ARM",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_031",
+            label = "Fleshy Eye",
+            hashMale = "MP_Sum2_Tat_031_M",
+            hashFemale = "MP_Sum2_Tat_031_F",
+            zone = "ZONE_RIGHT_ARM",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_045",
+            label = "Armored Arm",
+            hashMale = "MP_Sum2_Tat_045_M",
+            hashFemale = "MP_Sum2_Tat_045_F",
+            zone = "ZONE_RIGHT_ARM",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_046",
+            label = "Demon Smile",
+            hashMale = "MP_Sum2_Tat_046_M",
+            hashFemale = "MP_Sum2_Tat_046_F",
+            zone = "ZONE_RIGHT_ARM",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_047",
+            label = "Angel & Devil",
+            hashMale = "MP_Sum2_Tat_047_M",
+            hashFemale = "MP_Sum2_Tat_047_F",
+            zone = "ZONE_RIGHT_ARM",
+            collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_SB_048",
+            label = "Death Is Certain",
+            hashMale = "MP_Sum2_Tat_048_M",
+            hashFemale = "MP_Sum2_Tat_048_F",
+            zone = "ZONE_RIGHT_ARM",
+            collection = "mpsum2_overlays"
         }
     },
     ZONE_HAIR = {
