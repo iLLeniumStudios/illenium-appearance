@@ -539,14 +539,13 @@ client.removeClothes = removeClothes
 local playerHeading
 function client.getHeading() return playerHeading end
 
-local toggleRadar = GetConvarInt("illenium-appearance:radar", 1) == 1
 local callback
 function client.startPlayerCustomization(cb, conf)
     local playerPed = PlayerPedId()
     playerAppearance = client.getPedAppearance(playerPed)
     playerCoords = GetEntityCoords(playerPed, true)
     playerHeading = GetEntityHeading(playerPed)
-    
+
     BackupPlayerStats()
 
     callback = cb
@@ -561,7 +560,7 @@ function client.startPlayerCustomization(cb, conf)
     SetEntityInvincible(playerPed, Config.InvincibleDuringCustomization)
     TaskStandStill(playerPed, -1)
 
-    if toggleRadar then DisplayRadar(false) end
+    if Config.HideRadar then DisplayRadar(false) end
 
     SendNuiMessage(json.encode({
         type = "appearance_display",
@@ -574,7 +573,7 @@ function client.exitPlayerCustomization(appearance)
     DestroyCam(cameraHandle, false)
     SetNuiFocus(false, false)
 
-    if toggleRadar then DisplayRadar(true) end
+    if Config.HideRadar then DisplayRadar(true) end
 
     local playerPed = PlayerPedId()
 
