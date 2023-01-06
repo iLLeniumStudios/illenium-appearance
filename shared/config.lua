@@ -56,6 +56,8 @@ Config.BossManagedOutfits = false -- Allows Job / Gang bosses to manage their ow
 
 Config.ReloadSkinCooldown = 5000
 
+Config.AutomaticFade = false -- Enables automatic fading and hides the Fade section from Hair
+
 -- ACE Permissions Config
 Config.EnableACEPermissions = false
 Config.ACEResetCooldown = 5000

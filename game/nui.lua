@@ -81,9 +81,9 @@ RegisterNUICallback("appearance_change_eye_color", function(eyeColor, cb)
 end)
 
 RegisterNUICallback("appearance_apply_tattoo", function(data, cb)
-    local paid = not Config.ChargePerTattoo or lib.callback.await("illenium-appearance:server:payForTattoo", false, data.tattoo)
+    local paid = not data.tattoo or not Config.ChargePerTattoo or lib.callback.await("illenium-appearance:server:payForTattoo", false, data.tattoo)
     if paid then
-        client.addPedTattoo(PlayerPedId(), data.updatedTattoos)
+        client.addPedTattoo(PlayerPedId(), data.updatedTattoos or data)
     end
     cb(paid)
 end)

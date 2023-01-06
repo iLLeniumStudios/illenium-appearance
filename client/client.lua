@@ -275,7 +275,7 @@ RegisterNetEvent("qb-clothes:client:CreateFirstCharacter", function()
         client.setPedTattoos(ped, {})
         client.setPedComponents(ped, Config.InitialPlayerClothes[gender].Components)
         client.setPedProps(ped, Config.InitialPlayerClothes[gender].Props)
-        client.setPedHair(ped, Config.InitialPlayerClothes[gender].Hair)
+        client.setPedHair(ped, Config.InitialPlayerClothes[gender].Hair, {})
         ClearPedDecorations(ped)
         local config = getNewCharacterConfig()
         client.startPlayerCustomization(function(appearance)
@@ -701,7 +701,7 @@ RegisterNetEvent("illenium-appearance:client:changeOutfit", function(data)
         playerPed = PlayerPedId()
         client.setPedComponents(playerPed, data.components)
         client.setPedProps(playerPed, data.props)
-        client.setPedHair(playerPed, appearanceDB.hair)
+        client.setPedHair(playerPed, appearanceDB.hair, appearanceDB.tattoos)
 
         if data.disableSave then
             TriggerServerEvent("illenium-appearance:server:syncUniform", {
