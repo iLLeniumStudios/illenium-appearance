@@ -240,36 +240,6 @@ constants.HAIR_DECORATIONS = {
     },
 }
 
-constants.DEFAULT_CUSTOMIZATION_CONFIG = {
-    ped = true,
-    headBlend = true,
-    faceFeatures = true,
-    headOverlays = true,
-    components = true,
-    componentConfig = {
-        masks = true,
-        upperBody = true,
-        lowerBody = true,
-        bags = true,
-        shoes = true,
-        scarfAndChains = true,
-        shirts = true,
-        bodyArmor = true,
-        decals = true,
-        jackets = true
-    },
-    props = true,
-    propConfig = {
-        hats = true,
-        glasses = true,
-        ear = true,
-        watches = true,
-        bracelets = true
-    },
-    tattoos = true,
-    enableExit = true
-}
-
 constants.DATA_CLOTHES = {
     head = {
         animations = {

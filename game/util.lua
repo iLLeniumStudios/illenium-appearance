@@ -242,10 +242,43 @@ local function setPedHeadOverlays(ped, headOverlays)
     end
 end
 
-local function setPedHair(ped, hair)
+local function applyAutomaticFade(ped, style)
+    local gender = getPedDecorationType()
+    local hairDecoration = constants.HAIR_DECORATIONS[gender][style]
+
+    if(hairDecoration) then
+        AddPedDecorationFromHashes(ped, hairDecoration[1], hairDecoration[2])
+    end
+end
+
+local function setTattoos(ped, tattoos, style)
+    local isMale = client.getPedDecorationType() == "male"
+    ClearPedDecorations(ped)
+    if Config.AutomaticFade then
+        tattoos["ZONE_HAIR"] = {}
+        PED_TATTOOS["ZONE_HAIR"] = {}
+        applyAutomaticFade(ped, style or GetPedDrawableVariation(ped, 2))
+    end
+    for k in pairs(tattoos) do
+        for i = 1, #tattoos[k] do
+            local tattoo = tattoos[k][i]
+            local tattooGender = isMale and tattoo.hashMale or tattoo.hashFemale
+            for _ = 1, (tattoo.opacity or 0.1) * 10 do
+                AddPedDecorationFromHashes(ped, joaat(tattoo.collection), joaat(tattooGender))
+            end
+        end
+    end
+end
+
+
+
+local function setPedHair(ped, hair, tattoos)
     if hair then
         SetPedComponentVariation(ped, 2, hair.style, hair.texture, 0)
         SetPedHairColor(ped, hair.color, hair.highlight)
+        if isPedFreemodeModel(ped) then
+            setTattoos(ped, tattoos or PED_TATTOOS, hair.style)
+        end
     end
 end
 
@@ -291,20 +324,6 @@ local function setPedProps(ped, props)
     end
 end
 
-local function setTattoos(ped, tattoos)
-    local isMale = client.getPedDecorationType() == "male"
-    ClearPedDecorations(ped)
-    for k in pairs(tattoos) do
-        for i = 1, #tattoos[k] do
-            local tattoo = tattoos[k][i]
-            local tattooGender = isMale and tattoo.hashMale or tattoo.hashFemale
-            for _ = 1, (tattoo.opacity or 0.1) * 10 do
-                AddPedDecorationFromHashes(ped, joaat(tattoo.collection), joaat(tattooGender))
-            end
-        end
-    end
-end
-
 local function setPedTattoos(ped, tattoos)
     PED_TATTOOS = tattoos
     setTattoos(ped, tattoos)
@@ -341,6 +360,9 @@ local function setPreviewTattoo(ped, tattoos, tattoo)
             end
         end
     end
+    if Config.AutomaticFade then
+        applyAutomaticFade(ped, GetPedDrawableVariation(ped, 2))
+    end
 end
 
 local function setPedAppearance(ped, appearance)
@@ -351,7 +373,7 @@ local function setPedAppearance(ped, appearance)
         if appearance.headBlend and isPedFreemodeModel(ped) then setPedHeadBlend(ped, appearance.headBlend) end
         if appearance.faceFeatures then setPedFaceFeatures(ped, appearance.faceFeatures) end
         if appearance.headOverlays then setPedHeadOverlays(ped, appearance.headOverlays) end
-        if appearance.hair then setPedHair(ped, appearance.hair) end
+        if appearance.hair then setPedHair(ped, appearance.hair, appearance.tattoos) end
         if appearance.eyeColor then setPedEyeColor(ped, appearance.eyeColor) end
         if appearance.tattoos then setPedTattoos(ped, appearance.tattoos) end
     end
