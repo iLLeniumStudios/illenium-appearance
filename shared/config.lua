@@ -588,7 +588,7 @@ Config.PlayerOutfitRooms = {
 
 Config.Outfits = {
     ["police"] = {
-        ["male"] = {
+        ["Male"] = {
             {
                 name = "Short Sleeve",
                 outfitData = {
@@ -674,7 +674,7 @@ Config.Outfits = {
                 grades = {3, 4},
             }
         },
-        ["female"] = {
+        ["Female"] = {
             {
                 name = "Short Sleeve",
                 outfitData = {
@@ -763,7 +763,7 @@ Config.Outfits = {
         }
     },
     ["realestate"] = {
-        ["male"] = {
+        ["Male"] = {
             {
                 -- Outfits
                 name = "Worker",
@@ -783,7 +783,7 @@ Config.Outfits = {
                 grades = {0, 1, 2, 3, 4},
             }
         },
-        ["female"] = {
+        ["Female"] = {
             {
                 name = "Worker",
                 outfitData = {
@@ -804,7 +804,7 @@ Config.Outfits = {
         }
     },
     ["ambulance"] = {
-        ["male"] = {
+        ["Male"] = {
             {
                 name = "T-Shirt",
                 outfitData = {
@@ -863,7 +863,7 @@ Config.Outfits = {
                 grades = {3, 4},
             }
         },
-        ["female"] = {
+        ["Female"] = {
             {
                 name = "T-Shirt",
                 outfitData = {

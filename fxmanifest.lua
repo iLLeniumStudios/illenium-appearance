@@ -2,7 +2,7 @@ fx_version "cerulean"
 game "gta5"
 
 author "snakewiz & iLLeniumStudios"
-description "A flexible player customization script for FiveM qb-core servers."
+description "A flexible player customization script for FiveM servers."
 repository "https://github.com/iLLeniumStudios/illenium-appearance"
 version "main"
 
@@ -13,19 +13,27 @@ client_scripts {
   "game/util.lua",
   "game/customization.lua",
   "game/nui.lua",
+  "client/framework/framework.lua",
+  "client/framework/qb/compatibility.lua",
+  "client/framework/qb/main.lua",
+  "client/framework/qb/migrate.lua",
+  "client/framework/esx/compatibility.lua",
+  "client/framework/esx/main.lua",
+  "client/outfits.lua",
   "client/stats.lua",
   "client/defaults.lua",
   "client/blips.lua",
   "client/props.lua",
   "client/client.lua",
-  "client/backward-events.lua",
-  "@PolyZone/client.lua",
-  "@PolyZone/BoxZone.lua",
-  "@PolyZone/ComboZone.lua",
-  "migrate/client/client.lua"
 }
 
 server_scripts {
+  "server/framework/framework.lua",
+  "server/framework/qb/main.lua",
+  "server/framework/qb/migrate.lua",
+  "server/framework/esx/main.lua",
+  "server/framework/esx/migrate.lua",
+  "server/framework/esx/callbacks.lua",
   "server/server.lua",
   "server/permissions.lua",
   "@oxmysql/lib/MySQL.lua",
@@ -38,6 +46,8 @@ shared_scripts {
   "shared/peds.lua",
   "shared/tattoos.lua",
   "shared/theme.lua",
+  "shared/framework/framework.lua",
+  "shared/framework/esx/util.lua",
   "locales/en.lua",
   "locales/ar.lua",
   "locales/bg.lua",
@@ -56,7 +66,3 @@ files {
 }
 
 ui_page "web/dist/index.html"
-
-dependencies {
-  "qb-core",
-}
