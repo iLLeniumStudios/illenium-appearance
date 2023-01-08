@@ -42,6 +42,20 @@ Config.Theme = {
             scaleOnHover = true,
             sectionFontWeight = "bold",
             smoothBackgroundTransition = false
+        },
+        {
+            id = "not-heavily-inspired",
+            borderRadius = "10vh",
+            fontColor = "255, 255, 255",
+            fontColorHover = "255, 255, 255",
+            fontColorSelected = "255, 255, 255",
+            fontFamily = "Inter",
+            primaryBackground = "149, 239, 119",
+            primaryBackgroundSelected = "242, 163, 101",
+            secondaryBackground = "25, 46, 70",
+            scaleOnHover = true,
+            sectionFontWeight = "bold",
+            smoothBackgroundTransition = false
         }
     }
 }
