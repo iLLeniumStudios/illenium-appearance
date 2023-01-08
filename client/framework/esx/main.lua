@@ -21,19 +21,6 @@ AddEventHandler('esx:setJob', function(job)
     client.gang = Framework.PlayerData.job
 end)
 
-
-
-local function getRankInputValues(rankList)
-    local rankValues = {}
-    for k, v in pairs(rankList) do
-        rankValues[#rankValues + 1] = {
-            label = v.name,
-            value = k
-        }
-    end
-    return rankValues
-end
-
 function Framework.GetPlayerGender()
     Framework.PlayerData = ESX.GetPlayerData()
     if Framework.PlayerData.sex == "f" then

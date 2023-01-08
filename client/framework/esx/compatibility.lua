@@ -42,7 +42,7 @@ RegisterNetEvent('skinchanger:loadSkin', function(skin, cb)
 end)
 
 RegisterNetEvent('skinchanger:loadClothes')
-AddEventHandler('skinchanger:loadClothes', function(skin, clothes)
+AddEventHandler('skinchanger:loadClothes', function(_, clothes)
     print("I am in skinchanger:loadClothes")
     local playerPed = PlayerPedId()
     local components = Framework.ConvertComponents(clothes, client.getPedComponents(playerPed))

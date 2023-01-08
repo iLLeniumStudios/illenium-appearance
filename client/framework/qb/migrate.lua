@@ -17,8 +17,6 @@ local skinData = {
     },
 }
 
-local resourceName = GetCurrentResourceName()
-
 RegisterNetEvent("illenium-appearance:client:migration:load-qb-clothing-skin", function(playerSkin)
     local model = playerSkin.model
     model = model ~= nil and tonumber(model) or false

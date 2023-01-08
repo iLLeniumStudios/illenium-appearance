@@ -130,7 +130,7 @@ local function convertSkinToNewFormat(oldSkin, gender)
 end
 
 
-lib.addCommand("admin", "migrateskins", function(source, args)
+lib.addCommand("admin", "migrateskins", function(source)
     local users = MySQL.query.await("SELECT skin,identifier,gender FROM users LIMIT 100")
     local convertedSkins = 0
     if users then
