@@ -71,7 +71,10 @@ RegisterNetEvent("QBCore:Client:OnGangUpdate", function(GangInfo)
 end)
 
 RegisterNetEvent("QBCore:Client:SetDuty", function(duty)
-    client.job.onduty = duty
+    if PlayerData and PlayerData.job then
+        PlayerData.job.onduty = duty
+        client.job = PlayerData.job
+    end
 end)
 
 RegisterNetEvent("QBCore:Client:OnPlayerLoaded", function()
