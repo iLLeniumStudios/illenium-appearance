@@ -2,7 +2,7 @@ fx_version "cerulean"
 game "gta5"
 
 author "snakewiz & iLLeniumStudios"
-description "A flexible player customization script for FiveM qb-core servers."
+description "A flexible player customization script for FiveM servers."
 repository "https://github.com/iLLeniumStudios/illenium-appearance"
 version "main"
 

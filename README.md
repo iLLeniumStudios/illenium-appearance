@@ -2,7 +2,7 @@
 
 [![Lint](https://github.com/iLLeniumStudios/illenium-appearance/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/iLLeniumStudios/illenium-appearance/actions/workflows/lint.yml)
 
-A replacement for qb-clothing and other clothing resources for qb-core
+illenium-appearance replaces qb-clothing and other clothing resources when installed on a qb-core server and it replaces esx_skin, skinchanger, esx_clotheshop, esx_barbershop and other clothing related resources when installed on an ESX server 
 
 <img src="https://i.imgur.com/ltLSMmh.png" alt="illenium-appearance with Tattoos" />
 
@@ -12,9 +12,10 @@ Discord: https://discord.illenium.dev
 
 ## Dependencies
 
-- [qb-core](https://github.com/qbcore-framework/qb-core) (Latest)
+- [qb-core](https://github.com/qbcore-framework/qb-core) (Latest) (Only for qb-core based servers)
+- [es_extended](https://github.com/esx-framework/esx-legacy) (Latest) (Only for ESX based servers)
 - [ox_lib](https://github.com/overextended/ox_lib)
-- [qb-target](https://github.com/BerkieBb/qb-target) (Optional)
+- [qb-target](https://github.com/BerkieBb/qb-target) (Optional) (Only for qb-core based servers)
 
 ## Features
 
@@ -31,7 +32,7 @@ Discord: https://discord.illenium.dev
 - Improved code quality
 - Plastic Surgeons
 - qb-target Support
-- Skin migration support (qb-clothing / old fivem-appearance)
+- Skin migration support (qb-clothing / old fivem-appearance / esx_skin)
 - Player specific outfit locations (Restricted via CitizenID)
 - Makeup Secondary Color
 - Blacklist / Limit Components & Props to certain Jobs / Gangs / ACEs (Allows you to have VIP clothing on your Server)
