@@ -2,13 +2,21 @@
 
 [![Lint](https://github.com/iLLeniumStudios/illenium-appearance/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/iLLeniumStudios/illenium-appearance/actions/workflows/lint.yml)
 
-illenium-appearance replaces qb-clothing and other clothing resources when installed on a qb-core server and it replaces esx_skin, skinchanger, esx_clotheshop, esx_barbershop and other clothing related resources when installed on an ESX server 
+A replacement for clothing resources for various frameworks
+
+<div align='center'><h1><a href='https://docs.illenium.dev/free-resources/illenium-appearance/installation/'>Documentation</a></h3></div>
+<br>
 
 <img src="https://i.imgur.com/ltLSMmh.png" alt="illenium-appearance with Tattoos" />
 
 Discord: https://discord.illenium.dev
 
 **Note:** Do **NOT** use the `main` branch as it will most likely be broken for you. NO SUPPORT WILL BE PROVIDED IF YOU USE IT. Only use the [latest release](https://github.com/iLLeniumStudios/illenium-appearance/releases/latest)
+
+## Supported Frameworks
+
+- qb-core
+- ESX
 
 ## Dependencies
 
