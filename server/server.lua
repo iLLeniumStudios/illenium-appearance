@@ -1,5 +1,3 @@
-local QBCore = exports["qb-core"]:GetCoreObject()
-
 local outfitCache = {}
 local uniformCache = {}
 
@@ -35,26 +33,13 @@ end
 -- Callback(s)
 
 lib.callback.register("illenium-appearance:server:getAppearance", function(source, model)
-    local Player = QBCore.Functions.GetPlayer(source)
-    local query = "SELECT skin FROM playerskins WHERE citizenid = ?"
-    local queryArgs = {Player.PlayerData.citizenid}
-    if model ~= nil then
-        query = query .. " AND model = ?"
-        queryArgs[#queryArgs + 1] = model
-    else
-        query = query .. " AND active = ?"
-        queryArgs[#queryArgs + 1] = 1
-    end
-    local result = MySQL.Sync.fetchAll(query, queryArgs)
-    if result[1] ~= nil then
-        return json.decode(result[1].skin)
-    end
+    local citizenID = Framework.GetPlayerID(source)
+    return Framework.GetAppearance(citizenID, model)
 end)
 
 lib.callback.register("illenium-appearance:server:hasMoney", function(source, shopType)
-    local Player = QBCore.Functions.GetPlayer(source)
     local money = getMoneyForShop(shopType)
-    if Player.PlayerData.money.cash >= money then
+    if Framework.HasMoney(source, "cash", money) then
         return true, money
     else
         return false, money
@@ -63,9 +48,9 @@ end)
 
 lib.callback.register("illenium-appearance:server:payForTattoo", function(source, tattoo)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
     local cost = tattoo.cost or Config.TattooCost
-    if Player.Functions.RemoveMoney("cash", cost) then
+
+    if Framework.RemoveMoney(src, "cash", cost) then
         lib.notify(src, {
             title = "Success",
             description = "Purchased " .. tattoo.label .. " tattoo for " .. cost .. "$",
@@ -85,26 +70,23 @@ lib.callback.register("illenium-appearance:server:payForTattoo", function(source
 end)
 
 lib.callback.register("illenium-appearance:server:getOutfits", function(source)
-    local Player = QBCore.Functions.GetPlayer(source)
-    if outfitCache[Player.PlayerData.citizenid] == nil then
-        getOutfitsForPlayer(Player.PlayerData.citizenid)
+    local citizenID = Framework.GetPlayerID(source)
+    if outfitCache[citizenID] == nil then
+        getOutfitsForPlayer(citizenID)
     end
-    return outfitCache[Player.PlayerData.citizenid]
+    return outfitCache[citizenID]
 end)
 
 lib.callback.register("illenium-appearance:server:getManagementOutfits", function(source, mType, gender)
-    local Player = QBCore.Functions.GetPlayer(source)
-    local jobName = Player.PlayerData.job.name
-    local grade = Player.PlayerData.job.grade.level
+    local job = Framework.GetJob(source)
     if mType == "Gang" then
-        jobName = Player.PlayerData.gang.name
-        grade = Player.PlayerData.gang.grade.level
+        job = Framework.GetGang(source)
     end
-    
-    grade = tonumber(grade)
+
+    local grade = tonumber(job.grade.level)
 
     local query = "SELECT * FROM management_outfits WHERE type = ? AND job_name = ?"
-    local queryArgs = {mType, jobName}
+    local queryArgs = {mType, job.name}
 
     if gender then
         query = query .. " AND gender = ?"
@@ -129,28 +111,21 @@ lib.callback.register("illenium-appearance:server:getManagementOutfits", functio
 end)
 
 lib.callback.register("illenium-appearance:server:getUniform", function(source)
-    local Player = QBCore.Functions.GetPlayer(source)
-    return uniformCache[Player.PlayerData.citizenid]
+    return uniformCache[Framework.GetPlayerID(source)]
 end)
 
 RegisterServerEvent("illenium-appearance:server:saveAppearance", function(appearance)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local citizenID = Framework.GetPlayerID(src)
     if appearance ~= nil then
-        MySQL.update.await("UPDATE playerskins SET active = 0 WHERE citizenid = ?", {Player.PlayerData.citizenid}) -- Make all the skins inactive
-        MySQL.Async.execute("DELETE FROM playerskins WHERE citizenid = ? AND model = ?",
-            {Player.PlayerData.citizenid, appearance.model}, function()
-                MySQL.Async.insert("INSERT INTO playerskins (citizenid, model, skin, active) VALUES (?, ?, ?, ?)",
-                    {Player.PlayerData.citizenid, appearance.model, json.encode(appearance), 1})
-            end)
+        Framework.SaveAppearance(appearance, citizenID)
     end
 end)
 
 RegisterServerEvent("illenium-appearance:server:chargeCustomer", function(shopType)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
     local money = getMoneyForShop(shopType)
-    if Player.Functions.RemoveMoney("cash", money) then
+    if Framework.RemoveMoney(src, "cash", money) then
         lib.notify(src, {
             title = "Success",
             description = "Gave $" .. money .. " to " .. shopType .. "!",
@@ -169,15 +144,15 @@ end)
 
 RegisterNetEvent("illenium-appearance:server:saveOutfit", function(name, model, components, props)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-    if outfitCache[Player.PlayerData.citizenid] == nil then
-        getOutfitsForPlayer(Player.PlayerData.citizenid)
+    local citizenID = Framework.GetPlayerID(src)
+    if outfitCache[citizenID] == nil then
+        getOutfitsForPlayer(citizenID)
     end
     if model and components and props then
         MySQL.Async.insert(
             "INSERT INTO player_outfits (citizenid, outfitname, model, components, props) VALUES (?, ?, ?, ?, ?)",
-            {Player.PlayerData.citizenid, name, model, json.encode(components), json.encode(props)}, function(id)
-                outfitCache[Player.PlayerData.citizenid][#outfitCache[Player.PlayerData.citizenid] + 1] = {
+            {citizenID, name, model, json.encode(components), json.encode(props)}, function(id)
+                outfitCache[citizenID][#outfitCache[citizenID] + 1] = {
                     id = id,
                     name = name,
                     model = model,
@@ -224,18 +199,17 @@ end)
 
 RegisterNetEvent("illenium-appearance:server:syncUniform", function(uniform)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-    uniformCache[Player.PlayerData.citizenid] = uniform
+    uniformCache[Framework.GetPlayerID(src)] = uniform
 end)
 
 RegisterNetEvent("illenium-appearance:server:deleteOutfit", function(id)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
+    local citizenID = Framework.GetPlayerID(src)
     MySQL.query("DELETE FROM player_outfits WHERE id = ?", {id})
 
-    for k, v in ipairs(outfitCache[Player.PlayerData.citizenid]) do
+    for k, v in ipairs(outfitCache[citizenID]) do
         if v.id == id then
-            table.remove(outfitCache[Player.PlayerData.citizenid], k)
+            table.remove(outfitCache[citizenID], k)
             break
         end
     end
@@ -243,9 +217,9 @@ end)
 
 RegisterNetEvent("illenium-appearance:server:resetOutfitCache", function()
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-    if Player then
-        outfitCache[Player.PlayerData.citizenid] = nil
+    local citizenID = Framework.GetPlayerID(src)
+    if citizenID then
+        outfitCache[citizenID] = nil
     end
 end)
 
@@ -253,8 +227,8 @@ if Config.EnablePedMenu then
     lib.addCommand(Config.PedMenuGroup, "pedmenu", function(source, args)
         local target = source
         if args.playerID then
-            local Player = QBCore.Functions.GetPlayer(args.playerID)
-            if Player then
+            local citizenID = Framework.GetPlayerID(args.playerID)
+            if citizenID then
                 target = args.playerID
             else
                 lib.notify(source, {

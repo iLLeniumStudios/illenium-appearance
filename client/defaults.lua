@@ -35,7 +35,7 @@ function GetDefaultConfig()
         propConfig = getPropConfig(),
         tattoos = false,
         enableExit = true,
-        hasTracker = Config.PreventTrackerRemoval and exports["qb-core"]:GetCoreObject().Functions.GetPlayerData().metadata["tracker"],
+        hasTracker = Config.PreventTrackerRemoval and Framework.HasTracker(),
         automaticFade = Config.AutomaticFade
     }
 end

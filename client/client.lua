@@ -1,12 +1,7 @@
-local QBCore = exports["qb-core"]:GetCoreObject()
-
 local client = client
 
 local currentZone = nil
-
 local MenuItemId = nil
-
-local PlayerData = {}
 
 local ManagementItemIDs = {
     Gang = nil,
@@ -22,21 +17,6 @@ local TargetPeds = {
 }
 
 local Zones = {}
-
-local function getGender()
-    local gender
-    if Config.GenderBasedOnPed then
-        local model = client.getPedModel(PlayerPedId())
-        if model == "mp_f_freemode_01" then
-            gender = "female"
-        end
-    else
-        if PlayerData.charinfo.gender == 1 then
-            gender = "female"
-        end
-    end
-    return gender or "male"
-end
 
 local function RemoveTargetPeds(peds)
     for i = 1, #peds, 1 do
@@ -88,7 +68,7 @@ local function LoadPlayerUniform()
             return
         end
         if Config.BossManagedOutfits then
-            local result = lib.callback.await("illenium-appearance:server:getManagementOutfits", false, uniformData.type, getGender())
+            local result = lib.callback.await("illenium-appearance:server:getManagementOutfits", false, uniformData.type, Framework.GetGender())
             local uniform = nil
             for i = 1, #result, 1 do
                 if result[i].name == uniformData.name then
@@ -128,7 +108,7 @@ local function LoadPlayerUniform()
             uniform.jobName = uniformData.jobName
             uniform.gender = uniformData.gender
 
-            TriggerEvent("qb-clothing:client:loadOutfit", uniform)
+            TriggerEvent("illenium-appearance:client:loadJobOutfit", uniform)
         end
     end)
 end
@@ -170,11 +150,8 @@ local function RemoveRadialMenuOption()
     end
 end
 
-local function InitAppearance()
-    PlayerData = QBCore.Functions.GetPlayerData()
-    client.job = PlayerData.job
-    client.gang = PlayerData.gang
-
+function InitAppearance()
+    Framework.UpdatePlayerData()
     lib.callback("illenium-appearance:server:getAppearance", false, function(appearance)
         if not appearance then
             return
@@ -187,14 +164,6 @@ local function InitAppearance()
             LoadPlayerUniform()
         end
         RestorePlayerStats()
-
-        if Config.Debug then -- This will detect if the player model is set as "player_zero" aka michael. Will then set the character as a freemode ped based on gender.
-            Wait(5000)
-            if GetEntityModel(PlayerPedId()) == `player_zero` then
-                print('Player detected as "player_zero", Starting CreateFirstCharacter event')
-                TriggerEvent("qb-clothes:client:CreateFirstCharacter")
-            end
-        end
     end)
     ResetBlips()
     if Config.BossManagedOutfits then
@@ -224,26 +193,6 @@ AddEventHandler("onResourceStop", function(resource)
     end
 end)
 
-RegisterNetEvent("QBCore:Client:OnJobUpdate", function(JobInfo)
-    PlayerData.job = JobInfo
-    client.job = JobInfo
-    ResetBlips()
-end)
-
-RegisterNetEvent("QBCore:Client:OnGangUpdate", function(GangInfo)
-    PlayerData.gang = GangInfo
-    client.gang = GangInfo
-    ResetBlips()
-end)
-
-RegisterNetEvent("QBCore:Client:SetDuty", function(duty)
-    client.job.onduty = duty
-end)
-
-RegisterNetEvent("QBCore:Client:OnPlayerLoaded", function()
-    InitAppearance()
-end)
-
 
 
 local function getNewCharacterConfig()
@@ -261,30 +210,32 @@ local function getNewCharacterConfig()
     return config
 end
 
-RegisterNetEvent("qb-clothes:client:CreateFirstCharacter", function()
-    QBCore.Functions.GetPlayerData(function(pd)
-        local gender = "Male"
-        local skin = "mp_m_freemode_01"
-        if pd.charinfo.gender == 1 then
-            skin = "mp_f_freemode_01"
-            gender = "Female"
-        end
-        client.setPlayerModel(skin)
-        -- Fix for tattoo's appearing when creating a new character
-        local ped = PlayerPedId()
-        client.setPedTattoos(ped, {})
-        client.setPedComponents(ped, Config.InitialPlayerClothes[gender].Components)
-        client.setPedProps(ped, Config.InitialPlayerClothes[gender].Props)
-        client.setPedHair(ped, Config.InitialPlayerClothes[gender].Hair, {})
-        ClearPedDecorations(ped)
-        local config = getNewCharacterConfig()
-        client.startPlayerCustomization(function(appearance)
-            if (appearance) then
-                TriggerServerEvent("illenium-appearance:server:saveAppearance", appearance)
+function InitializeCharacter(gender, onSubmit, onCancel)
+    local skin = "mp_m_freemode_01"
+    if gender == "Female" then
+        skin = "mp_f_freemode_01"
+    end
+    client.setPlayerModel(skin)
+    -- Fix for tattoo's appearing when creating a new character
+    local ped = PlayerPedId()
+    client.setPedTattoos(ped, {})
+    client.setPedComponents(ped, Config.InitialPlayerClothes[gender].Components)
+    client.setPedProps(ped, Config.InitialPlayerClothes[gender].Props)
+    client.setPedHair(ped, Config.InitialPlayerClothes[gender].Hair, {})
+    ClearPedDecorations(ped)
+    local config = getNewCharacterConfig()
+    client.startPlayerCustomization(function(appearance)
+        if (appearance) then
+            TriggerServerEvent("illenium-appearance:server:saveAppearance", appearance)
+            if onSubmit then
+                onSubmit()
             end
-        end, config)
-    end)
-end)
+        elseif onCancel then
+            onCancel()
+        end
+        Framework.CachePed()
+    end, config)
+end
 
 function OpenShop(config, isPedMenu, shopType)
     lib.callback("illenium-appearance:server:hasMoney", false, function(hasMoney, money)
@@ -312,6 +263,7 @@ function OpenShop(config, isPedMenu, shopType)
                     position = Config.NotifyOptions.position
                 })
             end
+            Framework.CachePed()
         end, config)
     end, shopType)
 end
@@ -448,7 +400,7 @@ RegisterNetEvent("illenium-appearance:client:OutfitManagementMenu", function(arg
         bossMenuEvent = "qb-gangmenu:client:OpenMenu"
     end
 
-    local outfits = lib.callback.await("illenium-appearance:server:getManagementOutfits", false, args.type, getGender())
+    local outfits = lib.callback.await("illenium-appearance:server:getManagementOutfits", false, args.type, Framework.GetGender())
     local managementMenuID = "illenium_appearance_outfit_management_menu"
     local changeManagementOutfitMenuID = "illenium_appearance_change_management_outfit_menu"
     local deleteManagementOutfitMenuID = "illenium_appearance_delete_management_outfit_menu"
@@ -487,17 +439,6 @@ RegisterNetEvent("illenium-appearance:client:OutfitManagementMenu", function(arg
     lib.showContext(managementMenuID)
 end)
 
-local function getRankInputValues(rankList)
-    local rankValues = {}
-    for k, v in pairs(rankList) do
-        rankValues[#rankValues + 1] = {
-            label = v.name,
-            value = k
-        }
-    end
-    return rankValues
-end
-
 RegisterNetEvent("illenium-appearance:client:SaveManagementOutfit", function(mType)
     local playerPed = PlayerPedId()
     local outfitData = {
@@ -508,14 +449,14 @@ RegisterNetEvent("illenium-appearance:client:SaveManagementOutfit", function(mTy
     }
 
     local rankValues
-    
+
     if mType == "Job" then
         outfitData.JobName = client.job.name
-        rankValues = getRankInputValues(QBCore.Shared.Jobs[client.job.name].grades)
-        
+        rankValues = Framework.GetRankInputValues("job")
+
     else
         outfitData.JobName = client.gang.name
-        rankValues = getRankInputValues(QBCore.Shared.Gangs[client.gang.name].grades)
+        rankValues = Framework.GetRankInputValues("gang")
     end
 
     local dialogResponse = lib.inputDialog("Management Outfit Details", {
@@ -564,7 +505,7 @@ local function RegisterWorkOutfitsListMenu(id, parent, menuData)
         title = "Work Outfits",
         options = {}
     }
-    local event = "qb-clothing:client:loadOutfit"
+    local event = "illenium-appearance:client:loadJobOutfit"
     if Config.BossManagedOutfits then
         event = "illenium-appearance:client:changeOutfit"
     end
@@ -712,6 +653,7 @@ RegisterNetEvent("illenium-appearance:client:changeOutfit", function(data)
             local appearance = client.getPedAppearance(playerPed)
             TriggerServerEvent("illenium-appearance:server:saveAppearance", appearance)
         end
+        Framework.CachePed()
     end
 end)
 
@@ -743,14 +685,10 @@ local function InCooldown()
     return (GetGameTimer() - reloadSkinTimer) < Config.ReloadSkinCooldown
 end
 
-local function CheckPlayerMeta()
-    return PlayerData.metadata["isdead"] or PlayerData.metadata["inlaststand"] or PlayerData.metadata["ishandcuffed"]
-end
-
 RegisterNetEvent("illenium-appearance:client:reloadSkin", function()
     local playerPed = PlayerPedId()
 
-    if InCooldown() or CheckPlayerMeta() or IsPedInAnyVehicle(playerPed, true) or IsPedFalling(playerPed) then
+    if InCooldown() or Framework.CheckPlayerMeta() or IsPedInAnyVehicle(playerPed, true) or IsPedFalling(playerPed) then
         lib.notify({
             title = "Error",
             description = "You cannot use reloadskin right now",
@@ -776,7 +714,7 @@ RegisterNetEvent("illenium-appearance:client:reloadSkin", function()
 end)
 
 RegisterNetEvent("illenium-appearance:client:ClearStuckProps", function()
-    if InCooldown() or CheckPlayerMeta() then
+    if InCooldown() or Framework.CheckPlayerMeta() then
         lib.notify({
             title = "Error",
             description = "You cannot use clearstuckprops right now",
@@ -838,7 +776,7 @@ local function isPlayerAllowedForOutfitRoom(outfitRoom)
     local isAllowed = false
     local count = #outfitRoom.citizenIDs
     for i = 1, count, 1 do
-        if outfitRoom.citizenIDs[i] == PlayerData.citizenid then
+        if Framework.IsPlayerAllowed(outfitRoom.citizenIDs[i]) then
             isAllowed = true
             break
         end
@@ -855,8 +793,8 @@ end
 
 local function getPlayerJobOutfits(clothingRoom)
     local outfits = {}
-    local gender = getGender()
-    local gradeLevel = clothingRoom.job and client.job.grade.level or client.gang.grade.level
+    local gender = Framework.GetGender()
+    local gradeLevel = clothingRoom.job and Framework.GetJobGrade() or Framework.GetGangGrade()
     local jobName = clothingRoom.job and client.job.name or client.gang.name
 
     if Config.BossManagedOutfits then
