@@ -3,11 +3,11 @@ if not Framework.ESX() then return end
 local client = client
 local firstSpawn = false
 
-AddEventHandler('esx_skin:resetFirstSpawn', function()
+AddEventHandler("esx_skin:resetFirstSpawn", function()
     firstSpawn = true
 end)
 
-AddEventHandler('esx_skin:playerRegistered', function()
+AddEventHandler("esx_skin:playerRegistered", function()
     if(firstSpawn) then
         InitializeCharacter(Framework.GetGender())
     end
@@ -20,8 +20,6 @@ RegisterNetEvent("skinchanger:loadSkin2", function(ped, skin)
 end)
 
 RegisterNetEvent("skinchanger:getSkin", function(cb)
-    print("I am in skinchanger:getSkin")
-
     while not Framework.PlayerData do
         Wait(1000)
     end
@@ -31,9 +29,7 @@ RegisterNetEvent("skinchanger:getSkin", function(cb)
     end)
 end)
 
-RegisterNetEvent('skinchanger:loadSkin', function(skin, cb)
-    print("I am in skinchanger:loadSkin")
-
+RegisterNetEvent("skinchanger:loadSkin", function(skin, cb)
 	client.setPlayerAppearance(skin)
     Framework.CachePed()
 	if cb ~= nil then
@@ -41,9 +37,7 @@ RegisterNetEvent('skinchanger:loadSkin', function(skin, cb)
 	end
 end)
 
-RegisterNetEvent('skinchanger:loadClothes')
-AddEventHandler('skinchanger:loadClothes', function(_, clothes)
-    print("I am in skinchanger:loadClothes")
+RegisterNetEvent("skinchanger:loadClothes", function(_, clothes)
     local playerPed = PlayerPedId()
     local components = Framework.ConvertComponents(clothes, client.getPedComponents(playerPed))
     local props = Framework.ConvertProps(clothes, client.getPedProps(playerPed))
@@ -52,7 +46,6 @@ AddEventHandler('skinchanger:loadClothes', function(_, clothes)
     client.setPedProps(playerPed, props)
 end)
 
-RegisterNetEvent('esx_skin:openSaveableMenu')
-AddEventHandler('esx_skin:openSaveableMenu', function(onSubmit, onCancel)
+RegisterNetEvent("esx_skin:openSaveableMenu", function(onSubmit, onCancel)
     InitializeCharacter(Framework.GetGender(), onSubmit, onCancel)
 end)

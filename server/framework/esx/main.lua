@@ -40,11 +40,11 @@ function Framework.GetGang(src)
 end
 
 function Framework.SaveAppearance(appearance, citizenID)
-    MySQL.update('UPDATE users SET skin = ? WHERE identifier = ?', {json.encode(appearance), citizenID})
+    MySQL.update("UPDATE users SET skin = ? WHERE identifier = ?", {json.encode(appearance), citizenID})
 end
 
 function Framework.GetAppearance(citizenID)
-    local user = MySQL.Sync.fetchAll('SELECT skin FROM users WHERE identifier = ?', {citizenID})[1]
+    local user = MySQL.Sync.fetchAll("SELECT skin FROM users WHERE identifier = ?", {citizenID})[1]
     if user then
         return json.decode(user.skin)
     end

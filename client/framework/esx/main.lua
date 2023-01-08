@@ -3,19 +3,16 @@ if not Framework.ESX() then return end
 local ESX = exports["es_extended"]:getSharedObject()
 Framework.PlayerData = ESX.GetPlayerData()
 
-RegisterNetEvent('esx:playerLoaded')
-AddEventHandler('esx:playerLoaded', function(xPlayer)
+RegisterNetEvent("esx:playerLoaded", function(xPlayer)
 	Framework.PlayerData = xPlayer
     InitAppearance()
 end)
 
-RegisterNetEvent('esx:onPlayerLogout')
-AddEventHandler('esx:onPlayerLogout', function()
+RegisterNetEvent("esx:onPlayerLogout", function()
     Framework.PlayerData = nil
 end)
 
-RegisterNetEvent('esx:setJob')
-AddEventHandler('esx:setJob', function(job)
+RegisterNetEvent("esx:setJob", function(job)
 	Framework.PlayerData.job = job
     client.job = Framework.PlayerData.job
     client.gang = Framework.PlayerData.job
@@ -64,5 +61,5 @@ function Framework.GetGangGrade()
 end
 
 function Framework.CachePed()
-    ESX.SetPlayerData('ped', PlayerPedId())
+    ESX.SetPlayerData("ped", PlayerPedId())
 end

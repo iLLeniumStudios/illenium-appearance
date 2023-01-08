@@ -252,4 +252,4 @@ lib.addCommand(false, "clearstuckprops", function(source)
     TriggerClientEvent("illenium-appearance:client:ClearStuckProps", source)
 end, nil, "Removes all the props attached to the entity")
 
-lib.versionCheck('iLLeniumStudios/illenium-appearance')
+lib.versionCheck("iLLeniumStudios/illenium-appearance")
