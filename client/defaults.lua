@@ -33,7 +33,7 @@ function GetDefaultConfig()
         componentConfig = getComponentConfig(),
         props = false,
         propConfig = getPropConfig(),
-        tattoos = not Config.RCoreTattoosCompatibility,
+        tattoos = false,
         enableExit = true,
         hasTracker = Config.PreventTrackerRemoval and Framework.HasTracker(),
         automaticFade = Config.AutomaticFade
