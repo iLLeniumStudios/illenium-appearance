@@ -205,7 +205,7 @@ local function getNewCharacterConfig()
     config.headOverlays = Config.NewCharacterSections.HeadOverlays
     config.components   = Config.NewCharacterSections.Components
     config.props        = Config.NewCharacterSections.Props
-    config.tattoos      = Config.NewCharacterSections.Tattoos
+    config.tattoos      = not Config.RCoreTattoosCompatibility and Config.NewCharacterSections.Tattoos
 
     return config
 end
@@ -278,7 +278,7 @@ local function OpenClothingShop(isPedMenu)
         config.headBlend = true
         config.faceFeatures = true
         config.headOverlays = true
-        config.tattoos = true
+        config.tattoos = not Config.RCoreTattoosCompatibility
     end
     OpenShop(config, isPedMenu, "clothing")
 end
@@ -851,13 +851,13 @@ end
 local function onStoreEnter(data)
     local index = lookupZoneIndexFromID(Zones.Store, data.id)
     local store = Config.Stores[index]
-    currentZone = {
-        name = store.type,
-        index = index
-    }
 
     local jobName = (store.job and client.job.name) or (store.gang and client.gang.name)
     if jobName == (store.job or store.gang) then
+        currentZone = {
+            name = store.type,
+            index = index
+        }
         local prefix = Config.UseRadialMenu and "" or "[E] "
         if currentZone.name == "clothing" then
             lib.showTextUI(prefix .. "Clothing Store - Price: $" .. Config.ClothingCost, Config.TextUIOptions)
@@ -874,14 +874,14 @@ end
 local function onClothingRoomEnter(data)
     local index = lookupZoneIndexFromID(Zones.ClothingRoom, data.id)
     local clothingRoom = Config.ClothingRooms[index]
-    currentZone = {
-        name = "clothingRoom",
-        index = index
-    }
 
     local jobName = clothingRoom.job and client.job.name or client.gang.name
     if jobName == (clothingRoom.job or clothingRoom.gang) then
         if CheckDuty() or clothingRoom.gang then
+            currentZone = {
+                name = "clothingRoom",
+                index = index
+            }
             local prefix = Config.UseRadialMenu and "" or "[E] "
             lib.showTextUI(prefix .. "Clothing Room", Config.TextUIOptions)
         end
@@ -891,13 +891,13 @@ end
 local function onPlayerOutfitRoomEnter(data)
     local index = lookupZoneIndexFromID(Zones.PlayerOutfitRoom, data.id)
     local playerOutfitRoom = Config.PlayerOutfitRooms[index]
-    currentZone = {
-        name = "playerOutfitRoom",
-        index = index
-    }
 
     local isAllowed = isPlayerAllowedForOutfitRoom(playerOutfitRoom)
     if isAllowed then
+        currentZone = {
+            name = "playerOutfitRoom",
+            index = index
+        }
         local prefix = Config.UseRadialMenu and "" or "[E] "
         lib.showTextUI(prefix .. "Outfits", Config.TextUIOptions)
     end
@@ -909,6 +909,10 @@ local function onZoneExit()
 end
 
 local function SetupZone(store, onEnter, onExit)
+    if Config.RCoreTattoosCompatibility and store.type == "tattoo" then
+        return
+    end
+
     if Config.UseRadialMenu or store.usePoly then
         return lib.zones.poly({
             points = store.points,
@@ -974,6 +978,31 @@ local function CreatePedAtCoords(pedModel, coords, scenario)
     return ped
 end
 
+local function SetupStoreTarget(targetConfig, action, k, v)
+    local parameters = {
+        options = {{
+            type = "client",
+            action = action,
+            icon = targetConfig.icon,
+            label = targetConfig.label
+        }},
+        distance = targetConfig.distance
+    }
+
+    if Config.EnablePedsForShops then
+        TargetPeds.Store[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
+        exports["qb-target"]:AddTargetEntity(TargetPeds.Store[k], parameters)
+    else
+        exports["qb-target"]:AddBoxZone(v.type .. k, v.coords, v.size.x, v.size.y, {
+            name = v.type .. k,
+            debugPoly = Config.Debug,
+            minZ = v.coords.z - 1,
+            maxZ = v.coords.z + 1,
+            heading = v.coords.w
+        }, parameters)
+    end
+end
+
 local function SetupStoreTargets()
     for k, v in pairs(Config.Stores) do
         local targetConfig = Config.TargetConfig[v.type]
@@ -991,27 +1020,8 @@ local function SetupStoreTargets()
             action = OpenSurgeonShop
         end
 
-        local parameters = {
-            options = {{
-                type = "client",
-                action = action,
-                icon = targetConfig.icon,
-                label = targetConfig.label
-            }},
-            distance = targetConfig.distance
-        }
-
-        if Config.EnablePedsForShops then
-            TargetPeds.Store[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
-            exports["qb-target"]:AddTargetEntity(TargetPeds.Store[k], parameters)
-        else
-            exports["qb-target"]:AddBoxZone(v.type .. k, v.coords, v.size.x, v.size.y, {
-                name = v.type .. k,
-                debugPoly = Config.Debug,
-                minZ = v.coords.z - 1,
-                maxZ = v.coords.z + 1,
-                heading = v.coords.w
-            }, parameters)
+        if not (Config.RCoreTattoosCompatibility and v.type == "tattoo") then
+            SetupStoreTarget(targetConfig, action, k, v)
         end
     end
 end

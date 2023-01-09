@@ -5,6 +5,8 @@ Framework.PlayerData = ESX.GetPlayerData()
 
 RegisterNetEvent("esx:playerLoaded", function(xPlayer)
 	Framework.PlayerData = xPlayer
+    client.job = Framework.PlayerData.job
+    client.gang = Framework.PlayerData.gang
     InitAppearance()
 end)
 
@@ -27,9 +29,12 @@ function Framework.GetPlayerGender()
 end
 
 function Framework.UpdatePlayerData()
-    Framework.PlayerData = ESX.GetPlayerData()
-    client.job = Framework.PlayerData.job
-    client.gang = Framework.PlayerData.job
+    local data = ESX.GetPlayerData()
+    if data.job then
+        Framework.PlayerData = data
+        client.job = Framework.PlayerData.job
+        client.gang = Framework.PlayerData.job
+    end
 end
 
 function Framework.HasTracker()
