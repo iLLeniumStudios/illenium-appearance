@@ -268,9 +268,10 @@ local function setTattoos(ped, tattoos, style)
             end
         end
     end
+    if Config.RCoreTattoosCompatibility then
+        TriggerEvent("rcore_tattoos:applyOwnedTattoos")
+    end
 end
-
-
 
 local function setPedHair(ped, hair, tattoos)
     if hair then

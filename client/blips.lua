@@ -8,6 +8,10 @@ local function ShowBlip(blipConfig, blip)
         return false
     end
 
+    if Config.RCoreTattoosCompatibility and blip.type == "tattoo" then
+        return false
+    end
+
     return (blipConfig.Show and blip.showBlip == nil) or blip.showBlip
 end
 

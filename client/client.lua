@@ -205,7 +205,7 @@ local function getNewCharacterConfig()
     config.headOverlays = Config.NewCharacterSections.HeadOverlays
     config.components   = Config.NewCharacterSections.Components
     config.props        = Config.NewCharacterSections.Props
-    config.tattoos      = Config.NewCharacterSections.Tattoos
+    config.tattoos      = not Config.RCoreTattoosCompatibility and Config.NewCharacterSections.Tattoos
 
     return config
 end
@@ -278,7 +278,7 @@ local function OpenClothingShop(isPedMenu)
         config.headBlend = true
         config.faceFeatures = true
         config.headOverlays = true
-        config.tattoos = true
+        config.tattoos = not Config.RCoreTattoosCompatibility
     end
     OpenShop(config, isPedMenu, "clothing")
 end
@@ -909,6 +909,10 @@ local function onZoneExit()
 end
 
 local function SetupZone(store, onEnter, onExit)
+    if Config.RCoreTattoosCompatibility and store.type == "tattoo" then
+        return
+    end
+
     if Config.UseRadialMenu or store.usePoly then
         return lib.zones.poly({
             points = store.points,
@@ -974,6 +978,31 @@ local function CreatePedAtCoords(pedModel, coords, scenario)
     return ped
 end
 
+local function SetupStoreTarget(targetConfig, action, k, v)
+    local parameters = {
+        options = {{
+            type = "client",
+            action = action,
+            icon = targetConfig.icon,
+            label = targetConfig.label
+        }},
+        distance = targetConfig.distance
+    }
+
+    if Config.EnablePedsForShops then
+        TargetPeds.Store[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
+        exports["qb-target"]:AddTargetEntity(TargetPeds.Store[k], parameters)
+    else
+        exports["qb-target"]:AddBoxZone(v.type .. k, v.coords, v.size.x, v.size.y, {
+            name = v.type .. k,
+            debugPoly = Config.Debug,
+            minZ = v.coords.z - 1,
+            maxZ = v.coords.z + 1,
+            heading = v.coords.w
+        }, parameters)
+    end
+end
+
 local function SetupStoreTargets()
     for k, v in pairs(Config.Stores) do
         local targetConfig = Config.TargetConfig[v.type]
@@ -991,27 +1020,8 @@ local function SetupStoreTargets()
             action = OpenSurgeonShop
         end
 
-        local parameters = {
-            options = {{
-                type = "client",
-                action = action,
-                icon = targetConfig.icon,
-                label = targetConfig.label
-            }},
-            distance = targetConfig.distance
-        }
-
-        if Config.EnablePedsForShops then
-            TargetPeds.Store[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
-            exports["qb-target"]:AddTargetEntity(TargetPeds.Store[k], parameters)
-        else
-            exports["qb-target"]:AddBoxZone(v.type .. k, v.coords, v.size.x, v.size.y, {
-                name = v.type .. k,
-                debugPoly = Config.Debug,
-                minZ = v.coords.z - 1,
-                maxZ = v.coords.z + 1,
-                heading = v.coords.w
-            }, parameters)
+        if not (Config.RCoreTattoosCompatibility and v.type == "tattoo") then
+            SetupStoreTarget(targetConfig, action, k, v)
         end
     end
 end
