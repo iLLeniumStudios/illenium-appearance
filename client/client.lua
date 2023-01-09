@@ -278,7 +278,7 @@ local function OpenClothingShop(isPedMenu)
         config.headBlend = true
         config.faceFeatures = true
         config.headOverlays = true
-        config.tattoos = not Config.RCoreTattoosCompatibility
+        config.tattoos = not Config.RCoreTattoosCompatibility and true
     end
     OpenShop(config, isPedMenu, "clothing")
 end
