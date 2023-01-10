@@ -130,3 +130,7 @@ function LoadJobOutfit(oData)
 end
 
 RegisterNetEvent("illenium-appearance:client:loadJobOutfit", LoadJobOutfit)
+
+RegisterNetEvent("illenium-appearance:client:openOutfitMenu", function()
+    OpenMenu(nil, "outfit")
+end)

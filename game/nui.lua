@@ -5,7 +5,6 @@ RegisterNUICallback("appearance_get_locales", function(_, cb)
 end)
 
 RegisterNUICallback("appearance_get_settings_and_data", function(_, cb)
-    TriggerEvent("illenium-appearance:server:GetPlayerAces")
     Wait(250)
     local appearanceData = client.getAppearance()
     if appearanceData.tattoos then
