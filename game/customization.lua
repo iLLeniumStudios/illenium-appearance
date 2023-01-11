@@ -564,7 +564,9 @@ function client.startPlayerCustomization(cb, conf)
 
     SendNuiMessage(json.encode({
         type = "appearance_display",
-        payload = {}
+        payload = {
+            asynchronous = Config.AsynchronousLoading
+        }
     }))
 end
 
