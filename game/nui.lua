@@ -4,13 +4,17 @@ RegisterNUICallback("appearance_get_locales", function(_, cb)
     cb(Locales[GetConvar("illenium-appearance:locale", "en")])
 end)
 
-RegisterNUICallback("appearance_get_settings_and_data", function(_, cb)
+RegisterNUICallback("appearance_get_settings", function(_, cb)
+    cb({ appearanceSettings = client.getAppearanceSettings() })
+end)
+
+RegisterNUICallback("appearance_get_data", function(_, cb)
     Wait(250)
     local appearanceData = client.getAppearance()
     if appearanceData.tattoos then
         client.setPedTattoos(PlayerPedId(), appearanceData.tattoos)
     end
-    cb({ config = client.getConfig(), appearanceData = appearanceData, appearanceSettings = client.getAppearanceSettings() })
+    cb({ config = client.getConfig(), appearanceData = appearanceData })
 end)
 
 RegisterNUICallback("appearance_set_camera", function(camera, cb)
