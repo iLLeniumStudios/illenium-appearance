@@ -20,8 +20,6 @@ function LoadJobOutfit(oData)
         data = json.decode(data)
     end
 
-    print(json.encode(data, {indent = true}))
-
     -- Pants
     if data["pants"] ~= nil then
         SetPedComponentVariation(ped, 4, data["pants"].item, data["pants"].texture, 0)
@@ -126,7 +124,6 @@ function LoadJobOutfit(oData)
             label = oData.name
         })
     end
-    print("Done")
 end
 
 RegisterNetEvent("illenium-appearance:client:loadJobOutfit", LoadJobOutfit)
