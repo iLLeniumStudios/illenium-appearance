@@ -1,5 +1,3 @@
-Locales = {}
-
 Locales["nl"] = {
     modal = {
         save = {
