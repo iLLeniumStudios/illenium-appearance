@@ -1,7 +1,7 @@
 Target = {}
 
 function Target.IsOX()
-    return GetResourceState("ox-target") ~= "missing"
+    return GetResourceState("ox_target") ~= "missing"
 end
 
 function Target.IsQB()
