@@ -53,7 +53,6 @@ end
 -- Not implemented entirely
 function Framework.GetRankInputValues(type)
     local jobGrades = lib.callback.await("illenium-appearance:server:esx:getGradesForJob", false, client[type].name)
-    print(json.encode(jobGrades, {indent = true}))
     return jobGrades
 end
 

@@ -16,7 +16,11 @@ local TargetPeds = {
     PlayerOutfitRoom = {}
 }
 
-local Zones = {}
+local Zones = {
+    Store = {},
+    ClothingRoom = {},
+    PlayerOutfitRoom = {}
+}
 
 local function RemoveTargetPeds(peds)
     for i = 1, #peds, 1 do
@@ -29,7 +33,7 @@ local function RemoveTargets()
         RemoveTargetPeds(TargetPeds.Store)
     else
         for k, v in pairs(Config.Stores) do
-            exports["qb-target"]:RemoveZone(v.type .. k)
+            Target.RemoveZone(v.type .. k)
         end
     end
 
@@ -37,7 +41,7 @@ local function RemoveTargets()
         RemoveTargetPeds(TargetPeds.ClothingRoom)
     else
         for k, v in pairs(Config.ClothingRooms) do
-            exports["qb-target"]:RemoveZone("clothing_" .. (v.job or v.gang) .. k)
+            Target.RemoveZone("clothing_" .. (v.job or v.gang) .. k)
         end
     end
 
@@ -45,7 +49,7 @@ local function RemoveTargets()
         RemoveTargetPeds(TargetPeds.PlayerOutfitRoom)
     else
         for k in pairs(Config.PlayerOutfitRooms) do
-            exports["qb-target"]:RemoveZone("playeroutfitroom_" .. k)
+            Target.RemoveZone("playeroutfitroom_" .. k)
         end
     end
 end
@@ -179,7 +183,7 @@ end)
 
 AddEventHandler("onResourceStop", function(resource)
     if resource == GetCurrentResourceName() then
-        if Config.UseTarget and GetResourceState("qb-target") == "started" then
+        if Config.UseTarget and Target.IsTargetStarted() then
             RemoveTargets()
         else
             RemoveZones()
@@ -925,6 +929,7 @@ local function SetupZone(store, onEnter, onExit)
     return lib.zones.box({
         coords = store.coords,
         size = store.size,
+        rotation = store.rotation,
         debug = Config.Debug,
         onEnter = onEnter,
         onExit = onExit
@@ -932,21 +937,18 @@ local function SetupZone(store, onEnter, onExit)
 end
 
 local function SetupStoreZones()
-    Zones.Store = {}
     for _, v in pairs(Config.Stores) do
         Zones.Store[#Zones.Store + 1] = SetupZone(v, onStoreEnter, onZoneExit)
     end
 end
 
 local function SetupClothingRoomZones()
-    Zones.ClothingRoom = {}
     for _, v in pairs(Config.ClothingRooms) do
         Zones.ClothingRoom[#Zones.ClothingRoom + 1] = SetupZone(v, onClothingRoomEnter, onZoneExit)
     end
 end
 
 local function SetupPlayerOutfitRoomZones()
-    Zones.PlayerOutfitRoom = {}
     for _, v in pairs(Config.PlayerOutfitRooms) do
         Zones.PlayerOutfitRoom[#Zones.PlayerOutfitRoom + 1] = SetupZone(v, onPlayerOutfitRoomEnter, onZoneExit)
     end
@@ -986,20 +988,15 @@ local function SetupStoreTarget(targetConfig, action, k, v)
             icon = targetConfig.icon,
             label = targetConfig.label
         }},
-        distance = targetConfig.distance
+        distance = targetConfig.distance,
+        rotation = v.rotation
     }
 
     if Config.EnablePedsForShops then
         TargetPeds.Store[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
-        exports["qb-target"]:AddTargetEntity(TargetPeds.Store[k], parameters)
+        Target.AddTargetEntity(TargetPeds.Store[k], parameters)
     else
-        exports["qb-target"]:AddBoxZone(v.type .. k, v.coords, v.size.x, v.size.y, {
-            name = v.type .. k,
-            debugPoly = Config.Debug,
-            minZ = v.coords.z - 1,
-            maxZ = v.coords.z + 1,
-            heading = v.coords.w
-        }, parameters)
+        Target.AddBoxZone(v.type .. k, v.coords, v.size, parameters)
     end
 end
 
@@ -1044,21 +1041,16 @@ local function SetupClothingRoomTargets()
                 job = v.job,
                 gang = v.gang
             }},
-            distance = targetConfig.distance
+            distance = targetConfig.distance,
+            rotation = v.rotation
         }
 
         if Config.EnablePedsForClothingRooms then
             TargetPeds.ClothingRoom[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
-            exports["qb-target"]:AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
+            Target.AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
         else
             local key = "clothing_" .. (v.job or v.gang) .. k
-            exports["qb-target"]:AddBoxZone(key, v.coords, v.size.x, v.size.y, {
-                name = key,
-                debugPoly = Config.Debug,
-                minZ = v.coords.z - 2,
-                maxZ = v.coords.z + 2,
-                heading = v.coords.w
-            }, parameters)
+            Target.AddBoxZone(key, v.coords, v.size, parameters)
         end
     end
 end
@@ -1079,20 +1071,15 @@ local function SetupPlayerOutfitRoomTargets()
                     return isPlayerAllowedForOutfitRoom(v)
                 end
             }},
-            distance = targetConfig.distance
+            distance = targetConfig.distance,
+            rotation = v.rotation
         }
 
         if Config.EnablePedsForPlayerOutfitRooms then
             TargetPeds.PlayerOutfitRoom[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
-            exports["qb-target"]:AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
+            Target.AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
         else
-            exports["qb-target"]:AddBoxZone("playeroutfitroom_" .. k, v.coords, v.size.x, v.size.y, {
-                name = "playeroutfitroom_" .. k,
-                debugPoly = Config.Debug,
-                minZ = v.coords.z - 2,
-                maxZ = v.coords.z + 2,
-                heading = v.coords.w
-            }, parameters)
+            Target.AddBoxZone("playeroutfitroom_" .. k, v.coords, v.size, parameters)
         end
     end
 end

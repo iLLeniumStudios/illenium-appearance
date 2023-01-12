@@ -138,13 +138,11 @@ lib.addCommand("admin", "migrateskins", function(source)
             local user = users[i]
             local oldSkin = json.decode(user.skin)
             if oldSkin.mom then -- Convert only if its an old skin
-                print(json.encode(user, {indent = true}))
                 local skin = json.encode(convertSkinToNewFormat(oldSkin, user.gender))
                 local affectedRows = MySQL.update.await("UPDATE users SET skin = ? WHERE identifier = ?", {skin, user.identifier})
                 if affectedRows then
                     convertedSkins += 1
                 end
-                print("Done")
             end
         end
     end
