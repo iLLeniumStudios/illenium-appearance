@@ -31,15 +31,24 @@ client_scripts {
 }
 
 server_scripts {
+  "@oxmysql/lib/MySQL.lua",
+  "server/database/database.lua",
+  "server/database/jobgrades.lua",
+  "server/database/managementoutfits.lua",
+  "server/database/playeroutfitcodes.lua",
+  "server/database/playeroutfits.lua",
+  "server/database/players.lua",
+  "server/database/playerskins.lua",
+  "server/database/users.lua",
   "server/framework/framework.lua",
   "server/framework/qb/main.lua",
   "server/framework/qb/migrate.lua",
   "server/framework/esx/main.lua",
   "server/framework/esx/migrate.lua",
   "server/framework/esx/callbacks.lua",
+  "server/util.lua",
   "server/server.lua",
   "server/permissions.lua",
-  "@oxmysql/lib/MySQL.lua",
   "migrate/server/server.lua"
 }
 

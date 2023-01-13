@@ -92,7 +92,7 @@ local function LoadPlayerUniform()
                 TriggerServerEvent("illenium-appearance:server:syncUniform", nil) -- Uniform doesn't exist anymore
                 return
             end
-    
+
             TriggerEvent("illenium-appearance:client:changeOutfit", uniform)
         else
             local outfits = Config.Outfits[uniformData.jobName][uniformData.gender]
@@ -308,6 +308,72 @@ end
 
 RegisterNetEvent("illenium-appearance:client:openClothingShop", OpenClothingShop)
 
+RegisterNetEvent("illenium-appearance:client:importOutfitCode", function()
+    local response = lib.inputDialog("Enter outfit code", {
+        {
+            type = "input",
+            label = "Name the Outfit",
+            placeholder = "A nice outfit",
+            default = "Imported Outfit"
+        },
+        {
+            type = "input",
+            label = "Outfit Code",
+            placeholder = "XXXXXXXXXXXX"
+        }
+    })
+
+    if not response then
+        return
+    end
+
+    local outfitName = response[1]
+    local outfitCode = response[2]
+    if outfitCode ~= nil then
+        Wait(500)
+        lib.callback("illenium-appearance:server:importOutfitCode", false, function(success)
+            if success then
+                lib.notify({
+                    title = "Outfit Imported",
+                    description = "You can now change to the outfit using the outfit menu",
+                    type = "success",
+                    position = Config.NotifyOptions.position
+                })
+            else
+                lib.notify({
+                    title = "Import Failure",
+                    description = "Invalid outfit code",
+                    type = "error",
+                    position = Config.NotifyOptions.position
+                })
+            end
+        end, outfitName, outfitCode)
+    end
+end)
+
+RegisterNetEvent("illenium-appearance:client:generateOutfitCode", function(id)
+    lib.callback("illenium-appearance:server:generateOutfitCode", false, function(code)
+        if not code then
+            lib.notify({
+                title = "Something went wrong",
+                description = "Code generation failed for the outfit",
+                type = "error",
+                position = Config.NotifyOptions.position
+            })
+            return
+        end
+        lib.setClipboard(code)
+        lib.inputDialog("Outfit Code Generated", {
+            {
+                type = "input",
+                label = "Here is your outfit code",
+                default = code,
+                disabled = true
+            }
+        })
+    end, id)
+end)
+
 RegisterNetEvent("illenium-appearance:client:saveOutfit", function()
     local response = lib.inputDialog("Name your outfit", {
         {
@@ -377,6 +443,25 @@ local function RegisterChangeOutfitMenu(id, parent, outfits, mType)
     end
 
     lib.registerContext(changeOutfitMenu)
+end
+
+local function RegisterGenerateOutfitCodeMenu(id, parent, outfits)
+    local generateOutfitCodeMenu = {
+        id = id,
+        title = "Generate Outfit Code",
+        menu = parent,
+        options = {}
+    }
+    for i = 1, #outfits, 1 do
+        generateOutfitCodeMenu.options[#generateOutfitCodeMenu.options + 1] = {
+            title = outfits[i].name,
+            description = outfits[i].model,
+            event = "illenium-appearance:client:generateOutfitCode",
+            args = outfits[i].id
+        }
+    end
+
+    lib.registerContext(generateOutfitCodeMenu)
 end
 
 local function RegisterDeleteOutfitMenu(id, parent, outfits, deleteEvent)
@@ -535,9 +620,11 @@ function OpenMenu(isPedMenu, menuType, menuData)
     local outfits = lib.callback.await("illenium-appearance:server:getOutfits", false)
     local changeOutfitMenuID = "illenium_appearance_change_outfit_menu"
     local deleteOutfitMenuID = "illenium_appearance_delete_outfit_menu"
+    local generateOutfitCodeMenuID = "illenium_appearance_generate_outfit_code_menu"
 
     RegisterChangeOutfitMenu(changeOutfitMenuID, mainMenuID, outfits)
     RegisterDeleteOutfitMenu(deleteOutfitMenuID, mainMenuID, outfits, "illenium-appearance:client:deleteOutfit")
+    RegisterGenerateOutfitCodeMenu(generateOutfitCodeMenuID, mainMenuID, outfits)
     local outfitMenuItems = {
         {
             title = "Change Outfit",
@@ -550,9 +637,19 @@ function OpenMenu(isPedMenu, menuType, menuData)
             event = "illenium-appearance:client:saveOutfit"
         },
         {
+            title = "Generate Outfit Code",
+            description = "Generate an outfit code for sharing",
+            menu = generateOutfitCodeMenuID
+        },
+        {
             title = "Delete Outfit",
             description = "Delete any of your saved outfits",
             menu = deleteOutfitMenuID
+        },
+        {
+            title = "Import Outfit",
+            description = "Import an outfit from a sharing code",
+            event = "illenium-appearance:client:importOutfitCode"
         }
     }
     if menuType == "default" then

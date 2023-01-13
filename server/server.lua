@@ -18,7 +18,7 @@ end
 
 local function getOutfitsForPlayer(citizenid)
     outfitCache[citizenid] = {}
-    local result = MySQL.Sync.fetchAll("SELECT * FROM player_outfits WHERE citizenid = ?", {citizenid})
+    local result = Database.PlayerOutfits.GetAllByCitizenID(citizenid)
     for i = 1, #result, 1 do
         outfitCache[citizenid][#outfitCache[citizenid] + 1] = {
             id = result[i].id,
@@ -30,7 +30,60 @@ local function getOutfitsForPlayer(citizenid)
     end
 end
 
+local function GenerateUniqueCode()
+    local code, exists
+    repeat
+        code = GenerateNanoID(Config.OutfitCodeLength)
+        exists = Database.PlayerOutfitCodes.GetByCode(code)
+    until not exists
+    return code
+end
+
 -- Callback(s)
+
+lib.callback.register("illenium-appearance:server:generateOutfitCode", function(_, outfitID)
+    local existingOutfitCode = Database.PlayerOutfitCodes.GetByOutfitID(outfitID)
+    if not existingOutfitCode then
+        local code = GenerateUniqueCode()
+        local id = Database.PlayerOutfitCodes.Add(outfitID, code)
+        if not id then
+            print("Something went wrong while generating outfit code")
+            return
+        end
+        return code
+    end
+    return existingOutfitCode.code
+end)
+
+lib.callback.register("illenium-appearance:server:importOutfitCode", function(source, outfitName, outfitCode)
+    local citizenID = Framework.GetPlayerID(source)
+    local existingOutfitCode = Database.PlayerOutfitCodes.GetByCode(outfitCode)
+    if not existingOutfitCode then
+        return nil
+    end
+
+    local playerOutfit = Database.PlayerOutfits.GetByID(existingOutfitCode.outfitid)
+    if not playerOutfit then
+        return
+    end
+
+    local id = Database.PlayerOutfits.Add(citizenID, outfitName, playerOutfit.model, playerOutfit.components, playerOutfit.props)
+
+    if not id then
+        print("Something went wrong while importing the outfit")
+        return
+    end
+
+    outfitCache[citizenID][#outfitCache[citizenID] + 1] = {
+        id = id,
+        name = outfitName,
+        model = playerOutfit.model,
+        components = json.decode(playerOutfit.components),
+        props = json.decode(playerOutfit.props)
+    }
+
+    return true
+end)
 
 lib.callback.register("illenium-appearance:server:getAppearance", function(source, model)
     local citizenID = Framework.GetPlayerID(source)
@@ -84,17 +137,9 @@ lib.callback.register("illenium-appearance:server:getManagementOutfits", functio
     end
 
     local grade = tonumber(job.grade.level)
-
-    local query = "SELECT * FROM management_outfits WHERE type = ? AND job_name = ?"
-    local queryArgs = {mType, job.name}
-
-    if gender then
-        query = query .. " AND gender = ?"
-        queryArgs[#queryArgs + 1] = gender
-    end
-
     local managementOutfits = {}
-    local result = MySQL.Sync.fetchAll(query, queryArgs)
+    local result = Database.ManagementOutfits.GetAllByJob(mType, job.name, gender)
+
     for i = 1, #result, 1 do
         if grade >= result[i].minrank then
             managementOutfits[#managementOutfits + 1] = {
@@ -149,52 +194,43 @@ RegisterNetEvent("illenium-appearance:server:saveOutfit", function(name, model, 
         getOutfitsForPlayer(citizenID)
     end
     if model and components and props then
-        MySQL.Async.insert(
-            "INSERT INTO player_outfits (citizenid, outfitname, model, components, props) VALUES (?, ?, ?, ?, ?)",
-            {citizenID, name, model, json.encode(components), json.encode(props)}, function(id)
-                outfitCache[citizenID][#outfitCache[citizenID] + 1] = {
-                    id = id,
-                    name = name,
-                    model = model,
-                    components = components,
-                    props = props
-                }
-                lib.notify(src, {
-                    title = "Success",
-                    description = "Outfit " .. name .. " has been saved",
-                    type = "success",
-                    position = Config.NotifyOptions.position
-                })
-            end)
+        local id = Database.PlayerOutfits.Add(citizenID, name, model, json.encode(components), json.encode(props))
+        if not id then
+            return
+        end
+        outfitCache[citizenID][#outfitCache[citizenID] + 1] = {
+            id = id,
+            name = name,
+            model = model,
+            components = components,
+            props = props
+        }
+        lib.notify(src, {
+            title = "Success",
+            description = "Outfit " .. name .. " has been saved",
+            type = "success",
+            position = Config.NotifyOptions.position
+        })
     end
 end)
 
 RegisterNetEvent("illenium-appearance:server:saveManagementOutfit", function(outfitData)
     local src = source
+    local id = Database.ManagementOutfits.Add(outfitData)
+    if not id then
+        return
+    end
 
-    MySQL.Async.insert("INSERT INTO management_outfits (job_name, type, minrank, name, gender, model, props, components) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-        {
-            outfitData.JobName,
-            outfitData.Type,
-            outfitData.MinRank,
-            outfitData.Name,
-            outfitData.Gender,
-            outfitData.Model,
-            json.encode(outfitData.Props),
-            json.encode(outfitData.Components)
-        },
-        function()
-            lib.notify(src, {
-                title = "Success",
-                description = "Outfit " .. outfitData.Name .. " has been saved",
-                type = "success",
-                position = Config.NotifyOptions.position
-            })
-        end)
+    lib.notify(src, {
+        title = "Success",
+        description = "Outfit " .. outfitData.Name .. " has been saved",
+        type = "success",
+        position = Config.NotifyOptions.position
+    })
 end)
 
 RegisterNetEvent("illenium-appearance:server:deleteManagementOutfit", function(id)
-    MySQL.query("DELETE FROM management_outfits WHERE id = ?", {id})
+    Database.ManagementOutfits.DeleteByID(id)
 end)
 
 RegisterNetEvent("illenium-appearance:server:syncUniform", function(uniform)
@@ -205,7 +241,8 @@ end)
 RegisterNetEvent("illenium-appearance:server:deleteOutfit", function(id)
     local src = source
     local citizenID = Framework.GetPlayerID(src)
-    MySQL.query("DELETE FROM player_outfits WHERE id = ?", {id})
+    Database.PlayerOutfitCodes.DeleteByOutfitID(id)
+    Database.PlayerOutfits.DeleteByID(id)
 
     for k, v in ipairs(outfitCache[citizenID]) do
         if v.id == id then

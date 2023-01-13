@@ -24,6 +24,8 @@ Config.NotifyOptions = {
     position = "top-right"
 }
 
+Config.OutfitCodeLength = 10
+
 Config.UseRadialMenu = false
 
 Config.EnablePedsForShops = true

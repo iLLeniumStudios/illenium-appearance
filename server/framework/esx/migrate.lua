@@ -131,7 +131,7 @@ end
 
 
 lib.addCommand("admin", "migrateskins", function(source)
-    local users = MySQL.query.await("SELECT skin,identifier,gender FROM users LIMIT 100")
+    local users = Database.Users.GetAll()
     local convertedSkins = 0
     if users then
         for i = 1, #users do
@@ -139,7 +139,7 @@ lib.addCommand("admin", "migrateskins", function(source)
             local oldSkin = json.decode(user.skin)
             if oldSkin.mom then -- Convert only if its an old skin
                 local skin = json.encode(convertSkinToNewFormat(oldSkin, user.gender))
-                local affectedRows = MySQL.update.await("UPDATE users SET skin = ? WHERE identifier = ?", {skin, user.identifier})
+                local affectedRows = Database.Users.UpdateSkinForUser(user.identifier, skin)
                 if affectedRows then
                     convertedSkins += 1
                 end
