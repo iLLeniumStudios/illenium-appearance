@@ -9,7 +9,7 @@ end)
 
 AddEventHandler("esx_skin:playerRegistered", function()
     if(firstSpawn) then
-        InitializeCharacter(Framework.GetGender())
+        InitializeCharacter(Framework.GetGender(true))
     end
 end)
 
@@ -47,5 +47,5 @@ RegisterNetEvent("skinchanger:loadClothes", function(_, clothes)
 end)
 
 RegisterNetEvent("esx_skin:openSaveableMenu", function(onSubmit, onCancel)
-    InitializeCharacter(Framework.GetGender(), onSubmit, onCancel)
+    InitializeCharacter(Framework.GetGender(true), onSubmit, onCancel)
 end)

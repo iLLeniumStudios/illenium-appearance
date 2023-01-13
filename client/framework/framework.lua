@@ -1,10 +1,11 @@
-function Framework.GetGender()
-    if Config.GenderBasedOnPed then
-        local model = client.getPedModel(PlayerPedId())
-        if model == "mp_f_freemode_01" then
-            return "Female"
-        end
-        return "Male"
+function Framework.GetGender(isNew)
+    if isNew or not Config.GenderBasedOnPed then
+        return Framework.GetPlayerGender()
     end
-    return Framework.GetPlayerGender()
+
+    local model = client.getPedModel(PlayerPedId())
+    if model == "mp_f_freemode_01" then
+        return "Female"
+    end
+    return "Male"
 end
