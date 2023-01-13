@@ -30,26 +30,14 @@ function Framework.GetGang(src)
 end
 
 function Framework.SaveAppearance(appearance, citizenID)
-    MySQL.update.await("UPDATE playerskins SET active = 0 WHERE citizenid = ?", {citizenID}) -- Make all the skins inactive
-    MySQL.Async.execute("DELETE FROM playerskins WHERE citizenid = ? AND model = ?",
-        {citizenID, appearance.model}, function()
-            MySQL.Async.insert("INSERT INTO playerskins (citizenid, model, skin, active) VALUES (?, ?, ?, ?)",
-                {citizenID, appearance.model, json.encode(appearance), 1})
-        end)
+    Database.PlayerSkins.UpdateActiveField(citizenID, 0)
+    Database.PlayerSkins.DeleteByModel(citizenID, appearance.model)
+    Database.PlayerSkins.Add(citizenID, appearance.model, json.encode(appearance), 1)
 end
 
 function Framework.GetAppearance(citizenID, model)
-    local query = "SELECT skin FROM playerskins WHERE citizenid = ?"
-    local queryArgs = {citizenID}
-    if model ~= nil then
-        query = query .. " AND model = ?"
-        queryArgs[#queryArgs + 1] = model
-    else
-        query = query .. " AND active = ?"
-        queryArgs[#queryArgs + 1] = 1
-    end
-    local result = MySQL.Sync.fetchAll(query, queryArgs)
-    if result[1] ~= nil then
-        return json.decode(result[1].skin)
+    local result = Database.PlayerSkins.GetByCitizenID(citizenID, model)
+    if result then
+        return json.decode(result)
     end
 end
