@@ -9,5 +9,5 @@ function Database.Users.GetSkinByCitizenID(citizenID)
 end
 
 function Database.Users.GetAll()
-    return MySQL.query.await("SELECT skin,identifier,gender FROM users")
+    return MySQL.query.await("SELECT * FROM users")
 end

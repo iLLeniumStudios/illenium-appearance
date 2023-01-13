@@ -5,7 +5,7 @@ function Database.PlayerOutfits.GetAllByCitizenID(citizenid)
 end
 
 function Database.PlayerOutfits.GetByID(id)
-    MySQL.single.await("SELECT * FROM player_outfits WHERE id = ?", {id})
+    return MySQL.single.await("SELECT * FROM player_outfits WHERE id = ?", {id})
 end
 
 function Database.PlayerOutfits.Add(citizenID, outfitName, model, components, props)
