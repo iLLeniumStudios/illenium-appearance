@@ -41,7 +41,7 @@ end
 
 -- Callback(s)
 
-lib.callback.register("illenium-appearance:server:generateOutfitCode", function(source, outfitID)
+lib.callback.register("illenium-appearance:server:generateOutfitCode", function(_, outfitID)
     local existingOutfitCode = Database.PlayerOutfitCodes.GetByOutfitID(outfitID)
     if not existingOutfitCode then
         local code = GenerateUniqueCode()
