@@ -84,7 +84,7 @@ end)
 RegisterNetEvent("qb-clothes:client:CreateFirstCharacter", function()
     QBCore.Functions.GetPlayerData(function(pd)
         PlayerData = pd
-        InitializeCharacter(Framework.GetGender())
+        InitializeCharacter(Framework.GetGender(true))
     end)
 end)
 
