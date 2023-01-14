@@ -24,6 +24,15 @@ RegisterNetEvent("skinchanger:getSkin", function(cb)
         Wait(1000)
     end
     lib.callback("illenium-appearance:server:getAppearance", false, function(appearance)
+        if appearance.model then
+            if appearance.model == 'mp_m_freemode_01' then
+                appearance.sex = 0
+            elseif appearance.model == 'mp_f_freemode_01' then
+                appearance.sex = 1
+            else
+                appearance.sex = 0
+            end
+        end
         cb(appearance)
         Framework.CachePed()
     end)
