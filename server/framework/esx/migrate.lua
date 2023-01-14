@@ -136,12 +136,14 @@ lib.addCommand("admin", "migrateskins", function(source)
     if users then
         for i = 1, #users do
             local user = users[i]
-            local oldSkin = json.decode(user.skin)
-            if oldSkin.mom then -- Convert only if its an old skin
-                local skin = json.encode(convertSkinToNewFormat(oldSkin, user.gender))
-                local affectedRows = Database.Users.UpdateSkinForUser(user.identifier, skin)
-                if affectedRows then
-                    convertedSkins += 1
+            if user.skin then
+                local oldSkin = json.decode(user.skin)
+                if oldSkin.mom then -- Convert only if its an old skin
+                    local skin = json.encode(convertSkinToNewFormat(oldSkin, user.gender))
+                    local affectedRows = Database.Users.UpdateSkinForUser(user.identifier, skin)
+                    if affectedRows then
+                        convertedSkins += 1
+                    end
                 end
             end
         end
