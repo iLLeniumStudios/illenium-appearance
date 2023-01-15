@@ -47,8 +47,10 @@ function Framework.GetAppearance(citizenID)
     local user = Database.Users.GetSkinByCitizenID(citizenID)
     if user then
         local skin = json.decode(user.skin)
-        skin.sex = skin.model == "mp_m_freemode_01" and 0 or 1
-        return skin
+        if skin then
+            skin.sex = skin.model == "mp_m_freemode_01" and 0 or 1
+            return skin
+        end
     end
     return nil
 end
