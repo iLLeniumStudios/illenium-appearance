@@ -165,7 +165,6 @@ function InitAppearance()
         if Config.PersistUniforms then
             LoadPlayerUniform()
         end
-        RestorePlayerStats()
     end)
     ResetBlips()
     if Config.BossManagedOutfits then
@@ -175,7 +174,9 @@ end
 
 AddEventHandler("onResourceStart", function(resource)
     if resource == GetCurrentResourceName() then
+        BackupPlayerStats()
         InitAppearance()
+        RestorePlayerStats()
     end
 end)
 
