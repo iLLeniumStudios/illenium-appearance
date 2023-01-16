@@ -161,8 +161,6 @@ function InitAppearance()
             return
         end
 
-        BackupPlayerStats()
-
         client.setPlayerAppearance(appearance)
         if Config.PersistUniforms then
             LoadPlayerUniform()
