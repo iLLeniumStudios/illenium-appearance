@@ -170,13 +170,12 @@ function InitAppearance()
     if Config.BossManagedOutfits then
         AddManagementMenuItems()
     end
+    RestorePlayerStats()
 end
 
 AddEventHandler("onResourceStart", function(resource)
     if resource == GetCurrentResourceName() then
-        BackupPlayerStats()
         InitAppearance()
-        RestorePlayerStats()
     end
 end)
 

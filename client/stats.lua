@@ -23,5 +23,9 @@ function RestorePlayerStats()
         SetPedArmour(playerPed, stats.armour)
         ResetRechargeMultipliers()
         stats = nil
+        return
     end
+
+    -- If no stats are backed up, restore from the framework
+    Framework.RestorePlayerArmour()
 end

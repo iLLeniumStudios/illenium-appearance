@@ -67,3 +67,7 @@ end
 function Framework.CachePed()
     ESX.SetPlayerData("ped", PlayerPedId())
 end
+
+function Framework.RestorePlayerArmour()
+    return nil
+end
