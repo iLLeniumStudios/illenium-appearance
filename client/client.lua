@@ -161,18 +161,16 @@ function InitAppearance()
             return
         end
 
-        BackupPlayerStats()
-
         client.setPlayerAppearance(appearance)
         if Config.PersistUniforms then
             LoadPlayerUniform()
         end
-        RestorePlayerStats()
     end)
     ResetBlips()
     if Config.BossManagedOutfits then
         AddManagementMenuItems()
     end
+    RestorePlayerStats()
 end
 
 AddEventHandler("onResourceStart", function(resource)
