@@ -33,7 +33,7 @@ Config.EnablePedsForClothingRooms = true
 Config.EnablePedsForPlayerOutfitRooms = true
 
 Config.EnablePedMenu = true
-Config.PedMenuGroup = "admin"
+Config.PedMenuGroup = "group.admin"
 
 Config.ShowNearestShopOnly = false
 Config.HideRadar = false -- Hides the minimap while the appearance menu is open
