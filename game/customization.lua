@@ -58,7 +58,7 @@ local function listContainsAny(items, containedItems)
 end
 
 local function allowedForPlayer(item, allowedAces)
-    return (item.jobs and listContains(item.jobs, client.job.name)) or (item.gangs and listContains(item.gangs, client.gang.name)) or (item.aces and listContainsAny(item.aces, allowedAces))
+    return (item.jobs and listContains(item.jobs, client.job.name)) or (item.gangs and listContains(item.gangs, client.gang.name)) or (item.aces and listContainsAny(item.aces, allowedAces) or (item.citizenids and listContains(item.citizenids, client.citizenid)))
 end
 
 local function filterPedModelsForPlayer(pedConfigs)
