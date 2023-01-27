@@ -12,8 +12,7 @@ CREATE TABLE IF NOT EXISTS `player_outfit_codes` (
   `outfitid` int(11) NOT NULL,
   `code` varchar(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
-  KEY `FK_player_outfit_codes_player_outfits` (`outfitid`),
-  CONSTRAINT `FK_player_outfit_codes_player_outfits` FOREIGN KEY (`outfitid`) REFERENCES `player_outfits` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `FK_player_outfit_codes_player_outfits` (`outfitid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
