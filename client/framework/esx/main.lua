@@ -7,6 +7,7 @@ RegisterNetEvent("esx:playerLoaded", function(xPlayer)
 	Framework.PlayerData = xPlayer
     client.job = Framework.PlayerData.job
     client.gang = Framework.PlayerData.gang
+    client.citizenid = Framework.PlayerData.identifier
     InitAppearance()
 end)
 
@@ -34,6 +35,7 @@ function Framework.UpdatePlayerData()
         Framework.PlayerData = data
         client.job = Framework.PlayerData.job
         client.gang = Framework.PlayerData.job
+        client.citizenid = Framework.PlayerData.identifier
     end
 end
 

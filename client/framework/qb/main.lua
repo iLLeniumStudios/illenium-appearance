@@ -28,6 +28,7 @@ function Framework.UpdatePlayerData()
     PlayerData = QBCore.Functions.GetPlayerData()
     client.job = PlayerData.job
     client.gang = PlayerData.gang
+    client.citizenid = PlayerData.citizenid
 end
 
 function Framework.HasTracker()
