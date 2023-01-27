@@ -4,7 +4,7 @@ local ESX = exports["es_extended"]:getSharedObject()
 Framework.PlayerData = ESX.GetPlayerData()
 
 RegisterNetEvent("esx:playerLoaded", function(xPlayer)
-	Framework.PlayerData = xPlayer
+    Framework.PlayerData = xPlayer
     client.job = Framework.PlayerData.job
     client.gang = Framework.PlayerData.gang
     client.citizenid = Framework.PlayerData.identifier
