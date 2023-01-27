@@ -35,8 +35,8 @@ function Framework.UpdatePlayerData()
         Framework.PlayerData = data
         client.job = Framework.PlayerData.job
         client.gang = Framework.PlayerData.job
-        client.citizenid = Framework.PlayerData.identifier
     end
+    client.citizenid = Framework.PlayerData.identifier
 end
 
 function Framework.HasTracker()
