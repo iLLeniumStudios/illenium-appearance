@@ -214,6 +214,34 @@ RegisterNetEvent("illenium-appearance:server:saveOutfit", function(name, model, 
     end
 end)
 
+RegisterNetEvent("illenium-appearance:server:updateOutfit", function(id, model, components, props)
+    local src = source
+    local citizenID = Framework.GetPlayerID(src)
+    if outfitCache[citizenID] == nil then
+        getOutfitsForPlayer(citizenID)
+    end
+    if model and components and props then
+        if not Database.PlayerOutfits.Update(id, model, json.encode(components), json.encode(props)) then return end
+        local outfitName = ""
+        for i = 1, #outfitCache[citizenID], 1 do
+            local outfit = outfitCache[citizenID][i]
+            if outfit.id == id then
+                outfit.model = model
+                outfit.components = components
+                outfit.props = props
+                outfitName = outfit.name
+                break
+            end
+        end
+        lib.notify(src, {
+            title = "Success",
+            description = "Outfit " .. outfitName .. " has been saved",
+            type = "success",
+            position = Config.NotifyOptions.position
+        })
+    end
+end)
+
 RegisterNetEvent("illenium-appearance:server:saveManagementOutfit", function(outfitData)
     local src = source
     local id = Database.ManagementOutfits.Add(outfitData)

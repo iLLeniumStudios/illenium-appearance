@@ -18,6 +18,15 @@ function Database.PlayerOutfits.Add(citizenID, outfitName, model, components, pr
     })
 end
 
+function Database.PlayerOutfits.Update(outfitID, model, components, props)
+    return MySQL.update.await("UPDATE player_outfits SET model = ?, components = ?, props = ? WHERE id = ?", {
+        model,
+        components,
+        props,
+        outfitID
+    })
+end
+
 function Database.PlayerOutfits.DeleteByID(id)
     MySQL.query.await("DELETE FROM player_outfits WHERE id = ?", {id})
 end
