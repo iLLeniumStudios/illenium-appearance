@@ -417,7 +417,7 @@ RegisterNetEvent("illenium-appearance:client:saveOutfit", function()
     end
 end)
 
-RegisterNetEvent('illenium=appearance:client:updateOutfit', function(outfitID)
+RegisterNetEvent('illenium-appearance:client:updateOutfit', function(outfitID)
     if not outfitID then return end
     
     lib.callback("illenium-appearance:server:getOutfits", false, function(outfits)
@@ -489,7 +489,7 @@ local function RegisterUpdateOutfitMenu(id, parent, outfits)
         updateOutfitMenu.options[#updateOutfitMenu.options + 1] = {
             title = outfits[i].name,
             description = outfits[i].model,
-            event = "illenium=appearance:client:updateOutfit",
+            event = "illenium-appearance:client:updateOutfit",
             args = outfits[i].id
         }
     end
