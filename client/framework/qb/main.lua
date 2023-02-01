@@ -17,6 +17,12 @@ local function getRankInputValues(rankList)
     return rankValues
 end
 
+local function setClientParams()
+    client.job = PlayerData.job
+    client.gang = PlayerData.gang
+    client.citizenid = PlayerData.citizenid
+end
+
 function Framework.GetPlayerGender()
     if PlayerData.charinfo.gender == 1 then
         return "Female"
@@ -26,9 +32,7 @@ end
 
 function Framework.UpdatePlayerData()
     PlayerData = QBCore.Functions.GetPlayerData()
-    client.job = PlayerData.job
-    client.gang = PlayerData.gang
-    client.citizenid = PlayerData.citizenid
+    setClientParams()
 end
 
 function Framework.HasTracker()
@@ -85,6 +89,7 @@ end)
 RegisterNetEvent("qb-clothes:client:CreateFirstCharacter", function()
     QBCore.Functions.GetPlayerData(function(pd)
         PlayerData = pd
+        setClientParams()
         InitializeCharacter(Framework.GetGender(true))
     end)
 end)
