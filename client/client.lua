@@ -391,7 +391,7 @@ RegisterNetEvent("illenium-appearance:client:saveOutfit", function()
         lib.callback("illenium-appearance:server:getOutfits", false, function(outfits)
             local outfitExists = false
             for i = 1, #outfits, 1 do
-                if outfits[i].name == outfitName then
+                if outfits[i].name:lower() == outfitName:lower() then
                     outfitExists = true
                     break
                 end
