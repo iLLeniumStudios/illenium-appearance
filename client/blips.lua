@@ -21,8 +21,8 @@ local function CreateBlip(blipConfig, coords)
     SetBlipColour(blip, blipConfig.Color)
     SetBlipScale(blip, blipConfig.Scale)
     SetBlipAsShortRange(blip, true)
-    AddTextEntry(blipConfig.Name, blipConfig.Name)
-    BeginTextCommandSetBlipName(blipConfig.Name)
+    BeginTextCommandSetBlipName("STRING")
+    AddTextComponentString(blipConfig.Name)
     EndTextCommandSetBlipName(blip)
     return blip
 end
