@@ -235,7 +235,8 @@ RegisterNetEvent("illenium-appearance:server:updateOutfit", function(id, model, 
         end
         lib.notify(src, {
             title = "Success",
-            description = "Outfit " .. outfitName .. " has been saved",
+            description = "Outfit " .. outfitName .. " has been updated",
+
             type = "success",
             position = Config.NotifyOptions.position
         })
