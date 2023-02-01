@@ -417,6 +417,37 @@ RegisterNetEvent("illenium-appearance:client:saveOutfit", function()
     end
 end)
 
+RegisterNetEvent('illenium=appearance:client:updateOutfit', function(outfitID)
+    if not outfitID then return end
+    
+    lib.callback("illenium-appearance:server:getOutfits", false, function(outfits)
+        local outfitExists = false
+        for i = 1, #outfits, 1 do
+            if outfits[i].id == outfitID then
+                outfitExists = true
+                break
+            end
+        end
+
+        if not outfitExists then
+            lib.notify({
+                title = "Update Failed",
+                description = "That outfit does not exist",
+                type = "error",
+                position = Config.NotifyOptions.position
+            })
+            return
+        end
+
+        local playerPed = PlayerPedId()
+        local pedModel = client.getPedModel(playerPed)
+        local pedComponents = client.getPedComponents(playerPed)
+        local pedProps = client.getPedProps(playerPed)
+
+        TriggerServerEvent("illenium-appearance:server:updateOutfit", outfitID, pedModel, pedComponents, pedProps)
+    end)
+end)
+
 local function RegisterChangeOutfitMenu(id, parent, outfits, mType)
     local changeOutfitMenu = {
         id = id,
@@ -440,7 +471,34 @@ local function RegisterChangeOutfitMenu(id, parent, outfits, mType)
         }
     end
 
+    table.sort(changeOutfitMenu.options, function(a, b)
+        return a.title < b.title
+    end)
+    
     lib.registerContext(changeOutfitMenu)
+end
+
+local function RegisterUpdateOutfitMenu(id, parent, outfits)
+    local updateOutfitMenu = {
+        id = id,
+        title = "Change Outfit",
+        menu = parent,
+        options = {}
+    }
+    for i = 1, #outfits, 1 do
+        updateOutfitMenu.options[#updateOutfitMenu.options + 1] = {
+            title = outfits[i].name,
+            description = outfits[i].model,
+            event = "illenium=appearance:client:updateOutfit",
+            args = outfits[i].id
+        }
+    end
+
+    table.sort(updateOutfitMenu.options, function(a, b)
+        return a.title < b.title
+    end)
+    
+    lib.registerContext(updateOutfitMenu)
 end
 
 local function RegisterGenerateOutfitCodeMenu(id, parent, outfits)
@@ -469,6 +527,11 @@ local function RegisterDeleteOutfitMenu(id, parent, outfits, deleteEvent)
         menu = parent,
         options = {}
     }
+
+    table.sort(outfits, function(a, b)
+        return a.name < b.name
+    end)
+
     for i = 1, #outfits, 1 do
         deleteOutfitMenu.options[#deleteOutfitMenu.options + 1] = {
             title = 'Delete "' .. outfits[i].name .. '"',
@@ -617,10 +680,12 @@ function OpenMenu(isPedMenu, menuType, menuData)
 
     local outfits = lib.callback.await("illenium-appearance:server:getOutfits", false)
     local changeOutfitMenuID = "illenium_appearance_change_outfit_menu"
+    local updateOutfitMenuID = "illenium_appearance_update_outfit_menu"
     local deleteOutfitMenuID = "illenium_appearance_delete_outfit_menu"
     local generateOutfitCodeMenuID = "illenium_appearance_generate_outfit_code_menu"
 
     RegisterChangeOutfitMenu(changeOutfitMenuID, mainMenuID, outfits)
+    RegisterUpdateOutfitMenu(updateOutfitMenuID, mainMenuID, outfits)
     RegisterDeleteOutfitMenu(deleteOutfitMenuID, mainMenuID, outfits, "illenium-appearance:client:deleteOutfit")
     RegisterGenerateOutfitCodeMenu(generateOutfitCodeMenuID, mainMenuID, outfits)
     local outfitMenuItems = {
@@ -628,6 +693,11 @@ function OpenMenu(isPedMenu, menuType, menuData)
             title = "Change Outfit",
             description = "Pick from any of your currently saved outfits",
             menu = changeOutfitMenuID
+        },
+        {
+            title = "Update Outfit",
+            description = "Save your current clothing to an existing outfit",
+            menu = updateOutfitMenuID
         },
         {
             title = "Save New Outfit",
