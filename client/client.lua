@@ -527,6 +527,11 @@ local function RegisterDeleteOutfitMenu(id, parent, outfits, deleteEvent)
         menu = parent,
         options = {}
     }
+
+    table.sort(outfits, function(a, b)
+        return a.name < b.name
+    end)
+
     for i = 1, #outfits, 1 do
         deleteOutfitMenu.options[#deleteOutfitMenu.options + 1] = {
             title = 'Delete "' .. outfits[i].name .. '"',
