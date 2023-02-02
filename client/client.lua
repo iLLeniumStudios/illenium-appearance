@@ -226,6 +226,7 @@ function InitializeCharacter(gender, onSubmit, onCancel)
     client.setPedHair(ped, Config.InitialPlayerClothes[gender].Hair, {})
     ClearPedDecorations(ped)
     local config = getNewCharacterConfig()
+    TriggerServerEvent("illenium-appearance:server:ChangeRoutingBucket")
     client.startPlayerCustomization(function(appearance)
         if (appearance) then
             TriggerServerEvent("illenium-appearance:server:saveAppearance", appearance)
@@ -236,6 +237,7 @@ function InitializeCharacter(gender, onSubmit, onCancel)
             onCancel()
         end
         Framework.CachePed()
+        TriggerServerEvent("illenium-appearance:server:ResetRoutingBucket")
     end, config)
 end
 
