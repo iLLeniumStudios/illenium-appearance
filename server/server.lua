@@ -289,6 +289,16 @@ RegisterNetEvent("illenium-appearance:server:resetOutfitCache", function()
     end
 end)
 
+RegisterNetEvent("illenium-appearance:server:ChangeRoutingBucket", function()
+    local src = source
+    SetPlayerRoutingBucket(src, src)
+end)
+
+RegisterNetEvent("illenium-appearance:server:ResetRoutingBucket", function()
+    local src = source
+    SetPlayerRoutingBucket(src, 0)
+end)
+
 if Config.EnablePedMenu then
     lib.addCommand(Config.PedMenuGroup, "pedmenu", function(source, args)
         local target = source
