@@ -16,6 +16,8 @@ Config.AsynchronousLoading = false -- Change this to false if you want the NUI d
 
 Config.UseTarget = false
 
+Config.notify = true
+
 Config.TextUIOptions = {
     position = "left-center"
 }
@@ -42,6 +44,7 @@ Config.NearestShopBlipUpdateDelay = 10000
 Config.InvincibleDuringCustomization = true
 
 Config.PreventTrackerRemoval = true -- Disables "Scarf and Chains" section if the player has tracker
+
 
 Config.NewCharacterSections = {
     Ped = true,
