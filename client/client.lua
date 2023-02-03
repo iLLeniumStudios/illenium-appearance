@@ -270,7 +270,7 @@ function OpenShop(config, isPedMenu, shopType)
                  else
                 lib.notify({
                     title = "Cancelled Customization",
-                    description = "Customization not  ",
+                    description = "Customization not saved",
                     type = "inform",
                     position = Config.NotifyOptions.position
                 })
@@ -590,7 +590,7 @@ RegisterNetEvent("illenium-appearance:client:OutfitManagementMenu", function(arg
         options = {
             {
                 title = "Change Outfit",
-                description = "Pick from any of your currently   "  .. args.type .. " outfits",
+                description = "Pick from any of your currently saved "  .. args.type .. " outfits",
                 menu = changeManagementOutfitMenuID,
             },
             {
@@ -601,7 +601,7 @@ RegisterNetEvent("illenium-appearance:client:OutfitManagementMenu", function(arg
             },
             {
                 title = "Delete Outfit",
-                description = "Delete a   " .. args.type .. " outfit",
+                description = "Delete a saved " .. args.type .. " outfit",
                 menu = deleteManagementOutfitMenuID,
             },
             {
@@ -718,7 +718,7 @@ function OpenMenu(isPedMenu, menuType, menuData)
     local outfitMenuItems = {
         {
             title = "Change Outfit",
-            description = "Pick from any of your currently   outfits",
+            description = "Pick from any of your currently saved outfits",
             menu = changeOutfitMenuID
         },
         {
@@ -738,7 +738,7 @@ function OpenMenu(isPedMenu, menuType, menuData)
         },
         {
             title = "Delete Outfit",
-            description = "Delete any of your   outfits",
+            description = "Delete any of your saved outfits",
             menu = deleteOutfitMenuID
         },
         {
