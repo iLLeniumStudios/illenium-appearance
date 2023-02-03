@@ -16,7 +16,7 @@ Config.AsynchronousLoading = false -- Change this to false if you want the NUI d
 
 Config.UseTarget = false
 
-Config.notify = true
+Config.notify = false -- Change this to true if you have okoknotify script
 
 Config.TextUIOptions = {
     position = "left-center"
