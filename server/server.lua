@@ -104,6 +104,9 @@ lib.callback.register("illenium-appearance:server:payForTattoo", function(source
     local cost = tattoo.cost or Config.TattooCost
 
     if Framework.RemoveMoney(src, "cash", cost) then
+        if Config.notify then
+		    TriggerClientEvent('okokNotify:Alert', src, 'Success', "Purchased " .. tattoo.label .. " tattoo for " .. cost .. "$", 3000, 'success')
+        else
         lib.notify(src, {
             title = "Success",
             description = "Purchased " .. tattoo.label .. " tattoo for " .. cost .. "$",
@@ -111,7 +114,11 @@ lib.callback.register("illenium-appearance:server:payForTattoo", function(source
             position = Config.NotifyOptions.position
         })
         return true
+		end
     else
+         if Config.notify == 'okok' then
+		    TriggerClientEvent('okokNotify:Alert', src, 'Tattoo apply failed', "You don't have enough money!", 3000, 'error')
+        else
         lib.notify(src, {
             title = "Tattoo apply failed",
             description = "You don't have enough money!",
@@ -119,6 +126,7 @@ lib.callback.register("illenium-appearance:server:payForTattoo", function(source
             position = Config.NotifyOptions.position
         })
         return false
+		end
     end
 end)
 
@@ -171,19 +179,27 @@ RegisterServerEvent("illenium-appearance:server:chargeCustomer", function(shopTy
     local src = source
     local money = getMoneyForShop(shopType)
     if Framework.RemoveMoney(src, "cash", money) then
+       if Config.notify then
+		    TriggerClientEvent('okokNotify:Alert', src, 'Success', "Gave $" .. money .. " to " .. shopType .. "!", 3000, 'success')
+        else
         lib.notify(src, {
             title = "Success",
             description = "Gave $" .. money .. " to " .. shopType .. "!",
             type = "success",
             position = Config.NotifyOptions.position
         })
+		end
     else
+        if Config.notify then
+		    TriggerClientEvent('okokNotify:Alert', src, 'Exploit', "You didn't have enough money! Tried to exploit the system!", 3000, 'error')
+        else
         lib.notify(src, {
             title = "Exploit!",
             description = "You didn't have enough money! Tried to exploit the system!",
             type = "error",
             position = Config.NotifyOptions.position
         })
+		end
     end
 end)
 
@@ -205,12 +221,16 @@ RegisterNetEvent("illenium-appearance:server:saveOutfit", function(name, model, 
             components = components,
             props = props
         }
+        if Config.notify then
+		    TriggerClientEvent('okokNotify:Alert', src, 'Success', "Outfit " .. name .. " has been saved", 3000, 'success')
+        else
         lib.notify(src, {
             title = "Success",
             description = "Outfit " .. name .. " has been saved",
             type = "success",
             position = Config.NotifyOptions.position
         })
+		end
     end
 end)
 
@@ -233,13 +253,16 @@ RegisterNetEvent("illenium-appearance:server:updateOutfit", function(id, model, 
                 break
             end
         end
+        if Config.notify then
+		    TriggerClientEvent('okokNotify:Alert', src, 'Success', "Outfit " .. outfitName .. " has been updated", 3000, 'success')
+        else
         lib.notify(src, {
             title = "Success",
             description = "Outfit " .. outfitName .. " has been updated",
-
             type = "success",
             position = Config.NotifyOptions.position
         })
+		end
     end
 end)
 
@@ -249,13 +272,16 @@ RegisterNetEvent("illenium-appearance:server:saveManagementOutfit", function(out
     if not id then
         return
     end
-
+    if Config.notify then
+		    TriggerClientEvent('okokNotify:Alert', src, 'Success', "Outfit " .. outfitData.Name .. " has been saved", 3000, 'success')
+    else
     lib.notify(src, {
         title = "Success",
         description = "Outfit " .. outfitData.Name .. " has been saved",
         type = "success",
         position = Config.NotifyOptions.position
     })
+	end
 end)
 
 RegisterNetEvent("illenium-appearance:server:deleteManagementOutfit", function(id)
