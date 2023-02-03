@@ -244,12 +244,16 @@ end
 function OpenShop(config, isPedMenu, shopType)
     lib.callback("illenium-appearance:server:hasMoney", false, function(hasMoney, money)
         if not hasMoney and not isPedMenu then
+            if Config.notify then
+			   exports['okokNotify']:Alert('CCannot Enter Shop', "Not enough cash. Need $" .. money, 5000, 'error')
+            else
             lib.notify({
                 title = "Cannot Enter Shop",
                 description = "Not enough cash. Need $" .. money,
                 type = "error",
                 position = Config.NotifyOptions.position
             })
+			end
             return
         end
 
@@ -260,12 +264,17 @@ function OpenShop(config, isPedMenu, shopType)
                 end
                 TriggerServerEvent("illenium-appearance:server:saveAppearance", appearance)
             else
+              if Config.notify then
+			   exports['okokNotify']:Alert('Cancelled Customization', "Customization not  ", 5000, 'error')
+								
+                 else
                 lib.notify({
                     title = "Cancelled Customization",
-                    description = "Customization not saved",
+                    description = "Customization not  ",
                     type = "inform",
                     position = Config.NotifyOptions.position
                 })
+				end
             end
             Framework.CachePed()
         end, config)
@@ -333,19 +342,27 @@ RegisterNetEvent("illenium-appearance:client:importOutfitCode", function()
         Wait(500)
         lib.callback("illenium-appearance:server:importOutfitCode", false, function(success)
             if success then
-                lib.notify({
-                    title = "Outfit Imported",
-                    description = "You can now change to the outfit using the outfit menu",
-                    type = "success",
-                    position = Config.NotifyOptions.position
+				if Config.notify then
+				    exports['okokNotify']:Alert('Outfit Imported', "You can now change to the outfit using the outfit menu", 3000, 'success')
+                 else
+                     lib.notify({
+                         title = "Outfit Imported",
+                         description = "You can now change to the outfit using the outfit menu",
+                         type = "success",
+                         position = Config.NotifyOptions.position
                 })
+				end
             else
-                lib.notify({
+                if Config.notify then
+			        exports['okokNotify']:Alert('Import Failure', "Invalid outfit code", 3000, 'error')
+                else
+                     lib.notify({
                     title = "Import Failure",
                     description = "Invalid outfit code",
                     type = "error",
                     position = Config.NotifyOptions.position
                 })
+				end
             end
         end, outfitName, outfitCode)
     end
@@ -354,12 +371,16 @@ end)
 RegisterNetEvent("illenium-appearance:client:generateOutfitCode", function(id)
     lib.callback("illenium-appearance:server:generateOutfitCode", false, function(code)
         if not code then
+           if Config.notify then
+			  exports['okokNotify']:Alert('Something went wrong', "Code generation failed for the outfit ", 3000, 'error')
+           else
             lib.notify({
                 title = "Something went wrong",
                 description = "Code generation failed for the outfit",
                 type = "error",
                 position = Config.NotifyOptions.position
             })
+			end
             return
         end
         lib.setClipboard(code)
@@ -400,12 +421,16 @@ RegisterNetEvent("illenium-appearance:client:saveOutfit", function()
             end
 
             if outfitExists then
-                lib.notify({
-                    title = "Save Failed",
-                    description = "Outfit with this name already exists",
+               if Config.notify then
+		            exports['okokNotify']:Alert('Update Failed', "That outfit does not exist", 3000, 'error')
+                else
+                    lib.notify({
+                    title = "Update Failed",
+                    description = "That outfit does not exist",
                     type = "error",
                     position = Config.NotifyOptions.position
-                })
+            })
+			end
                 return
             end
 
@@ -565,7 +590,7 @@ RegisterNetEvent("illenium-appearance:client:OutfitManagementMenu", function(arg
         options = {
             {
                 title = "Change Outfit",
-                description = "Pick from any of your currently saved "  .. args.type .. " outfits",
+                description = "Pick from any of your currently   "  .. args.type .. " outfits",
                 menu = changeManagementOutfitMenuID,
             },
             {
@@ -576,7 +601,7 @@ RegisterNetEvent("illenium-appearance:client:OutfitManagementMenu", function(arg
             },
             {
                 title = "Delete Outfit",
-                description = "Delete a saved " .. args.type .. " outfit",
+                description = "Delete a   " .. args.type .. " outfit",
                 menu = deleteManagementOutfitMenuID,
             },
             {
@@ -693,7 +718,7 @@ function OpenMenu(isPedMenu, menuType, menuData)
     local outfitMenuItems = {
         {
             title = "Change Outfit",
-            description = "Pick from any of your currently saved outfits",
+            description = "Pick from any of your currently   outfits",
             menu = changeOutfitMenuID
         },
         {
@@ -713,7 +738,7 @@ function OpenMenu(isPedMenu, menuType, menuData)
         },
         {
             title = "Delete Outfit",
-            description = "Delete any of your saved outfits",
+            description = "Delete any of your   outfits",
             menu = deleteOutfitMenuID
         },
         {
@@ -795,7 +820,7 @@ RegisterNetEvent("illenium-appearance:client:changeOutfit", function(data)
             if appearance then
                 client.setPlayerAppearance(appearance)
                 RestorePlayerStats()
-            else
+			else
                 lib.notify({
                     title = "Something went wrong",
                     description = "The outfit that you're trying to change to, does not have a base appearance",
@@ -830,22 +855,30 @@ end)
 
 RegisterNetEvent("illenium-appearance:client:DeleteManagementOutfit", function(id)
     TriggerServerEvent("illenium-appearance:server:deleteManagementOutfit", id)
+	if Config.notify then
+		exports['okokNotify']:Alert('Success', "Outfit Deleted", 5000, 'success')
+    else
     lib.notify({
         title = "Success",
         description = "Outfit Deleted",
         type = "success",
         position = Config.NotifyOptions.position
     })
+	end
 end)
 
 RegisterNetEvent("illenium-appearance:client:deleteOutfit", function(id)
     TriggerServerEvent("illenium-appearance:server:deleteOutfit", id)
+	if Config.notify then
+		exports['okokNotify']:Alert('Success', "Outfit Deleted", 5000, 'success')
+    else
     lib.notify({
         title = "Success",
         description = "Outfit Deleted",
         type = "success",
         position = Config.NotifyOptions.position
     })
+	end
 end)
 
 RegisterNetEvent("illenium-appearance:client:openJobOutfitsMenu", function(outfitsToShow)
