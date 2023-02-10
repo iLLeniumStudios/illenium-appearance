@@ -139,7 +139,6 @@ lib.addCommand("admin", "migrateskins", function(source)
             if user.skin then
                 local oldSkin = json.decode(user.skin)
                 if oldSkin.hair_1 then -- Convert only if its an old skin
-                    print(user.identifier)
                     local skin = json.encode(convertSkinToNewFormat(oldSkin))
                     local affectedRows = Database.Users.UpdateSkinForUser(user.identifier, skin)
                     if affectedRows then

@@ -1,14 +1,3 @@
-function _L(key)
-    local value = Locales["en"]
-    for k in key:gmatch("[^.]+") do
-        value = value[k]
-        if not value then
-            return ""
-        end
-    end
-    return value
-end
-
 Locales = {}
 
 Locales["en"] = {
