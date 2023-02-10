@@ -4,7 +4,7 @@ local function tofloat(num)
     return num + 0.0
 end
 
-local function convertSkinToNewFormat(oldSkin, gender)
+local function convertSkinToNewFormat(oldSkin)
     local skin = {
         components = Framework.ConvertComponents(oldSkin),
         eyeColor = oldSkin.eye_color,
