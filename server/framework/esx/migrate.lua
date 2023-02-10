@@ -4,7 +4,7 @@ local function tofloat(num)
     return num + 0.0
 end
 
-local function convertSkinToNewFormat(oldSkin)
+local function convertSkinToNewFormat(oldSkin, gender)
     local skin = {
         components = Framework.ConvertComponents(oldSkin),
         eyeColor = oldSkin.eye_color,
@@ -121,7 +121,7 @@ local function convertSkinToNewFormat(oldSkin)
                 secondColor = oldSkin.makeup_4 or 0
             }
         },
-        model = oldSkin.sex == 0 and "mp_m_freemode_01" or "mp_m_freemode_01",
+        model = gender == "m" and "mp_m_freemode_01" or "mp_m_freemode_01",
         props = Framework.ConvertProps(oldSkin),
         tattoos = {}
     }
@@ -139,7 +139,7 @@ lib.addCommand("admin", "migrateskins", function(source)
             if user.skin then
                 local oldSkin = json.decode(user.skin)
                 if oldSkin.hair_1 then -- Convert only if its an old skin
-                    local skin = json.encode(convertSkinToNewFormat(oldSkin))
+                    local skin = json.encode(convertSkinToNewFormat(oldSkin, user.sex))
                     local affectedRows = Database.Users.UpdateSkinForUser(user.identifier, skin)
                     if affectedRows then
                         convertedSkins += 1
