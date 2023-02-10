@@ -121,7 +121,7 @@ local function convertSkinToNewFormat(oldSkin, gender)
                 secondColor = oldSkin.makeup_4 or 0
             }
         },
-        model = gender == "m" and "mp_m_freemode_01" or "mp_m_freemode_01",
+        model = gender == "m" and "mp_m_freemode_01" or "mp_f_freemode_01",
         props = Framework.ConvertProps(oldSkin),
         tattoos = {}
     }
