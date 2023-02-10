@@ -60,6 +60,7 @@ shared_scripts {
   "shared/theme.lua",
   "shared/framework/framework.lua",
   "shared/framework/esx/util.lua",
+  "locales/locales.lua",
   "locales/en.lua",
   "locales/ar.lua",
   "locales/bg.lua",

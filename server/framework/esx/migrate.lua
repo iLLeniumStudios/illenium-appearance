@@ -149,8 +149,8 @@ lib.addCommand("admin", "migrateskins", function(source)
         end
     end
     lib.notify(source, {
-        title = "Success",
-        description = "Migration finished. " .. tostring(convertedSkins) .. " skins migrated",
+        title = _L("migrate.success.title"),
+        description = string.format(_L("migrate.success.description"), tostring(convertedSkins)),
         type = "success",
         position = Config.NotifyOptions.position
     })
