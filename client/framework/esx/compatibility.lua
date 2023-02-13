@@ -30,8 +30,10 @@ RegisterNetEvent("skinchanger:getSkin", function(cb)
 end)
 
 RegisterNetEvent("skinchanger:loadSkin", function(skin, cb)
-	client.setPlayerAppearance(skin)
-    Framework.CachePed()
+    if not skin.hair_1 then
+        client.setPlayerAppearance(skin)
+        Framework.CachePed()
+    end
 	if cb ~= nil then
 		cb()
 	end
