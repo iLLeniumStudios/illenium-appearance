@@ -18,8 +18,8 @@ local function MigrateFivemAppearance(source)
         Database.PlayerSkins.Add(playerSkins[i].citizenID, json.decode(playerSkins[i].skin).model, playerSkins[i].skin, 1)
     end
     lib.notify(source, {
-        title = "Success",
-        description = "Migration finished. " .. tostring(#playerSkins) .. " skins migrated",
+        title = _L("migrate.success.title"),
+        description = string.format(_L("migrate.success.description"), tostring(#playerSkins)),
         type = "success",
         position = Config.NotifyOptions.position
     })
@@ -31,8 +31,8 @@ local function MigrateQBClothing(source)
     for i=1, #allPlayerSkins, 1 do
         if not tonumber(allPlayerSkins[i].model) then
             lib.notify(source, {
-                title = "Information",
-                description = "Skipped skin",
+                title = _L("migrate.skip.title"),
+                description = _L("migrate.skip.description"),
                 type = "inform",
                 position = Config.NotifyOptions.position
             })
@@ -48,8 +48,8 @@ local function MigrateQBClothing(source)
     TriggerClientEvent("illenium-appearance:client:reloadSkin", source)
 
     lib.notify(source, {
-        title = "Success",
-        description = "Migration finished. " .. migrated .. " skins migrated",
+        title = _L("migrate.success.title"),
+        description = string.format(_L("migrate.success.description"), tostring(migrated)),
         type = "success",
         position = Config.NotifyOptions.position
     })
@@ -62,8 +62,8 @@ RegisterNetEvent("illenium-appearance:server:migrate-qb-clothing-skin", function
     continue = true
     lib.notify(src, {
         id = "illenium_appearance_skin_migrated",
-        title = "Success",
-        description = "Migrated skin",
+        title = _L("migrate.success.title"),
+        description = _L("migrate.success.descriptionSingle"),
         type = "success",
         position = Config.NotifyOptions.position
     })
@@ -79,8 +79,8 @@ lib.addCommand("god", "migrateskins", function(source, args)
         end)
     else
         lib.notify(source, {
-            title = "Error",
-            description = "Invalid type",
+            title = _L("migrate.typeError.title"),
+            description = _L("migrate.typeError.description"),
             type = "error",
             position = Config.NotifyOptions.position
         })
