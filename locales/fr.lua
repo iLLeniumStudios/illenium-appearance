@@ -150,5 +150,209 @@ Locales["fr"] = {
             deleteAll = "Supprimer tous les tatouages",
             opacity = "Opacité"
         }
+    },
+    outfitManagement = {
+        title = "Gestion de tenues",
+        jobText = "Gérer les tenues pour le travail",
+        gangText = "Gérer les tenues pour le gang"
+    },
+    cancelled = {
+        title = "Personnalisation annulée",
+        description = "Personnalisation non enregistrée"
+    },
+    outfits = {
+        import = {
+            title = "Entrer le code de la tenue",
+            menuTitle = "Importer la tenue",
+            description = "Importer une tenue à partir d'un code de partage",
+            name = {
+                label = "Nom de la tenue",
+                placeholder = "Une belle tenue",
+                default = "Tenue importée"
+            },
+            code = {
+                label = "Code de la tenue"
+            },
+            success = {
+                title = "Tenue importée",
+                description = "Vous pouvez maintenant changer de tenue en utilisant le menu des tenues"
+            },
+            failure = {
+                title = "Échec de l'importation",
+                description = "Code de tenue non valide"
+            }
+        },
+        generate = {
+            title = "Générer un code de tenue",
+            description = "Générer un code de tenue pour le partage",
+            failure = {
+                title = "Quelque chose s'est mal passé",
+                description = "La génération du code a échoué pour la tenue"
+            },
+            success = {
+                title = "Code de tenue généré",
+                description = "Voici votre code de tenue"
+            }
+        },
+        save = {
+            menuTitle = "Enregistrer la tenue actuelle",
+            menuDescription = "Enregistrer votre tenue actuelle en tant que tenue %s",
+            description = "Enregistrer votre tenue actuelle",
+            title = "Nommez votre tenue",
+            managementTitle = "Détails de gestion des tenues",
+            name = {
+                label = "Nom de la tenue",
+                placeholder = "Tenue très cool"
+            },
+            gender = {
+                label = "Genre",
+                male = "Homme",
+                female = "Femme"
+            },
+            rank = {
+                label = "Rang minimum"
+            },
+            failure = {
+                title = "Échec de l'enregistrement",
+                description = "Une tenue avec ce nom existe déjà"
+            },
+            success = {
+                title = "Succès",
+                description = "Tenue %s enregistrée"
+            }
+        },
+        update = {
+            title = "Mettre à jour la tenue",
+            description = "Enregistrer vos vêtements actuels dans une tenue existante",
+            failure = {
+                title = "Échec de la mise à jour",
+                description = "Cette tenue n'existe pas"
+            },
+            success = {
+                title = "Succès",
+                description = "La tenue %s a été mise à jour"
+            }
+        },
+        change = {
+            title = "Changer de tenue",
+            description = "Choisissez parmi toutes vos tenues %s enregistrées",
+            pDescription = "Choisissez parmi toutes vos tenues enregistrées",
+            failure = {
+                title = "Quelque chose s'est mal passé",
+                description = "La tenue que vous essayez de changer n'a pas d'apparence de base",
+            }
+        },
+        delete = {
+            title = "Supprimer la tenue",
+            description = "Supprimer une tenue enregistrée %",
+            mDescription = "Supprimer n'importe laquelle de vos tenues enregistrées",
+            item = {
+                title = 'Supprimer "%s"',
+                description = "Modèle : %s%s"
+            },
+            success = {
+                title = "Succès",
+                description = "Tenue supprimée"
+            }
+        },
+        manage = {
+            title = "👔 | Gérer les tenues %s"
+        }
+    },
+    jobOutfits = {
+        title = "Tenues de travail",
+        description = "Choisissez parmi toutes vos tenues de travail"
+    },
+    menu = {
+        returnTitle = "Retour",
+        title = "Chambre de vêtements",
+        outfitsTitle = "Tenues du joueur",
+        clothingShopTitle = "Magasin de vêtements",
+        barberShopTitle = "Salon de coiffure",
+        tattooShopTitle = "Salon de tatouage",
+        surgeonShopTitle = "Chirurgien esthétique"
+    },
+    clothing = {
+        title = "Acheter des vêtements - %d $",
+        titleNoPrice = "Changer de vêtements",
+        options = {
+            title = "👔 | Options de magasin de vêtements",
+            description = "Choisissez parmi une large gamme d'articles à porter"
+        },
+        outfits = {
+            title = "👔 | Options de tenue",
+            civilian = {
+                title = "Tenue civile",
+                description = "Mettre vos vêtements"
+            }
+        }
+    },
+    commands = {
+        reloadskin = {
+            title = "Recharger votre personnage",
+            failure = {
+                title = "Erreur",
+                description = "Vous ne pouvez pas utiliser reloadskin pour le moment"
+            }
+        },
+        clearstuckprops = {
+            title = "Supprimer tous les accessoires attachés à l'entité",
+            failure = {
+                title = "Erreur",
+                description = "Vous ne pouvez pas utiliser clearstuckprops pour le moment"
+            }
+        },
+        pedmenu = {
+            title = "Ouvrir / Donner le menu de vêtements",
+            failure = {
+                title = "Erreur",
+                description = "Joueur non connecté"
+            }
+        }
+    },
+    textUI = {
+        clothing = "Magasin de vêtements - Prix : %s $",
+        barber = "Barbier - Prix : %s $",
+        tattoo = "Boutique de tatouages - Prix : %s $",
+        surgeon = "Chirurgien plasticien - Prix : %s $",
+        clothingRoom = "Chambre d'habillage",
+        playerOutfitRoom = "Tenues"
+    },
+    migrate = {
+        success = {
+            title = "Succès",
+            description = "%s skins ont été migrées",
+            descriptionSingle = "Skin migré"
+        },
+        skip = {
+            title = "Information",
+            description = "Skin ignoré"
+        },
+        typeError = {
+            title = "Erreur",
+            description = "Type invalide"
+        }
+    },
+    purchase = {
+        tattoo = {
+            success = {
+                title = "Succès",
+                description = "Tatouage %s acheté pour %s$"
+            },
+            failure = {
+                title = "Échec de l'application du tatouage",
+                description = "Vous n'avez pas assez d'argent !"
+            }
+        },
+        store = {
+            success = {
+                title = "Succès",
+                description = "Don de %s$ à %s !"
+            },
+            failure = {
+                title = "Exploitation !",
+                description = "Vous n'avez pas assez d'argent ! Vous avez essayé d'exploiter le système !"
+            }
+        }
     }
 }
