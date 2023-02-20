@@ -67,7 +67,7 @@ local function filterPedModelsForPlayer(pedConfigs)
 
     for i = 1, #pedConfigs do
         local config = pedConfigs[i]
-        if (not config.jobs and not config.gangs and not config.aces) or allowedForPlayer(config, allowedAces) then
+        if (not config.jobs and not config.gangs and not config.aces and not config.citizenids) or allowedForPlayer(config, allowedAces) then
             for j = 1, #config.peds do
                 playerPeds[#playerPeds + 1] = config.peds[j]
             end
