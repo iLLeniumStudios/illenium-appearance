@@ -212,19 +212,19 @@ local function getNewCharacterConfig()
     return config
 end
 
-function InitializeCharacter(gender, onSubmit, onCancel)
-    local skin = "mp_m_freemode_01"
-    if gender == "Female" then
-        skin = "mp_f_freemode_01"
-    end
-    client.setPlayerModel(skin)
+function SetInitialClothes(initial)
+    client.setPlayerModel(initial.Model)
     -- Fix for tattoo's appearing when creating a new character
     local ped = PlayerPedId()
     client.setPedTattoos(ped, {})
-    client.setPedComponents(ped, Config.InitialPlayerClothes[gender].Components)
-    client.setPedProps(ped, Config.InitialPlayerClothes[gender].Props)
-    client.setPedHair(ped, Config.InitialPlayerClothes[gender].Hair, {})
+    client.setPedComponents(ped, initial.Components)
+    client.setPedProps(ped, initial.Props)
+    client.setPedHair(ped, initial.Hair, {})
     ClearPedDecorations(ped)
+end
+
+function InitializeCharacter(gender, onSubmit, onCancel)
+    SetInitialClothes(Config.InitialPlayerClothes[gender])
     local config = getNewCharacterConfig()
     TriggerServerEvent("illenium-appearance:server:ChangeRoutingBucket")
     client.startPlayerCustomization(function(appearance)
