@@ -34,7 +34,13 @@ RegisterNetEvent("skinchanger:loadSkin", function(skin, cb)
     if skin.model then
         client.setPlayerAppearance(skin)
     else
-        client.setPlayerAppearance(Config.DefaultSkin)
+        local data = Config.InitialPlayerClothes[Framework.GetGender(true)]
+        if Framework.GetGender(true) == "Male" then
+            data.model = 'mp_m_freemode_01'
+        else
+            data.model = 'mp_f_freemode_01'
+        end
+        client.setPlayerAppearance(data)
     end
     Framework.CachePed()
 	if cb ~= nil then
