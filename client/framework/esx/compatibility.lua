@@ -30,23 +30,17 @@ RegisterNetEvent("skinchanger:getSkin", function(cb)
 end)
 
 RegisterNetEvent("skinchanger:loadSkin", function(skin, cb)
-    -- add validation invisible when failed registration (maybe server restarted when apply skin)
     if skin.model then
         client.setPlayerAppearance(skin)
-    else
-        local data = Config.InitialPlayerClothes[Framework.GetGender(true)]
-        if Framework.GetGender(true) == "Male" then
-            data.model = 'mp_m_freemode_01'
-        else
-            data.model = 'mp_f_freemode_01'
-        end
-        client.setPlayerAppearance(data)
+    else -- add validation invisible when failed registration (maybe server restarted when apply skin)
+        SetInitialClothes(Config.InitialPlayerClothes[Framework.GetGender(true)])
     end
     Framework.CachePed()
 	if cb ~= nil then
 		cb()
 	end
 end)
+
 
 RegisterNetEvent("skinchanger:loadClothes", function(_, clothes)
     local playerPed = PlayerPedId()
