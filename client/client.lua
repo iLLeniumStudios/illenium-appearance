@@ -257,6 +257,7 @@ function OpenShop(config, isPedMenu, shopType)
             if appearance then
                 if not isPedMenu then
                     TriggerServerEvent("illenium-appearance:server:chargeCustomer", shopType)
+                    return
                 end
                 TriggerServerEvent("illenium-appearance:server:saveAppearance", appearance)
             else
