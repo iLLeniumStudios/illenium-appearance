@@ -67,8 +67,8 @@ lib.callback.register("illenium-appearance:server:importOutfitCode", function(so
         return
     end
 
-    if playerOutfit.citizenid == citizenID then return false end -- Validation when someone tried to duplicate own outfit
-    if Database.PlayerOutfits.GetByOutfit(outfitName, citizenID) then return false end -- Validation duplicate outfit name, if validate on local id, someone can "spam error" server-sided
+    if playerOutfit.citizenid == citizenID then return end -- Validation when someone tried to duplicate own outfit
+    if Database.PlayerOutfits.GetByOutfit(outfitName, citizenID) then return end -- Validation duplicate outfit name, if validate on local id, someone can "spam error" server-sided
 
     local id = Database.PlayerOutfits.Add(citizenID, outfitName, playerOutfit.model, playerOutfit.components, playerOutfit.props)
 
