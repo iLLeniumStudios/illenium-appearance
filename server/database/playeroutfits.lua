@@ -8,6 +8,10 @@ function Database.PlayerOutfits.GetByID(id)
     return MySQL.single.await("SELECT * FROM player_outfits WHERE id = ?", {id})
 end
 
+function Database.PlayerOutfits.GetByOutfit(name, citizenid) -- for validate duplicate name before insert
+    return MySQL.single.await("SELECT * FROM player_outfits WHERE outfitname = ? AND citizenid = ?", {name, citizenid})
+end
+
 function Database.PlayerOutfits.Add(citizenID, outfitName, model, components, props)
    return MySQL.insert.await("INSERT INTO player_outfits (citizenid, outfitname, model, components, props) VALUES (?, ?, ?, ?, ?)", {
         citizenID,
