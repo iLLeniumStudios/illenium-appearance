@@ -69,7 +69,16 @@ RegisterNetEvent("illenium-appearance:server:migrate-qb-clothing-skin", function
     })
 end)
 
-lib.addCommand("god", "migrateskins", function(source, args)
+lib.addCommand("migrateskins", {
+    help = "Migrate skins",
+    params = {
+        {
+            name = "resourceName",
+            type = "string",
+        },
+    },
+    restricted = "group.god"
+}, function(source, args)
     local resourceName = args.resourceName
     if resourceName == "fivem-appearance" then
         MigrateFivemAppearance(source)
@@ -85,4 +94,4 @@ lib.addCommand("god", "migrateskins", function(source, args)
             position = Config.NotifyOptions.position
         })
     end
-end, {"resourceName:string"}, "Migrate skins")
+end)

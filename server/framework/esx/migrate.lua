@@ -129,8 +129,7 @@ local function convertSkinToNewFormat(oldSkin, gender)
     return skin
 end
 
-
-lib.addCommand("admin", "migrateskins", function(source)
+lib.addCommand("migrateskins", { help = "Migrate skins", restricted = "group.admin" }, function(source)
     local users = Database.Users.GetAll()
     local convertedSkins = 0
     if users then
@@ -154,4 +153,4 @@ lib.addCommand("admin", "migrateskins", function(source)
         type = "success",
         position = Config.NotifyOptions.position
     })
-end, nil, "Migrate skins to illenium-appearance")
+end)

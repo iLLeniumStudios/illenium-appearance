@@ -302,7 +302,18 @@ RegisterNetEvent("illenium-appearance:server:ResetRoutingBucket", function()
 end)
 
 if Config.EnablePedMenu then
-    lib.addCommand(Config.PedMenuGroup, "pedmenu", function(source, args)
+    lib.addCommand("pedmenu", {
+        help = _L("commands.pedmenu.title"),
+        params = {
+            {
+                name = "playerID",
+                type = "number",
+                help = "Target player's server id",
+                optional = true
+            },
+        },
+        restricted = Config.PedMenuGroup
+    }, function(source, args)
         local target = source
         if args.playerID then
             local citizenID = Framework.GetPlayerID(args.playerID)
@@ -319,15 +330,15 @@ if Config.EnablePedMenu then
             end
         end
         TriggerClientEvent("illenium-appearance:client:openClothingShopMenu", target, true)
-    end, {"playerID:?number"}, _L("commands.pedmenu.title"))
+    end)
 end
 
-lib.addCommand(false, "reloadskin", function(source)
+lib.addCommand("reloadskin", { help = _L("commands.reloadskin.title") }, function(source)
     TriggerClientEvent("illenium-appearance:client:reloadSkin", source)
-end, nil, _L("commands.reloadskin.title"))
+end)
 
-lib.addCommand(false, "clearstuckprops", function(source)
+lib.addCommand("clearstuckprops", { help = _L("commands.clearstuckprops.title") }, function(source)
     TriggerClientEvent("illenium-appearance:client:ClearStuckProps", source)
-end, nil, _L("commands.clearstuckprops.title"))
+end)
 
 lib.versionCheck("iLLeniumStudios/illenium-appearance")
