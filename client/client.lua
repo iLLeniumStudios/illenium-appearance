@@ -314,12 +314,14 @@ RegisterNetEvent("illenium-appearance:client:importOutfitCode", function()
             type = "input",
             label = _L("outfits.import.name.label"),
             placeholder = _L("outfits.import.name.placeholder"),
-            default = _L("outfits.import.name.default")
+            default = _L("outfits.import.name.default"),
+            required = true
         },
         {
             type = "input",
             label = _L("outfits.import.code.label"),
-            placeholder = "XXXXXXXXXXXX"
+            placeholder = "XXXXXXXXXXXX",
+            required = true
         }
     })
 
@@ -379,7 +381,8 @@ RegisterNetEvent("illenium-appearance:client:saveOutfit", function()
         {
             type = "input",
             label = _L("outfits.save.name.label"),
-            placeholder = _L("outfits.save.name.placeholder")
+            placeholder = _L("outfits.save.name.placeholder"),
+            required = true
         }
     })
 
@@ -615,6 +618,7 @@ RegisterNetEvent("illenium-appearance:client:SaveManagementOutfit", function(mTy
             {
                 label = _L("outfits.save.name.label"),
                 type = "input",
+                required = true
             },
             {
                 label = _L("outfits.save.gender.label"),
@@ -627,7 +631,7 @@ RegisterNetEvent("illenium-appearance:client:SaveManagementOutfit", function(mTy
                         label = _L("outfits.save.gender.female"), value = "female"
                     }
                 },
-                default = "male"
+                default = "male",
             },
             {
                 label = _L("outfits.save.rank.label"),
