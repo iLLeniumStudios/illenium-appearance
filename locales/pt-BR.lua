@@ -244,7 +244,7 @@ Locales["pt-BR"] = {
         },
         delete = {
             title = "Deletar roupa",
-            description = "Deletar uma roupa salva %",
+            description = "Deletar uma roupa salva %s",
             mDescription = "Deletar qualquer roupa salva",
             item = {
                 title = 'Deletar "%s"',

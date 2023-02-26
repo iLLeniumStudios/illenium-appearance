@@ -244,7 +244,7 @@ Locales["ar"] = {
         },
         delete = {
             title = "حذف المظهر",
-            description = "حذف مظهر % محفوظ",
+            description = "حذف مظهر %s محفوظ",
             mDescription = "حذف أي من مظاهرك المحفوظة",
             item = {
                 title = 'حذف "%s"',

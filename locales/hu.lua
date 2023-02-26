@@ -244,7 +244,7 @@ Locales["hu"] = {
         },
         delete = {
             title = "Ruházat Törlése",
-            description = "Mentés törlése % ruházat",
+            description = "Mentés törlése %s ruházat",
             mDescription = "Összes mentett ruházat törlése",
             item = {
                 title = 'Törlése "%s"',

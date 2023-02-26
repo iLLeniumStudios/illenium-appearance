@@ -244,7 +244,7 @@ Locales["bg"] = {
         },
         delete = {
             title = "Изтрий дрехата",
-            description = "Изтрийте запазен % дреха",
+            description = "Изтрийте запазен %s дреха",
             mDescription = "Изтрийте всяка от вашите запазени дрехи",
             item = {
                 title = 'Изтрий "%s"',

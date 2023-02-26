@@ -244,7 +244,7 @@ Locales["nl"] = {
         },
         delete = {
             title = "Outfit verwijderen",
-            description = "Verwijder een opgeslagen % outfit",
+            description = "Verwijder een opgeslagen %s outfit",
             mDescription = "Verwijder een van je opgeslagen outfits",
             item = {
                 title = 'Verwijder "%s"',

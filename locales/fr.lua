@@ -244,7 +244,7 @@ Locales["fr"] = {
         },
         delete = {
             title = "Supprimer la tenue",
-            description = "Supprimer une tenue enregistrée %",
+            description = "Supprimer une tenue enregistrée %s",
             mDescription = "Supprimer n'importe laquelle de vos tenues enregistrées",
             item = {
                 title = 'Supprimer "%s"',
