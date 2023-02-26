@@ -568,7 +568,7 @@ RegisterNetEvent("illenium-appearance:client:OutfitManagementMenu", function(arg
         options = {
             {
                 title = _L("outfits.change.title"),
-                description = string.format(_L("outfits.manage.description"), args.type),
+                description = string.format(_L("outfits.change.description"), args.type),
                 menu = changeManagementOutfitMenuID,
             },
             {
