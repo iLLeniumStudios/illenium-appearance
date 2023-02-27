@@ -56,7 +56,9 @@ end
 
 local function RemoveZones()
     for i = 1, #Zones.Store do
-        Zones.Store[i]:remove()
+        if Zones.Store[i]["remove"] then
+            Zones.Store[i]:remove()
+        end
     end
     for i = 1, #Zones.ClothingRoom do
         Zones.ClothingRoom[i]:remove()
