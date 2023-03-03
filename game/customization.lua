@@ -21,7 +21,7 @@ local playerAppearance
 
 local function getAppearance()
     if not playerAppearance then
-        playerAppearance = client.getPedAppearance(PlayerPedId())
+        playerAppearance = client.getPedAppearance(cache.ped)
     end
 
     return playerAppearance
@@ -248,8 +248,6 @@ end
 client.getHairSettings = getHairSettings
 
 local function getAppearanceSettings()
-    local playerPed = PlayerPedId()
-
     local ped = {
         model = {
             items = filterPedModelsForPlayer(Config.Peds.pedConfig)
@@ -267,12 +265,12 @@ local function getAppearanceSettings()
 
     local components = {}
     for i = 1, #constants.PED_COMPONENTS_IDS do
-        components[i] = getComponentSettings(playerPed, constants.PED_COMPONENTS_IDS[i])
+        components[i] = getComponentSettings(cache.ped, constants.PED_COMPONENTS_IDS[i])
     end
 
     local props = {}
     for i = 1, #constants.PED_PROPS_IDS do
-        props[i] = getPropSettings(playerPed, constants.PED_PROPS_IDS[i])
+        props[i] = getPropSettings(cache.ped, constants.PED_PROPS_IDS[i])
     end
 
     local headBlend = {
@@ -373,7 +371,7 @@ local function getAppearanceSettings()
         headBlend = headBlend,
         faceFeatures = faceFeatures,
         headOverlays = headOverlays,
-        hair = getHairSettings(playerPed),
+        hair = getHairSettings(cache.ped),
         eyeColor = eyeColor,
         tattoos = tattoos
     }
@@ -394,11 +392,10 @@ local function setCamera(key)
 
         local coords, point = table.unpack(constants.CAMERAS[currentCamera])
         local reverseFactor = reverseCamera and -1 or 1
-        local playerPed = PlayerPedId()
 
         if cameraHandle then
-            local camCoords = GetOffsetFromEntityInWorldCoords(playerPed, coords.x * reverseFactor, coords.y * reverseFactor, coords.z * reverseFactor)
-            local camPoint = GetOffsetFromEntityInWorldCoords(playerPed, point.x, point.y, point.z)
+            local camCoords = GetOffsetFromEntityInWorldCoords(cache.ped, coords.x * reverseFactor, coords.y * reverseFactor, coords.z * reverseFactor)
+            local camPoint = GetOffsetFromEntityInWorldCoords(cache.ped, point.x, point.y, point.z)
             local tmpCamera = CreateCameraWithParams("DEFAULT_SCRIPTED_CAMERA", camCoords.x, camCoords.y, camCoords.z, 0.0, 0.0, 0.0, 49.0, false, 0)
 
             PointCamAtCoord(tmpCamera, camPoint.x, camPoint.y, camPoint.z)
@@ -414,8 +411,8 @@ local function setCamera(key)
                 isCameraInterpolating = false
             end)
         else
-            local camCoords = GetOffsetFromEntityInWorldCoords(playerPed, coords.x, coords.y, coords.z)
-            local camPoint = GetOffsetFromEntityInWorldCoords(playerPed, point.x, point.y, point.z)
+            local camCoords = GetOffsetFromEntityInWorldCoords(cache.ped, coords.x, coords.y, coords.z)
+            local camPoint = GetOffsetFromEntityInWorldCoords(cache.ped, point.x, point.y, point.z)
             cameraHandle = CreateCameraWithParams("DEFAULT_SCRIPTED_CAMERA", camCoords.x, camCoords.y, camCoords.z, 0.0, 0.0, 0.0, 49.0, false, 0)
 
             PointCamAtCoord(cameraHandle, camPoint.x, camPoint.y, camPoint.z)
@@ -431,16 +428,15 @@ function client.rotateCamera(direction)
         local offset = constants.OFFSETS[currentCamera]
         local sideFactor = direction == "left" and 1 or -1
         local reverseFactor = reverseCamera and -1 or 1
-        local playerPed = PlayerPedId()
 
         local camCoords = GetOffsetFromEntityInWorldCoords(
-            playerPed,
+            cache.ped,
             (coords.x + offset.x) * sideFactor * reverseFactor,
             (coords.y + offset.y) * reverseFactor,
             coords.z
         )
 
-        local camPoint = GetOffsetFromEntityInWorldCoords(playerPed, point.x, point.y, point.z)
+        local camPoint = GetOffsetFromEntityInWorldCoords(cache.ped, point.x, point.y, point.z)
         local tmpCamera = CreateCameraWithParams("DEFAULT_SCRIPTED_CAMERA", camCoords.x, camCoords.y, camCoords.z, 0.0, 0.0, 0.0, 49.0, false, 0)
 
         PointCamAtCoord(tmpCamera, camPoint.x, camPoint.y, camPoint.z)
@@ -475,7 +471,6 @@ client.pedTurn = pedTurn
 
 local function wearClothes(data, typeClothes)
     local dataClothes = constants.DATA_CLOTHES[typeClothes]
-    local playerPed = PlayerPedId()
     local animationsOn = dataClothes.animations.on
     local components = dataClothes.components[client.getPedDecorationType()]
     local appliedComponents = data.components
@@ -492,7 +487,7 @@ local function wearClothes(data, typeClothes)
         for j = 1, #appliedComponents do
             local applied = appliedComponents[j]
             if applied.component_id == componentId then
-                SetPedComponentVariation(playerPed, componentId, applied.drawable, applied.texture, 2)
+                SetPedComponentVariation(cache.ped, componentId, applied.drawable, applied.texture, 2)
             end
         end
     end
@@ -502,22 +497,21 @@ local function wearClothes(data, typeClothes)
         for j = 1, #appliedProps do
             local applied = appliedProps[j]
             if applied.prop_id == propId then
-                SetPedPropIndex(playerPed, propId, applied.drawable, applied.texture, true)
+                SetPedPropIndex(cache.ped, propId, applied.drawable, applied.texture, true)
             end
         end
     end
 
-    TaskPlayAnim(playerPed, animationsOn.dict, animationsOn.anim, 3.0, 3.0, animationsOn.duration, animationsOn.move, 0, false, false, false)
+    TaskPlayAnim(cache.ped, animationsOn.dict, animationsOn.anim, 3.0, 3.0, animationsOn.duration, animationsOn.move, 0, false, false, false)
 end
 client.wearClothes = wearClothes
 
 local function removeClothes(typeClothes)
     local dataClothes = constants.DATA_CLOTHES[typeClothes]
-    local playerPed = PlayerPedId()
     local animationsOff = dataClothes.animations.off
     local components = dataClothes.components[client.getPedDecorationType()]
     local props = dataClothes.props[client.getPedDecorationType()]
-    
+
     RequestAnimDict(animationsOff.dict)
     while not HasAnimDictLoaded(animationsOff.dict) do
         Wait(0)
@@ -525,14 +519,14 @@ local function removeClothes(typeClothes)
 
     for i = 1, #components do
         local component = components[i]
-        SetPedComponentVariation(playerPed, component[1], component[2], 0, 2)
+        SetPedComponentVariation(cache.ped, component[1], component[2], 0, 2)
     end
 
     for i = 1, #props do
-        ClearPedProp(playerPed, props[i][1])
+        ClearPedProp(cache.ped, props[i][1])
     end
 
-    TaskPlayAnim(playerPed, animationsOff.dict, animationsOff.anim, 3.0, 3.0, animationsOff.duration, animationsOff.move, 0, false, false, false)
+    TaskPlayAnim(cache.ped, animationsOff.dict, animationsOff.anim, 3.0, 3.0, animationsOff.duration, animationsOff.move, 0, false, false, false)
 end
 client.removeClothes = removeClothes
 
@@ -541,10 +535,9 @@ function client.getHeading() return playerHeading end
 
 local callback
 function client.startPlayerCustomization(cb, conf)
-    local playerPed = PlayerPedId()
-    playerAppearance = client.getPedAppearance(playerPed)
-    playerCoords = GetEntityCoords(playerPed, true)
-    playerHeading = GetEntityHeading(playerPed)
+    playerAppearance = client.getPedAppearance(cache.ped)
+    playerCoords = GetEntityCoords(cache.ped, true)
+    playerHeading = GetEntityHeading(cache.ped)
 
     BackupPlayerStats()
 
@@ -557,8 +550,8 @@ function client.startPlayerCustomization(cb, conf)
     SetNuiFocus(true, true)
     SetNuiFocusKeepInput(false)
     RenderScriptCams(true, false, 0, true, true)
-    SetEntityInvincible(playerPed, Config.InvincibleDuringCustomization)
-    TaskStandStill(playerPed, -1)
+    SetEntityInvincible(cache.ped, Config.InvincibleDuringCustomization)
+    TaskStandStill(cache.ped, -1)
 
     if Config.HideRadar then DisplayRadar(false) end
 
@@ -577,10 +570,8 @@ function client.exitPlayerCustomization(appearance)
 
     if Config.HideRadar then DisplayRadar(true) end
 
-    local playerPed = PlayerPedId()
-
-    ClearPedTasksImmediately(playerPed)
-    SetEntityInvincible(playerPed, false)
+    ClearPedTasksImmediately(cache.ped)
+    SetEntityInvincible(cache.ped, false)
 
     SendNuiMessage(json.encode({
         type = "appearance_hide",
@@ -590,7 +581,7 @@ function client.exitPlayerCustomization(appearance)
     if not appearance then
         client.setPlayerAppearance(getAppearance())
     else
-        client.setPedTattoos(playerPed, appearance.tattoos)
+        client.setPedTattoos(cache.ped, appearance.tattoos)
     end
 
     RestorePlayerStats()
