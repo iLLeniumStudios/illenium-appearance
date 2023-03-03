@@ -1,26 +1,23 @@
 local stats = nil
 
 local function ResetRechargeMultipliers()
-    local player = PlayerId()
-    SetPlayerHealthRechargeMultiplier(player, 0.0)
-    SetPlayerHealthRechargeLimit(player, 0.0)
+    SetPlayerHealthRechargeMultiplier(cache.playerId, 0.0)
+    SetPlayerHealthRechargeLimit(cache.playerId, 0.0)
 end
 
 function BackupPlayerStats()
-    local playerPed = PlayerPedId()
     stats = {
-        health = GetEntityHealth(playerPed),
-        armour = GetPedArmour(playerPed)
+        health = GetEntityHealth(cache.ped),
+        armour = GetPedArmour(cache.ped)
     }
 end
 
 function RestorePlayerStats()
     if stats then
-        local playerPed = PlayerPedId()
-        SetEntityMaxHealth(playerPed, 200)
+        SetEntityMaxHealth(cache.ped, 200)
         Wait(1000) -- Safety Delay
-        SetEntityHealth(playerPed, stats.health)
-        SetPedArmour(playerPed, stats.armour)
+        SetEntityHealth(cache.ped, stats.health)
+        SetPedArmour(cache.ped, stats.armour)
         ResetRechargeMultipliers()
         stats = nil
         return
