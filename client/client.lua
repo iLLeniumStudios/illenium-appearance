@@ -1079,7 +1079,7 @@ end
 
 local function SetupZone(store, onEnter, onExit)
     if Config.RCoreTattoosCompatibility and store.type == "tattoo" then
-        return
+        return {}
     end
 
     if Config.UseRadialMenu or store.usePoly then
