@@ -21,20 +21,17 @@ RegisterNetEvent("illenium-appearance:client:migration:load-qb-clothing-skin", f
     local model = playerSkin.model
     model = model ~= nil and tonumber(model) or false
     Citizen.CreateThread(function()
-        RequestModel(model)
-        while not HasModelLoaded(model) do
-            RequestModel(model)
-            Citizen.Wait(0)
-        end
-        SetPlayerModel(PlayerId(), model)
-        SetPedComponentVariation(PlayerPedId(), 0, 0, 0, 2)
-        TriggerEvent("illenium-appearance:client:migration:load-qb-clothing-clothes", playerSkin, PlayerPedId())
+        lib.requestModel(model, 1000)
+        SetPlayerModel(cache.playerId, model)
+        SetPedComponentVariation(cache.ped, 0, 0, 0, 2)
+        TriggerEvent("illenium-appearance:client:migration:load-qb-clothing-clothes", playerSkin, cache.ped)
+        SetModelAsNoLongerNeeded(model)
     end)
 end)
 
 RegisterNetEvent("illenium-appearance:client:migration:load-qb-clothing-clothes", function(playerSkin, ped)
     local data = json.decode(playerSkin.skin)
-    if ped == nil then ped = PlayerPedId() end
+    if ped == nil then ped = cache.ped end
 
     for i = 0, 11 do
         SetPedComponentVariation(ped, i, 0, 0, 0)

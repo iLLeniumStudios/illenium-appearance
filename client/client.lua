@@ -217,7 +217,7 @@ end
 function SetInitialClothes(initial)
     client.setPlayerModel(initial.Model)
     -- Fix for tattoo's appearing when creating a new character
-    local ped = PlayerPedId()
+    local ped = cache.ped
     client.setPedTattoos(ped, {})
     client.setPedComponents(ped, initial.Components)
     client.setPedProps(ped, initial.Props)
@@ -393,7 +393,7 @@ RegisterNetEvent("illenium-appearance:client:saveOutfit", function()
     end
 
     local outfitName = response[1]
-    if outfitName ~= nil then
+    if outfitName then
         Wait(500)
         lib.callback("illenium-appearance:server:getOutfits", false, function(outfits)
             local outfitExists = false
@@ -414,10 +414,9 @@ RegisterNetEvent("illenium-appearance:client:saveOutfit", function()
                 return
             end
 
-            local playerPed = PlayerPedId()
-            local pedModel = client.getPedModel(playerPed)
-            local pedComponents = client.getPedComponents(playerPed)
-            local pedProps = client.getPedProps(playerPed)
+            local pedModel = client.getPedModel(cache.ped)
+            local pedComponents = client.getPedComponents(cache.ped)
+            local pedProps = client.getPedProps(cache.ped)
 
             TriggerServerEvent("illenium-appearance:server:saveOutfit", outfitName, pedModel, pedComponents, pedProps)
         end)
@@ -426,7 +425,7 @@ end)
 
 RegisterNetEvent('illenium-appearance:client:updateOutfit', function(outfitID)
     if not outfitID then return end
-    
+
     lib.callback("illenium-appearance:server:getOutfits", false, function(outfits)
         local outfitExists = false
         for i = 1, #outfits, 1 do
@@ -446,10 +445,9 @@ RegisterNetEvent('illenium-appearance:client:updateOutfit', function(outfitID)
             return
         end
 
-        local playerPed = PlayerPedId()
-        local pedModel = client.getPedModel(playerPed)
-        local pedComponents = client.getPedComponents(playerPed)
-        local pedProps = client.getPedProps(playerPed)
+        local pedModel = client.getPedModel(cache.ped)
+        local pedComponents = client.getPedComponents(cache.ped)
+        local pedProps = client.getPedProps(cache.ped)
 
         TriggerServerEvent("illenium-appearance:server:updateOutfit", outfitID, pedModel, pedComponents, pedProps)
     end)
@@ -481,7 +479,7 @@ local function RegisterChangeOutfitMenu(id, parent, outfits, mType)
     table.sort(changeOutfitMenu.options, function(a, b)
         return a.title < b.title
     end)
-    
+
     lib.registerContext(changeOutfitMenu)
 end
 
@@ -504,7 +502,7 @@ local function RegisterUpdateOutfitMenu(id, parent, outfits)
     table.sort(updateOutfitMenu.options, function(a, b)
         return a.title < b.title
     end)
-    
+
     lib.registerContext(updateOutfitMenu)
 end
 
@@ -597,12 +595,11 @@ RegisterNetEvent("illenium-appearance:client:OutfitManagementMenu", function(arg
 end)
 
 RegisterNetEvent("illenium-appearance:client:SaveManagementOutfit", function(mType)
-    local playerPed = PlayerPedId()
     local outfitData = {
         Type = mType,
-        Model = client.getPedModel(playerPed),
-        Components = client.getPedComponents(playerPed),
-        Props = client.getPedProps(playerPed)
+        Model = client.getPedModel(cache.ped),
+        Components = client.getPedComponents(cache.ped),
+        Props = client.getPedProps(cache.ped)
     }
 
     local rankValues
@@ -791,8 +788,7 @@ RegisterNetEvent("illenium-appearance:client:OpenSurgeonShop", function()
 end)
 
 RegisterNetEvent("illenium-appearance:client:changeOutfit", function(data)
-    local playerPed = PlayerPedId()
-    local pedModel = client.getPedModel(playerPed)
+    local pedModel = client.getPedModel(cache.ped)
     local appearanceDB
     if pedModel ~= data.model then
         local p = promise.new()
@@ -813,13 +809,12 @@ RegisterNetEvent("illenium-appearance:client:changeOutfit", function(data)
         end, data.model)
         appearanceDB = Citizen.Await(p)
     else
-        appearanceDB = client.getPedAppearance(playerPed)
+        appearanceDB = client.getPedAppearance(cache.ped)
     end
     if appearanceDB then
-        playerPed = PlayerPedId()
-        client.setPedComponents(playerPed, data.components)
-        client.setPedProps(playerPed, data.props)
-        client.setPedHair(playerPed, appearanceDB.hair, appearanceDB.tattoos)
+        client.setPedComponents(cache.ped, data.components)
+        client.setPedProps(cache.ped, data.props)
+        client.setPedHair(cache.ped, appearanceDB.hair, appearanceDB.tattoos)
 
         if data.disableSave then
             TriggerServerEvent("illenium-appearance:server:syncUniform", {
@@ -827,7 +822,7 @@ RegisterNetEvent("illenium-appearance:client:changeOutfit", function(data)
                 name = data.name
             }) -- Is a uniform
         else
-            local appearance = client.getPedAppearance(playerPed)
+            local appearance = client.getPedAppearance(cache.ped)
             TriggerServerEvent("illenium-appearance:server:saveAppearance", appearance)
         end
         Framework.CachePed()
@@ -863,9 +858,7 @@ local function InCooldown()
 end
 
 RegisterNetEvent("illenium-appearance:client:reloadSkin", function()
-    local playerPed = PlayerPedId()
-
-    if InCooldown() or Framework.CheckPlayerMeta() or IsPedInAnyVehicle(playerPed, true) or IsPedFalling(playerPed) then
+    if InCooldown() or Framework.CheckPlayerMeta() or cache.vehicle or IsPedFalling(cache.ped) then
         lib.notify({
             title = _L("commands.reloadskin.failure.title"),
             description = _L("commands.reloadskin.failure.description"),
@@ -902,10 +895,9 @@ RegisterNetEvent("illenium-appearance:client:ClearStuckProps", function()
     end
 
     reloadSkinTimer = GetGameTimer()
-    local playerPed = PlayerPedId()
 
     for _, v in pairs(GetGamePool("CObject")) do
-      if IsEntityAttachedToEntity(playerPed, v) then
+      if IsEntityAttachedToEntity(cache.ped, v) then
         SetEntityAsMissionEntity(v, true, true)
         DeleteObject(v)
         DeleteEntity(v)

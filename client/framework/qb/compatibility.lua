@@ -23,9 +23,8 @@ end)
 RegisterNetEvent("qb-clothing:client:loadOutfit", LoadJobOutfit)
 
 RegisterNetEvent("qb-multicharacter:client:chooseChar", function()
-    local ped = PlayerPedId()
-    client.setPedTattoos(ped, {})
-    ClearPedDecorations(ped)
+    client.setPedTattoos(cache.ped, {})
+    ClearPedDecorations(cache.ped)
 
     TriggerServerEvent("illenium-appearance:server:resetOutfitCache")
 end)

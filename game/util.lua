@@ -154,8 +154,7 @@ local function getPedHair(ped)
 end
 
 local function getPedDecorationType()
-    local playerPed = PlayerPedId()
-    local pedModel = GetEntityModel(playerPed)
+    local pedModel = GetEntityModel(cache.ped)
     local decorationType
 
     if pedModel == `mp_m_freemode_01` then
@@ -163,7 +162,7 @@ local function getPedDecorationType()
     elseif pedModel == `mp_f_freemode_01` then
         decorationType = "female"
     else
-        decorationType = IsPedMale(playerPed) and "male" or "female"
+        decorationType = IsPedMale(cache.ped) and "male" or "female"
     end
 
     return decorationType
@@ -186,7 +185,6 @@ local function getPedAppearance(ped)
 end
 
 local function setPlayerModel(model)
-    local playerPed = PlayerId()
 
     if type(model) == "string" then model = joaat(model) end
 
@@ -194,20 +192,19 @@ local function setPlayerModel(model)
         RequestModel(model)
         while not HasModelLoaded(model) do Wait(0) end
 
-        SetPlayerModel(playerPed, model)
+        SetPlayerModel(cache.playerId, model)
         SetModelAsNoLongerNeeded(model)
-        playerPed = PlayerPedId()
 
-        if isPedFreemodeModel(playerPed) then
-            SetPedDefaultComponentVariation(playerPed)
-            SetPedHeadBlendData(playerPed, 0, 0, 0, 0, 0, 0, 0, 0, 0, false)
+        if isPedFreemodeModel(cache.ped) then
+            SetPedDefaultComponentVariation(cache.ped)
+            SetPedHeadBlendData(cache.ped, 0, 0, 0, 0, 0, 0, 0, 0, 0, false)
         end
 
         PED_TATTOOS = {}
-        return playerPed
+        return cache.ped
     end
 
-    return playerPed
+    return cache.playerId
 end
 
 local function setPedHeadBlend(ped, headBlend)
@@ -383,7 +380,7 @@ end
 local function setPlayerAppearance(appearance)
     if appearance then
         setPlayerModel(appearance.model)
-        setPedAppearance(PlayerPedId(), appearance)
+        setPedAppearance(cache.ped, appearance)
     end
 end
 

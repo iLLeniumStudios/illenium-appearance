@@ -54,7 +54,7 @@ local function ShowNearestShopBlip()
         Blips[k] = 0
     end
     while true do
-        local coords = GetEntityCoords(PlayerPedId())
+        local coords = GetEntityCoords(cache.ped)
         for shopType, blipConfig in pairs(Config.Blips) do
             local closest = 1000000
             local closestCoords

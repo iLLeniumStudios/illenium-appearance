@@ -101,7 +101,6 @@ end
 function Framework.RestorePlayerArmour()
     if PlayerData then
         Wait(1000)
-        local playerPed = PlayerPedId()
-        SetPedArmour(playerPed, PlayerData.metadata["armor"])
+        SetPedArmour(cache.ped, PlayerData.metadata["armor"])
     end
 end
