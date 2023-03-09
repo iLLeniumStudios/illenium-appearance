@@ -418,6 +418,7 @@ client = {
     setPedComponent = setPedComponent,
     setPedProp = setPedProp,
     setPlayerAppearance = setPlayerAppearance,
+    setPedAppearance = setPedAppearance,
     getPedDecorationType = getPedDecorationType,
     isPedFreemodeModel = isPedFreemodeModel,
     setPreviewTattoo = setPreviewTattoo,
