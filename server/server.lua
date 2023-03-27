@@ -135,11 +135,18 @@ end)
 
 lib.callback.register("illenium-appearance:server:getManagementOutfits", function(source, mType, gender)
     local job = Framework.GetJob(source)
+	local grade
+	
     if mType == "Gang" then
         job = Framework.GetGang(source)
     end
 
-    local grade = tonumber(job.grade.level)
+    if Framework.ESX() then
+        grade = tonumber(job.grade)
+    elseif Framework.QBCore() then
+        grade = tonumber(job.grade.level)
+    end
+	
     local managementOutfits = {}
     local result = Database.ManagementOutfits.GetAllByJob(mType, job.name, gender)
 
@@ -254,7 +261,7 @@ RegisterNetEvent("illenium-appearance:server:saveManagementOutfit", function(out
 
     lib.notify(src, {
         title = _L("outfits.save.success.title"),
-            description = string.format(_L("outfits.save.success.description"), outfitData.name),
+            description = string.format(_L("outfits.save.success.description"), outfitData.Name),
         type = "success",
         position = Config.NotifyOptions.position
     })

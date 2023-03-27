@@ -170,7 +170,9 @@ function InitAppearance()
     end)
     ResetBlips()
     if Config.BossManagedOutfits then
-        AddManagementMenuItems()
+        if Framework.QBCore() then
+            AddManagementMenuItems()
+        end
     end
     RestorePlayerStats()
 end
@@ -549,11 +551,16 @@ local function RegisterDeleteOutfitMenu(id, parent, outfits, deleteEvent)
     lib.registerContext(deleteOutfitMenu)
 end
 
-RegisterNetEvent("illenium-appearance:client:OutfitManagementMenu", function(args)
-    local bossMenuEvent = "qb-bossmenu:client:OpenMenu"
-    if args.type == "Gang" then
-        bossMenuEvent = "qb-gangmenu:client:OpenMenu"
-    end
+RegisterNetEvent("illenium-appearance:client:OutfitManagementMenu", function(args, backMenuEvent)
+	local backMenuEvent
+	if Framework.QBCore() then
+		bossMenuEvent = "qb-bossmenu:client:OpenMenu"
+		if args.type == "Gang" then
+			bossMenuEvent = "qb-gangmenu:client:OpenMenu"
+		end
+	elseif Framework.ESX() then
+		bossMenuEvent = backMenuEvent
+	end
 
     local outfits = lib.callback.await("illenium-appearance:server:getManagementOutfits", false, args.type, Framework.GetGender())
     local managementMenuID = "illenium_appearance_outfit_management_menu"
@@ -994,9 +1001,48 @@ local function getPlayerJobOutfits(clothingRoom)
     return outfits
 end
 
+local function getPlayerJobOutfitsESX()
+    local outfits = {}
+    local gender = Framework.GetGender()
+    local gradeLevel = Framework.GetJobGrade() or Framework.GetGangGrade()
+    local jobName = client.job.name
+
+    if Config.BossManagedOutfits then
+        local mType = "Job"
+        local result = lib.callback.await("illenium-appearance:server:getManagementOutfits", false, mType, gender)
+        for i = 1, #result, 1 do
+            outfits[#outfits + 1] = {
+                type = mType,
+                model = result[i].model,
+                components = result[i].components,
+                props = result[i].props,
+                disableSave = true,
+                name = result[i].name
+            }
+        end
+    else
+        for i = 1, #Config.Outfits[jobName][gender], 1 do
+            for _, v in pairs(Config.Outfits[jobName][gender][i].grades) do
+                if v == gradeLevel then
+                    outfits[#outfits + 1] = Config.Outfits[jobName][gender][i]
+                    outfits[#outfits].gender = gender
+                    outfits[#outfits].jobName = jobName
+                end
+            end
+        end
+    end
+
+    return outfits
+end
+
 RegisterNetEvent("illenium-appearance:client:OpenClothingRoom", function()
     local clothingRoom = Config.ClothingRooms[currentZone.index]
     local outfits = getPlayerJobOutfits(clothingRoom)
+    TriggerEvent("illenium-appearance:client:openJobOutfitsMenu", outfits)
+end)
+
+RegisterNetEvent("illenium-appearance:client:OpenClothingRoomESX", function()
+    local outfits = getPlayerJobOutfitsESX()
     TriggerEvent("illenium-appearance:client:openJobOutfitsMenu", outfits)
 end)
 
