@@ -3,6 +3,17 @@ if not Framework.ESX() then return end
 local ESX = exports["es_extended"]:getSharedObject()
 Framework.PlayerData = ESX.GetPlayerData()
 
+local function getRankInputValues(rankList)
+    local rankValues = {}
+    for k, v in pairs(rankList) do
+        rankValues[#rankValues + 1] = {
+            label = v.label,
+            value = k
+        }
+    end
+    return rankValues
+end
+
 RegisterNetEvent("esx:playerLoaded", function(xPlayer)
     Framework.PlayerData = xPlayer
     client.job = Framework.PlayerData.job
@@ -55,7 +66,7 @@ end
 -- Not implemented entirely
 function Framework.GetRankInputValues(type)
     local jobGrades = lib.callback.await("illenium-appearance:server:esx:getGradesForJob", false, client[type].name)
-    return jobGrades
+    return getRankInputValues(jobGrades)
 end
 
 function Framework.GetJobGrade()
