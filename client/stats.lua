@@ -7,17 +7,17 @@ end
 
 function BackupPlayerStats()
     stats = {
-        health = GetEntityHealth(cache.ped),
-        armour = GetPedArmour(cache.ped)
+        health = GetEntityHealth(PlayerPedId()),
+        armour = GetPedArmour(PlayerPedId())
     }
 end
 
 function RestorePlayerStats()
     if stats then
-        SetEntityMaxHealth(cache.ped, 200)
+        SetEntityMaxHealth(PlayerPedId(), 200)
         Wait(1000) -- Safety Delay
-        SetEntityHealth(cache.ped, stats.health)
-        SetPedArmour(cache.ped, stats.armour)
+        SetEntityHealth(PlayerPedId(), stats.health)
+        SetPedArmour(PlayerPedId(), stats.armour)
         ResetRechargeMultipliers()
         stats = nil
         return

@@ -12,7 +12,7 @@ local function typeof(var)
 end
 
 function LoadJobOutfit(oData)
-    local ped = cache.ped
+    local ped = PlayerPedId()
 
     local data = oData.outfitData
 

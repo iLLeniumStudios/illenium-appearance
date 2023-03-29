@@ -78,7 +78,7 @@ function Framework.GetGangGrade()
 end
 
 function Framework.CachePed()
-    ESX.SetPlayerData("ped", cache.ped)
+    ESX.SetPlayerData("ped", PlayerPedId())
 end
 
 function Framework.RestorePlayerArmour()

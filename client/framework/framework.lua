@@ -3,7 +3,7 @@ function Framework.GetGender(isNew)
         return Framework.GetPlayerGender()
     end
 
-    local model = client.getPedModel(cache.ped)
+    local model = client.getPedModel(PlayerPedId())
     if model == "mp_f_freemode_01" then
         return "Female"
     end

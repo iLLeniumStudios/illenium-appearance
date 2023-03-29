@@ -42,11 +42,11 @@ RegisterNetEvent("skinchanger:loadSkin", function(skin, cb)
 end)
 
 RegisterNetEvent("skinchanger:loadClothes", function(_, clothes)
-    local components = Framework.ConvertComponents(clothes, client.getPedComponents(cache.ped))
-    local props = Framework.ConvertProps(clothes, client.getPedProps(cache.ped))
+    local components = Framework.ConvertComponents(clothes, client.getPedComponents(PlayerPedId()))
+    local props = Framework.ConvertProps(clothes, client.getPedProps(PlayerPedId()))
 
-    client.setPedComponents(cache.ped, components)
-    client.setPedProps(cache.ped, props)
+    client.setPedComponents(PlayerPedId(), components)
+    client.setPedProps(PlayerPedId(), props)
 end)
 
 RegisterNetEvent("esx_skin:openSaveableMenu", function(onSubmit, onCancel)
