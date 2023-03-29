@@ -1,7 +1,7 @@
 local client = client
 
 local currentZone = nil
-local MenuItemId = nil
+local radialOptionAdded = false
 
 local ManagementItemIDs = {
     Gang = nil,
@@ -150,9 +150,13 @@ local function AddManagementMenuItems()
 end
 
 local function RemoveRadialMenuOption()
-    if MenuItemId then
-        exports["qb-radialmenu"]:RemoveOption(MenuItemId)
-        MenuItemId = nil
+    if radialOptionAdded then
+        if Config.UseOxRadial then
+            lib.removeRadialItem("open_clothing_menu")
+        else
+            exports["qb-radialmenu"]:RemoveOption("open_clothing_menu")
+        end
+        radialOptionAdded = false
     end
 end
 
@@ -190,8 +194,12 @@ AddEventHandler("onResourceStop", function(resource)
         else
             RemoveZones()
         end
-        if Config.UseRadialMenu and GetResourceState("qb-radialmenu") == "started" then
-            RemoveRadialMenuOption()
+		if Config.UseRadialMenu then
+            if Config.UseOxRadial and GetResourceState('ox_lib') == "started" then
+                RemoveRadialMenuOption()
+            elseif GetResourceState("qb-radialmenu") == "started" then
+                RemoveRadialMenuOption()
+            end
         end
         if Config.BossManagedOutfits and GetResourceState("qb-management") == "started" then
             RemoveManagementMenuItems()
@@ -219,7 +227,7 @@ end
 function SetInitialClothes(initial)
     client.setPlayerModel(initial.Model)
     -- Fix for tattoo's appearing when creating a new character
-    local ped = cache.ped
+    local ped = PlayerPedId()
     client.setPedTattoos(ped, {})
     client.setPedComponents(ped, initial.Components)
     client.setPedProps(ped, initial.Props)
@@ -416,9 +424,9 @@ RegisterNetEvent("illenium-appearance:client:saveOutfit", function()
                 return
             end
 
-            local pedModel = client.getPedModel(cache.ped)
-            local pedComponents = client.getPedComponents(cache.ped)
-            local pedProps = client.getPedProps(cache.ped)
+            local pedModel = client.getPedModel(PlayerPedId())
+            local pedComponents = client.getPedComponents(PlayerPedId())
+            local pedProps = client.getPedProps(PlayerPedId())
 
             TriggerServerEvent("illenium-appearance:server:saveOutfit", outfitName, pedModel, pedComponents, pedProps)
         end)
@@ -447,9 +455,9 @@ RegisterNetEvent('illenium-appearance:client:updateOutfit', function(outfitID)
             return
         end
 
-        local pedModel = client.getPedModel(cache.ped)
-        local pedComponents = client.getPedComponents(cache.ped)
-        local pedProps = client.getPedProps(cache.ped)
+        local pedModel = client.getPedModel(PlayerPedId())
+        local pedComponents = client.getPedComponents(PlayerPedId())
+        local pedProps = client.getPedProps(PlayerPedId())
 
         TriggerServerEvent("illenium-appearance:server:updateOutfit", outfitID, pedModel, pedComponents, pedProps)
     end)
@@ -604,9 +612,9 @@ end)
 RegisterNetEvent("illenium-appearance:client:SaveManagementOutfit", function(mType)
     local outfitData = {
         Type = mType,
-        Model = client.getPedModel(cache.ped),
-        Components = client.getPedComponents(cache.ped),
-        Props = client.getPedProps(cache.ped)
+        Model = client.getPedModel(PlayerPedId()),
+        Components = client.getPedComponents(PlayerPedId()),
+        Props = client.getPedProps(PlayerPedId())
     }
 
     local rankValues
@@ -795,7 +803,7 @@ RegisterNetEvent("illenium-appearance:client:OpenSurgeonShop", function()
 end)
 
 RegisterNetEvent("illenium-appearance:client:changeOutfit", function(data)
-    local pedModel = client.getPedModel(cache.ped)
+    local pedModel = client.getPedModel(PlayerPedId())
     local appearanceDB
     if pedModel ~= data.model then
         local p = promise.new()
@@ -816,12 +824,12 @@ RegisterNetEvent("illenium-appearance:client:changeOutfit", function(data)
         end, data.model)
         appearanceDB = Citizen.Await(p)
     else
-        appearanceDB = client.getPedAppearance(cache.ped)
+        appearanceDB = client.getPedAppearance(PlayerPedId())
     end
     if appearanceDB then
-        client.setPedComponents(cache.ped, data.components)
-        client.setPedProps(cache.ped, data.props)
-        client.setPedHair(cache.ped, appearanceDB.hair, appearanceDB.tattoos)
+        client.setPedComponents(PlayerPedId(), data.components)
+        client.setPedProps(PlayerPedId(), data.props)
+        client.setPedHair(PlayerPedId(), appearanceDB.hair, appearanceDB.tattoos)
 
         if data.disableSave then
             TriggerServerEvent("illenium-appearance:server:syncUniform", {
@@ -829,7 +837,7 @@ RegisterNetEvent("illenium-appearance:client:changeOutfit", function(data)
                 name = data.name
             }) -- Is a uniform
         else
-            local appearance = client.getPedAppearance(cache.ped)
+            local appearance = client.getPedAppearance(PlayerPedId())
             TriggerServerEvent("illenium-appearance:server:saveAppearance", appearance)
         end
         Framework.CachePed()
@@ -865,7 +873,7 @@ local function InCooldown()
 end
 
 RegisterNetEvent("illenium-appearance:client:reloadSkin", function()
-    if InCooldown() or Framework.CheckPlayerMeta() or cache.vehicle or IsPedFalling(cache.ped) then
+    if InCooldown() or Framework.CheckPlayerMeta() or cache.vehicle or IsPedFalling(PlayerPedId()) then
         lib.notify({
             title = _L("commands.reloadskin.failure.title"),
             description = _L("commands.reloadskin.failure.description"),
@@ -904,7 +912,7 @@ RegisterNetEvent("illenium-appearance:client:ClearStuckProps", function()
     reloadSkinTimer = GetGameTimer()
 
     for _, v in pairs(GetGamePool("CObject")) do
-      if IsEntityAttachedToEntity(cache.ped, v) then
+      if IsEntityAttachedToEntity(PlayerPedId(), v) then
         SetEntityAsMissionEntity(v, true, true)
         DeleteObject(v)
         DeleteEntity(v)
@@ -912,7 +920,8 @@ RegisterNetEvent("illenium-appearance:client:ClearStuckProps", function()
     end
 end)
 
-RegisterNetEvent("qb-radialmenu:client:onRadialmenuOpen", function()
+local function AddRadialMenuOption()
+    if not Config.UseRadialMenu then return end
     if not currentZone then
         RemoveRadialMenuOption()
         return
@@ -936,17 +945,29 @@ RegisterNetEvent("qb-radialmenu:client:onRadialmenuOpen", function()
     elseif currentZone.name == "surgeon" then
         event = "illenium-appearance:client:OpenSurgeonShop"
         title = _L("menu.surgeonShopTitle")
+	end
+    if Config.UseOxRadial then
+        lib.addRadialItem({
+            id = "open_clothing_menu",
+            icon = "tshirt",
+            label = title,
+            event = event,
+            onSelect = function()
+                TriggerEvent(event)
+            end
+        })
+    else
+        exports["qb-radialmenu"]:AddOption({
+            id = "open_clothing_menu",
+            title = title,
+            icon = "tshirt",
+            type = "client",
+            event = event,
+            shouldClose = true
+        }, "open_clothing_menu")
     end
-
-    MenuItemId = exports["qb-radialmenu"]:AddOption({
-        id = "open_clothing_menu",
-        title = title,
-        icon = "shirt",
-        type = "client",
-        event = event,
-        shouldClose = true
-    }, MenuItemId)
-end)
+    radialOptionAdded = true
+end
 
 local function isPlayerAllowedForOutfitRoom(outfitRoom)
     local isAllowed = false
@@ -1083,6 +1104,7 @@ local function onStoreEnter(data)
         elseif currentZone.name == "surgeon" then
             lib.showTextUI(prefix .. string.format(_L("textUI.surgeon"), Config.SurgeonCost), Config.TextUIOptions)
         end
+		AddRadialMenuOption()
     end
 end
 
@@ -1120,6 +1142,7 @@ end
 
 local function onZoneExit()
     currentZone = nil
+	RemoveRadialMenuOption()
     lib.hideTextUI()
 end
 
