@@ -6,7 +6,7 @@ metadata:
   annotations:
     pipelinesascode.tekton.dev/on-event: "[push, pull_request, pull_request_target]"
     pipelinesascode.tekton.dev/on-target-branch: "[main]"
-    pipelinesascode.tekton.dev/max-keep-runs: "2"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/task: "[git-clone]"
     pipelinesascode.tekton.dev/task-1: ".tekton/tasks/fivem-lua-lint.yaml"
 spec:
@@ -36,7 +36,7 @@ spec:
         workspace: source
         secret:
           secretName: "{{ git_auth_secret }}"
-    - name: generate-release-yaml
+    - name: run-lint
       runAfter:
       - fetch-repo
       taskRef:

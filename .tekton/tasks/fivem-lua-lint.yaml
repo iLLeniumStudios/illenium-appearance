@@ -32,7 +32,7 @@ spec:
     default: ""
   steps:
   - name: lint
-    image: ghcr.io/illeniumstudios/fivem-lua-lint-action:v2.0.0
+    image: ghcr.io/illeniumstudios/fivem-lua-lint-action:latest@sha256:2075ceeff02911e60cc478d6044186faacbbed436e41a008c6c892cf2d6e7ef2
     workingDir: $(workspaces.source.path)
     args:
     - $(params.args)
