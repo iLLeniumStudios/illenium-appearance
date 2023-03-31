@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: linters
+  name: illenium-appearance-lint
   annotations:
     pipelinesascode.tekton.dev/on-event: "[push, pull_request, pull_request_target]"
     pipelinesascode.tekton.dev/on-target-branch: "[main]"
