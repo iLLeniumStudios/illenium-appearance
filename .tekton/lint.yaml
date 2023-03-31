@@ -31,7 +31,8 @@ spec:
       workspaces:
       - name: output
         workspace: source
-
+        secret:
+          secretName: "{{ git_auth_secret }}"
     - name: generate-release-yaml
       runAfter:
       - fetch-repo
