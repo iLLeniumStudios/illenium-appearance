@@ -35,16 +35,15 @@ spec:
     - name: generate-release-yaml
       runAfter:
       - fetch-repo
-      tasks:
-      - taskRef:
-          name: fivem-lua-lint
-        params:
-        - name: capture
-          value: junit.xml
-        - name: args
-          value: -t --formatter JUnit
-        - name: extra_libs
-          value: mysql+polyzone+ox_lib
+      taskRef:
+        name: fivem-lua-lint
+      params:
+      - name: capture
+        value: junit.xml
+      - name: args
+        value: -t --formatter JUnit
+      - name: extra_libs
+        value: mysql+polyzone+ox_lib
       workspaces:
       - name: source
         workspace: source
