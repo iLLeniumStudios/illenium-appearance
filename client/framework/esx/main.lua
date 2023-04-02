@@ -1,5 +1,8 @@
 if not Framework.ESX() then return end
 
+local RegisterNetEvent = RegisterNetEvent
+local IsPedCuffed = IsPedCuffed
+
 local ESX = exports["es_extended"]:getSharedObject()
 Framework.PlayerData = ESX.GetPlayerData()
 

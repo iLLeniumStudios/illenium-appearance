@@ -1,10 +1,23 @@
 local Blips = {}
 local client = client
 
+local SetBlipSprite = SetBlipSprite
+local SetBlipColour = SetBlipColour
+local SetBlipScale = SetBlipScale
+local SetBlipAsShortRange = SetBlipAsShortRange
+local BeginTextCommandSetBlipName = BeginTextCommandSetBlipName
+local AddTextComponentSubstringPlayerName = AddTextComponentSubstringPlayerName
+local EndTextCommandSetBlipName = EndTextCommandSetBlipName
+local AddBlipForCoord = AddBlipForCoord
+local RemoveBlip = RemoveBlip
+local DoesBlipExist = DoesBlipExist
+local CreateThread = CreateThread
+local Wait = Wait
+local GetEntityCoords = GetEntityCoords
+local vector3 = vector3
+
 local function ShowBlip(blipConfig, blip)
-    if blip.job and blip.job ~= client.job.name then
-        return false
-    elseif blip.gang and blip.gang ~= client.gang.name then
+    if (blip.job and blip.job ~= client.job.name) or (blip.gang and blip.gang ~= client.gang.name) then
         return false
     end
 
@@ -15,6 +28,7 @@ local function ShowBlip(blipConfig, blip)
     return (blipConfig.Show and blip.showBlip == nil) or blip.showBlip
 end
 
+
 local function CreateBlip(blipConfig, coords)
     local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
     SetBlipSprite(blip, blipConfig.Sprite)
@@ -22,7 +36,7 @@ local function CreateBlip(blipConfig, coords)
     SetBlipScale(blip, blipConfig.Scale)
     SetBlipAsShortRange(blip, true)
     BeginTextCommandSetBlipName("STRING")
-    AddTextComponentString(blipConfig.Name)
+    AddTextComponentSubstringPlayerName(blipConfig.Name)
     EndTextCommandSetBlipName(blip)
     return blip
 end

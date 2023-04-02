@@ -1,5 +1,25 @@
 local reverseCamera
 
+local GetNumberOfPedDrawableVariations = GetNumberOfPedDrawableVariations
+local GetNumberOfPedTextureVariations = GetNumberOfPedTextureVariations
+local GetNumberOfPedPropDrawableVariations = GetNumberOfPedPropDrawableVariations
+local GetNumberOfPedPropTextureVariations = GetNumberOfPedPropTextureVariations
+local GetPedDrawableVariation = GetPedDrawableVariation
+local GetPedPropIndex = GetPedPropIndex
+local GetPedHairRgbColor = GetPedHairRgbColor
+local GetPedMakeupRgbColor = GetPedMakeupRgbColor
+local GetNumHairColors = GetNumHairColors
+local GetNumMakeupColors = GetNumMakeupColors
+local GetPedHeadOverlayNum = GetPedHeadOverlayNum
+local CreateThread = CreateThread
+local PointCamAtCoord = PointCamAtCoord
+local SetCamActiveWithInterp = SetCamActiveWithInterp
+local DestroyCam = DestroyCam
+local SetCamActive = SetCamActive
+local TaskPlayAnim = TaskPlayAnim
+local SetPedPropIndex = SetPedPropIndex
+local ClearPedProp = ClearPedProp
+
 local function getRgbColors()
     local colors = {
         hair = {},
@@ -29,13 +49,14 @@ end
 client.getAppearance = getAppearance
 
 local function addToBlacklist(item, drawable, drawableId, blacklistSettings)
-    if drawable == drawableId and item.textures then
-        for i = 1, #item.textures do
-            blacklistSettings.textures[#blacklistSettings.textures + 1] = item.textures[i]
+    if drawable == drawableId then
+        if item.textures then
+            for i = 1, #item.textures do
+                blacklistSettings.textures[#blacklistSettings.textures + 1] = item.textures[i]
+            end
+        elseif not item.textures or #item.textures == 0 then
+            blacklistSettings.drawables[#blacklistSettings.drawables + 1] = drawable
         end
-    end
-    if not item.textures or #item.textures == 0 then
-        blacklistSettings.drawables[#blacklistSettings.drawables + 1] = drawable
     end
 end
 
@@ -113,47 +134,34 @@ end
 
 local function componentBlacklistMap(gender, componentId)
     local genderSettings = Config.Blacklist[gender].components
-    if componentId == 1 then
-        return genderSettings.masks
-    elseif componentId == 3 then
-        return genderSettings.upperBody
-    elseif componentId == 4 then
-        return genderSettings.lowerBody
-    elseif componentId == 5 then
-        return genderSettings.bags
-    elseif componentId == 6 then
-        return genderSettings.shoes
-    elseif componentId == 7 then
-        return genderSettings.scarfAndChains
-    elseif componentId == 8 then
-        return genderSettings.shirts
-    elseif componentId == 9 then
-        return genderSettings.bodyArmor
-    elseif componentId == 10 then
-        return genderSettings.decals
-    elseif componentId == 11 then
-        return genderSettings.jackets
-    end
-
-    return {}
+    local componentMap = {
+        [1] = genderSettings.masks,
+        [3] = genderSettings.upperBody,
+        [4] = genderSettings.lowerBody,
+        [5] = genderSettings.bags,
+        [6] = genderSettings.shoes,
+        [7] = genderSettings.scarfAndChains,
+        [8] = genderSettings.shirts,
+        [9] = genderSettings.bodyArmor,
+        [10] = genderSettings.decals,
+        [11] = genderSettings.jackets
+    }
+    
+    return componentMap[componentId] or {}
 end
+
 
 local function propBlacklistMap(gender, propId)
     local genderSettings = Config.Blacklist[gender].props
+    local propMap = {
+        [0] = genderSettings.hats,
+        [1] = genderSettings.glasses,
+        [2] = genderSettings.ear,
+        [6] = genderSettings.watches,
+        [7] = genderSettings.bracelets
+    }
 
-    if propId == 0 then
-        return genderSettings.hats
-    elseif propId == 1 then
-        return genderSettings.glasses
-    elseif propId == 2 then
-        return genderSettings.ear
-    elseif propId == 6 then
-        return genderSettings.watches
-    elseif propId == 7 then
-        return genderSettings.bracelets
-    end
-
-    return {}
+    return propMap[propId] {}
 end
 
 local function getComponentSettings(ped, componentId)
@@ -384,42 +392,47 @@ function client.getConfig() return config end
 local isCameraInterpolating
 local currentCamera
 local cameraHandle
+
+local function calculateCamCoords(coords, point, reverseFactor)
+    local camCoords = GetOffsetFromEntityInWorldCoords(cache.ped, coords.x * reverseFactor, coords.y * reverseFactor, coords.z * reverseFactor)
+    local camPoint = GetOffsetFromEntityInWorldCoords(cache.ped, point.x, point.y, point.z)
+    return camCoords, camPoint
+end
+
 local function setCamera(key)
-    if not isCameraInterpolating then
-        if key ~= "current" then
-            currentCamera = key
-        end
+    if isCameraInterpolating then
+        return
+    end
 
-        local coords, point = table.unpack(constants.CAMERAS[currentCamera])
-        local reverseFactor = reverseCamera and -1 or 1
+    if key ~= "current" then
+        currentCamera = key
+    end
 
-        if cameraHandle then
-            local camCoords = GetOffsetFromEntityInWorldCoords(cache.ped, coords.x * reverseFactor, coords.y * reverseFactor, coords.z * reverseFactor)
-            local camPoint = GetOffsetFromEntityInWorldCoords(cache.ped, point.x, point.y, point.z)
-            local tmpCamera = CreateCameraWithParams("DEFAULT_SCRIPTED_CAMERA", camCoords.x, camCoords.y, camCoords.z, 0.0, 0.0, 0.0, 49.0, false, 0)
+    local coords, point = table.unpack(constants.CAMERAS[currentCamera])
+    local reverseFactor = reverseCamera and -1 or 1
+    local camCoords, camPoint = calculateCamCoords(coords, point, reverseFactor)
 
-            PointCamAtCoord(tmpCamera, camPoint.x, camPoint.y, camPoint.z)
-            SetCamActiveWithInterp(tmpCamera, cameraHandle, 1000, 1, 1)
+    if cameraHandle then
+        local tmpCamera = CreateCameraWithParams("DEFAULT_SCRIPTED_CAMERA", camCoords.x, camCoords.y, camCoords.z, 0.0, 0.0, 0.0, 49.0, false, 0)
+        PointCamAtCoord(tmpCamera, camPoint.x, camPoint.y, camPoint.z)
+        SetCamActiveWithInterp(tmpCamera, cameraHandle, 1000, 1, 1)
 
-            isCameraInterpolating = true
+        isCameraInterpolating = true
 
-            CreateThread(function()
-                repeat Wait(500)
-                until not IsCamInterpolating(cameraHandle) and IsCamActive(tmpCamera)
-                DestroyCam(cameraHandle, false)
-                cameraHandle = tmpCamera
-                isCameraInterpolating = false
-            end)
-        else
-            local camCoords = GetOffsetFromEntityInWorldCoords(cache.ped, coords.x, coords.y, coords.z)
-            local camPoint = GetOffsetFromEntityInWorldCoords(cache.ped, point.x, point.y, point.z)
-            cameraHandle = CreateCameraWithParams("DEFAULT_SCRIPTED_CAMERA", camCoords.x, camCoords.y, camCoords.z, 0.0, 0.0, 0.0, 49.0, false, 0)
-
-            PointCamAtCoord(cameraHandle, camPoint.x, camPoint.y, camPoint.z)
-            SetCamActive(cameraHandle, true)
-        end
+        CreateThread(function()
+            repeat Wait(500)
+            until not IsCamInterpolating(cameraHandle) and IsCamActive(tmpCamera)
+            DestroyCam(cameraHandle, false)
+            cameraHandle = tmpCamera
+            isCameraInterpolating = false
+        end)
+    else
+        cameraHandle = CreateCameraWithParams("DEFAULT_SCRIPTED_CAMERA", camCoords.x, camCoords.y, camCoords.z, 0.0, 0.0, 0.0, 49.0, false, 0)
+        PointCamAtCoord(cameraHandle, camPoint.x, camPoint.y, camPoint.z)
+        SetCamActive(cameraHandle, true)
     end
 end
+
 client.setCamera = setCamera
 
 function client.rotateCamera(direction)
@@ -464,7 +477,7 @@ local function pedTurn(ped, angle)
         CloseSequenceTask(sequenceTaskId)
         ClearPedTasks(ped)
         TaskPerformSequence(ped, sequenceTaskId)
-        ClearSequenceTask(sequenceTaskId)
+        ClearSequenceTask()
     end
 end
 client.pedTurn = pedTurn

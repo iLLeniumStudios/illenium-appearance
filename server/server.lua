@@ -1,20 +1,17 @@
 local outfitCache = {}
 local uniformCache = {}
 
-local function getMoneyForShop(shopType)
-    local money = 0
-    if shopType == "clothing" then
-        money = Config.ClothingCost
-    elseif shopType == "barber" then
-        money = Config.BarberCost
-    elseif shopType == "tattoo" then
-        money = Config.TattooCost
-    elseif shopType == "surgeon" then
-        money = Config.SurgeonCost
-    end
-
-    return money
-end
+local shopCosts = {
+    ["clothing"] = Config.ClothingCost,
+    ["barber"] = Config.BarberCost,
+    ["tattoo"] = Config.TattooCost,
+    ["surgeon"] = Config.SurgeonCost,
+  }
+  
+  local function getMoneyForShop(shopType)
+    return shopCosts[shopType] or 0
+  end
+  
 
 local function getOutfitsForPlayer(citizenid)
     outfitCache[citizenid] = {}

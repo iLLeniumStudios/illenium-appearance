@@ -1,6 +1,21 @@
 if not Framework.QBCore() then return end
 
 local client = client
+local RegisterNetEvent = RegisterNetEvent
+local SetPedComponentVariation = SetPedComponentVariation
+local ClearPedProp = ClearPedProp
+local SetPedHeadBlendData = SetPedHeadBlendData
+local SetModelAsNoLongerNeeded = SetModelAsNoLongerNeeded
+local SetPlayerModel = SetPlayerModel
+local TriggerEvent = TriggerEvent
+local CreateThread = CreateThread
+local SetPedHairColor = SetPedHairColor
+local SetPedHeadOverlay = SetPedHeadOverlay
+local SetPedHeadOverlayColor = SetPedHeadOverlayColor
+local SetPedPropIndex = SetPedPropIndex
+local SetPedEyeColor = SetPedEyeColor
+local SetPedFaceFeature = SetPedFaceFeature
+local TriggerServerEvent = TriggerServerEvent
 
 local skinData = {
     ["face2"] = {
@@ -20,7 +35,7 @@ local skinData = {
 RegisterNetEvent("illenium-appearance:client:migration:load-qb-clothing-skin", function(playerSkin)
     local model = playerSkin.model
     model = model ~= nil and tonumber(model) or false
-    Citizen.CreateThread(function()
+    CreateThread(function()
         lib.requestModel(model, 1000)
         SetPlayerModel(cache.playerId, model)
         SetPedComponentVariation(cache.ped, 0, 0, 0, 2)

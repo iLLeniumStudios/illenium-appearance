@@ -1,5 +1,11 @@
 local client = client
 
+local RegisterNUICallback = RegisterNUICallback
+local Wait = Wait
+local SetEntityHeading = SetEntityHeading
+local SetEntityInvincible = SetEntityInvincible
+local TaskStandStill = TaskStandStill
+
 RegisterNUICallback("appearance_get_locales", function(_, cb)
     cb(Locales[GetConvar("illenium-appearance:locale", "en")].UI)
 end)

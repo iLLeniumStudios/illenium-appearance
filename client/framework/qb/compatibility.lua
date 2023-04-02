@@ -1,6 +1,9 @@
 if not Framework.QBCore() then return end
 
 local client = client
+local RegisterNetEvent = RegisterNetEvent
+local ClearPedDecorations = ClearPedDecorations
+local TriggerServerEvent = TriggerServerEvent
 
 -- Backwards Compatible Events
 

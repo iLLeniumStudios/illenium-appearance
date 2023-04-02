@@ -1,5 +1,9 @@
 if not Framework.ESX() then return end
 
+local AddEventHandler = AddEventHandler
+local RegisterNetEvent = RegisterNetEvent
+local Wait = Wait
+
 local client = client
 local firstSpawn = false
 

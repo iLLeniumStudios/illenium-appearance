@@ -2,6 +2,20 @@ local hashesComputed = false
 local PED_TATTOOS = {}
 local pedModelsByHash = {}
 
+local GetEntityModel = GetEntityModel
+local GetPedDrawableVariation = GetPedDrawableVariation
+local GetPedPropIndex = GetPedPropIndex
+local GetPedPropTextureIndex = GetPedPropTextureIndex
+local GetPedHairColor = GetPedHairColor
+local GetPedEyeColor = GetPedEyeColor
+local GetPedFaceFeature = GetPedFaceFeature
+local GetPedHairHighlightColor = GetPedHairHighlightColor
+local SetModelAsNoLongerNeeded = SetModelAsNoLongerNeeded
+local ClearPedDecorations = ClearPedDecorations
+local TriggerEvent = TriggerEvent
+local SetPedHairColor = SetPedHairColor
+local AddPedDecorationFromHashes = AddPedDecorationFromHashes
+
 local function tofloat(num)
     return num + 0.0
 end

@@ -1,5 +1,13 @@
 local client = client
 
+local TriggerServerEvent = TriggerServerEvent
+local TriggerEvent = TriggerEvent
+local GetGameTimer = GetGameTimer
+local AddEventHandler = AddEventHandler
+local ClearPedDecorations = ClearPedDecorations
+local RegisterNetEvent = RegisterNetEvent
+local Wait = Wait
+
 local currentZone = nil
 local MenuItemId = nil
 
@@ -910,25 +918,19 @@ RegisterNetEvent("qb-radialmenu:client:onRadialmenuOpen", function()
         RemoveRadialMenuOption()
         return
     end
+
     local event, title
-    if currentZone.name == "clothingRoom" then
-        event = "illenium-appearance:client:OpenClothingRoom"
-        title = _L("menu.title")
-    elseif currentZone.name == "playerOutfitRoom" then
-        event = "illenium-appearance:client:OpenPlayerOutfitRoom"
-        title = _L("menu.outfitsTitle")
-    elseif currentZone.name == "clothing" then
-        event = "illenium-appearance:client:openClothingShopMenu"
-        title = _L("menu.clothingShopTitle")
-    elseif currentZone.name == "barber" then
-        event = "illenium-appearance:client:OpenBarberShop"
-        title = _L("menu.barberShopTitle")
-    elseif currentZone.name == "tattoo" then
-        event = "illenium-appearance:client:OpenTattooShop"
-        title = _L("menu.tattooShopTitle")
-    elseif currentZone.name == "surgeon" then
-        event = "illenium-appearance:client:OpenSurgeonShop"
-        title = _L("menu.surgeonShopTitle")
+    local zoneEvents = {
+        clothingRoom = {"illenium-appearance:client:OpenClothingRoom", _L("menu.title")},
+        playerOutfitRoom = {"illenium-appearance:client:OpenPlayerOutfitRoom", _L("menu.outfitsTitle")},
+        clothing = {"illenium-appearance:client:openClothingShopMenu", _L("menu.clothingShopTitle")},
+        barber = {"illenium-appearance:client:OpenBarberShop", _L("menu.barberShopTitle")},
+        tattoo = {"illenium-appearance:client:OpenTattooShop", _L("menu.tattooShopTitle")},
+        surgeon = {"illenium-appearance:client:OpenSurgeonShop", _L("menu.surgeonShopTitle")},
+    }
+
+    if zoneEvents[currentZone.name] then
+        event, title = table.unpack(zoneEvents[currentZone.name])
     end
 
     MenuItemId = exports["qb-radialmenu"]:AddOption({
@@ -940,6 +942,7 @@ RegisterNetEvent("qb-radialmenu:client:onRadialmenuOpen", function()
         shouldClose = true
     }, MenuItemId)
 end)
+
 
 local function isPlayerAllowedForOutfitRoom(outfitRoom)
     local isAllowed = false
@@ -1028,17 +1031,20 @@ local function onStoreEnter(data)
             index = index
         }
         local prefix = Config.UseRadialMenu and "" or "[E] "
-        if currentZone.name == "clothing" then
-            lib.showTextUI(prefix .. string.format(_L("textUI.clothing"), Config.ClothingCost), Config.TextUIOptions)
-        elseif currentZone.name == "barber" then
-            lib.showTextUI(prefix .. string.format(_L("textUI.barber"), Config.BarberCost), Config.TextUIOptions)
-        elseif currentZone.name == "tattoo" then
-            lib.showTextUI(prefix .. string.format(_L("textUI.tattoo"), Config.TattooCost), Config.TextUIOptions)
-        elseif currentZone.name == "surgeon" then
-            lib.showTextUI(prefix .. string.format(_L("textUI.surgeon"), Config.SurgeonCost), Config.TextUIOptions)
+        
+        local zoneTexts = {
+            clothing = function() return string.format(_L("textUI.clothing"), Config.ClothingCost) end,
+            barber = function() return string.format(_L("textUI.barber"), Config.BarberCost) end,
+            tattoo = function() return string.format(_L("textUI.tattoo"), Config.TattooCost) end,
+            surgeon = function() return string.format(_L("textUI.surgeon"), Config.SurgeonCost) end,
+        }
+
+        if zoneTexts[currentZone.name] then
+            lib.showTextUI(prefix .. zoneTexts[currentZone.name](), Config.TextUIOptions)
         end
     end
 end
+
 
 local function onClothingRoomEnter(data)
     local index = lookupZoneIndexFromID(Zones.ClothingRoom, data.id)
@@ -1136,9 +1142,9 @@ local function CreatePedAtCoords(pedModel, coords, scenario)
     pedModel = type(pedModel) == "string" and joaat(pedModel) or pedModel
     EnsurePedModel(pedModel)
     local ped = CreatePed(0, pedModel, coords.x, coords.y, coords.z - 0.98, coords.w, false, false)
-    TaskStartScenarioInPlace(ped, scenario, true)
+    TaskStartScenarioInPlace(ped, scenario, 0, true)
     FreezeEntityPosition(ped, true)
-    SetEntityVisible(ped, true)
+    SetEntityVisible(ped, true, false)
     SetEntityInvincible(ped, true)
     PlaceObjectOnGroundProperly(ped)
     SetBlockingOfNonTemporaryEvents(ped, true)
@@ -1166,27 +1172,23 @@ local function SetupStoreTarget(targetConfig, action, k, v)
 end
 
 local function SetupStoreTargets()
+    local storeActions = {
+        barber = OpenBarberShop,
+        clothing = function() TriggerEvent("illenium-appearance:client:openClothingShopMenu") end,
+        tattoo = OpenTattooShop,
+        surgeon = OpenSurgeonShop
+    }
+
     for k, v in pairs(Config.Stores) do
         local targetConfig = Config.TargetConfig[v.type]
-        local action
-
-        if v.type == "barber" then
-            action = OpenBarberShop
-        elseif v.type == "clothing" then
-            action = function()
-                TriggerEvent("illenium-appearance:client:openClothingShopMenu")
-            end
-        elseif v.type == "tattoo" then
-            action = OpenTattooShop
-        elseif v.type == "surgeon" then
-            action = OpenSurgeonShop
-        end
+        local action = storeActions[v.type]
 
         if not (Config.RCoreTattoosCompatibility and v.type == "tattoo") then
             SetupStoreTarget(targetConfig, action, k, v)
         end
     end
 end
+
 
 local function SetupClothingRoomTargets()
     for k, v in pairs(Config.ClothingRooms) do
@@ -1256,33 +1258,38 @@ local function SetupTargets()
 end
 
 local function ZonesLoop()
+    local zoneActions = {
+        clothingRoom = function(index)
+            local clothingRoom = Config.ClothingRooms[index]
+            local outfits = getPlayerJobOutfits(clothingRoom)
+            TriggerEvent("illenium-appearance:client:openJobOutfitsMenu", outfits)
+        end,
+        playerOutfitRoom = function(index)
+            local outfitRoom = Config.PlayerOutfitRooms[index]
+            OpenOutfitRoom(outfitRoom)
+        end,
+        clothing = function() TriggerEvent("illenium-appearance:client:openClothingShopMenu") end,
+        barber = OpenBarberShop,
+        tattoo = OpenTattooShop,
+        surgeon = OpenSurgeonShop
+    }
+
     Wait(1000)
     while true do
         local sleep = 1000
         if currentZone then
             sleep = 5
             if IsControlJustReleased(0, 38) then
-                if currentZone.name == "clothingRoom" then
-                    local clothingRoom = Config.ClothingRooms[currentZone.index]
-                    local outfits = getPlayerJobOutfits(clothingRoom)
-                    TriggerEvent("illenium-appearance:client:openJobOutfitsMenu", outfits)
-                elseif currentZone.name == "playerOutfitRoom" then
-                    local outfitRoom = Config.PlayerOutfitRooms[currentZone.index]
-                    OpenOutfitRoom(outfitRoom)
-                elseif currentZone.name == "clothing" then
-                    TriggerEvent("illenium-appearance:client:openClothingShopMenu")
-                elseif currentZone.name == "barber" then
-                    OpenBarberShop()
-                elseif currentZone.name == "tattoo" then
-                    OpenTattooShop()
-                elseif currentZone.name == "surgeon" then
-                    OpenSurgeonShop()
+                local action = zoneActions[currentZone.name]
+                if action then
+                    action(currentZone.index)
                 end
             end
         end
         Wait(sleep)
     end
 end
+
 
 CreateThread(function()
     if Config.UseTarget then

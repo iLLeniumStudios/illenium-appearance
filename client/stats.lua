@@ -1,4 +1,12 @@
 local stats = nil
+local SetPlayerHealthRechargeMultiplier = SetPlayerHealthRechargeMultiplier
+local SetPlayerHealthRechargeLimit = SetPlayerHealthRechargeLimit
+local GetEntityHealth = GetEntityHealth
+local GetPedArmour = GetPedArmour
+local SetEntityMaxHealth = SetEntityMaxHealth
+local Wait = Wait
+local SetEntityHealth = SetEntityHealth
+local SetPedArmour = SetPedArmour
 
 local function ResetRechargeMultipliers()
     SetPlayerHealthRechargeMultiplier(cache.playerId, 0.0)

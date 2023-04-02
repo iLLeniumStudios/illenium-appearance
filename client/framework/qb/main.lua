@@ -1,6 +1,9 @@
 if not Framework.QBCore() then return end
 
 local client = client
+local RegisterNetEvent = RegisterNetEvent
+local SetPedArmour = SetPedArmour
+local Wait = Wait
 
 local QBCore = exports["qb-core"]:GetCoreObject()
 
