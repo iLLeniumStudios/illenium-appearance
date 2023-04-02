@@ -1294,3 +1294,106 @@ CreateThread(function()
         end
     end
 end)
+
+RegisterCommand('downloadclothes', function()
+	local ped = PlayerPedId()
+	local numMaskVar = GetNumberOfPedDrawableVariations(ped, 1)
+	local numHairVar = GetNumberOfPedDrawableVariations(ped, 2)
+	local numTorsoVar = GetNumberOfPedDrawableVariations(ped, 3)
+	local numLegVar = GetNumberOfPedDrawableVariations(ped, 4)
+	local numBagVar = GetNumberOfPedDrawableVariations(ped, 5)
+	local numShoeVar = GetNumberOfPedDrawableVariations(ped, 6)
+	local numAccVar = GetNumberOfPedDrawableVariations(ped, 7)
+	local numUnsVar = GetNumberOfPedDrawableVariations(ped, 8)
+	local numKevVar = GetNumberOfPedDrawableVariations(ped, 9)
+	local numBadgeVar = GetNumberOfPedDrawableVariations(ped, 10)
+	local numTor2Var = GetNumberOfPedDrawableVariations(ped, 11)
+	local defMask = GetPedDrawableVariation(ped, 1)
+	local defHair = GetPedDrawableVariation(ped, 2)
+	local defTorso = GetPedDrawableVariation(ped, 3)
+	local defLeg = GetPedDrawableVariation(ped, 4)
+	local defBag = GetPedDrawableVariation(ped, 5)
+	local defShoe = GetPedDrawableVariation(ped, 6)
+	local defAcc = GetPedDrawableVariation(ped, 7)
+	local defUns = GetPedDrawableVariation(ped, 8)
+	local defKev = GetPedDrawableVariation(ped, 9)
+	local defBadge = GetPedDrawableVariation(ped, 10)
+	local defTor2 = GetPedDrawableVariation(ped, 11)
+	local maskZ = 0
+	local hairZ = 0
+	local torsoZ = 0
+	local legZ = 0
+	local bagZ = 0
+	local shoeZ = 0
+	local accZ = 0
+	local unsZ = 0
+	local kevZ = 0
+	local badgeZ = 0
+	local tor2Z = 0
+	while maskZ < numMaskVar do
+		Wait(1)
+		SetPedComponentVariation(ped, 1, maskZ, 0, 0)
+		maskZ = maskZ + 1
+	end
+	while hairZ < numHairVar do
+		Wait(1)
+		SetPedComponentVariation(ped, 2, hairZ, 0, 0)
+		hairZ = hairZ + 1
+	end
+	while torsoZ < numTorsoVar do
+		Wait(1)
+		SetPedComponentVariation(ped, 3, torsoZ, 0, 0)
+		torsoZ = torsoZ + 1
+	end
+	while legZ < numLegVar do
+		Wait(1)
+		SetPedComponentVariation(ped, 4, legZ, 0, 0)
+		legZ = legZ + 1
+	end
+	while bagZ < numBagVar do
+		Wait(1)
+		SetPedComponentVariation(ped, 5, bagZ, 0, 0)
+		bagZ = bagZ + 1
+	end
+	while shoeZ < numShoeVar do
+		Wait(1)
+		SetPedComponentVariation(ped, 6, shoeZ, 0, 0)
+		shoeZ = shoeZ + 1
+	end
+	while accZ < numAccVar do
+		Wait(1)
+		SetPedComponentVariation(ped, 7, accZ, 0, 0)
+		accZ = accZ + 1
+	end
+	while unsZ < numUnsVar do
+		Wait(1)
+		SetPedComponentVariation(ped, 8, unsZ, 0, 0)
+		unsZ = unsZ + 1
+	end
+	while kevZ < numKevVar do
+		Wait(1)
+		SetPedComponentVariation(ped, 9, kevZ, 0, 0)
+		kevZ = kevZ + 1
+	end
+	while badgeZ < numMaskVar do
+		Wait(1)
+		SetPedComponentVariation(ped, 10, badgeZ, 0, 0)
+		badgeZ = badgeZ + 1
+	end
+	while tor2Z < numBadgeVar do
+		Wait(1)
+		SetPedComponentVariation(ped, 11, tor2Z, 0, 0)
+		tor2Z = tor2Z + 1
+	end
+	SetPedComponentVariation(ped, 1, defMask, 0, 0)
+	SetPedComponentVariation(ped, 2, defHair, 0, 0)
+	SetPedComponentVariation(ped, 3, defTorso, 0, 0)
+	SetPedComponentVariation(ped, 4, defLeg, 0, 0)
+	SetPedComponentVariation(ped, 5, defBag, 0, 0)
+	SetPedComponentVariation(ped, 6, defShoe, 0, 0)
+	SetPedComponentVariation(ped, 7, defAcc, 0, 0)
+	SetPedComponentVariation(ped, 8, defUns, 0, 0)
+	SetPedComponentVariation(ped, 9, defKev, 0, 0)
+	SetPedComponentVariation(ped, 10, defBadge, 0, 0)
+	SetPedComponentVariation(ped, 11, defTor2, 0, 0)
+end)
