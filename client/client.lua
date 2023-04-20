@@ -808,7 +808,7 @@ RegisterNetEvent("illenium-appearance:client:changeOutfit", function(data)
             else
                 lib.notify({
                     title = _L("outfits.change.failure.title"),
-                    description = _L("ouftis.change.failure.description"),
+                    description = _L("outfits.change.failure.description"),
                     type = "error",
                     position = Config.NotifyOptions.position
                 })
@@ -851,7 +851,7 @@ RegisterNetEvent("illenium-appearance:client:deleteOutfit", function(id)
     TriggerServerEvent("illenium-appearance:server:deleteOutfit", id)
     lib.notify({
         title = _L("outfits.delete.success.title"),
-        description = _L("ouftis.delete.success.failure"),
+        description = _L("outfits.delete.success.failure"),
         type = "success",
         position = Config.NotifyOptions.position
     })
