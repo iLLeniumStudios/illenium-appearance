@@ -977,7 +977,7 @@ end
 local function OpenOutfitRoom(outfitRoom)
     local isAllowed = isPlayerAllowedForOutfitRoom(outfitRoom)
     if isAllowed then
-        TriggerEvent("qb-clothing:client:openOutfitMenu")
+        OpenMenu(nil, "outfit")
     end
 end
 
@@ -1265,7 +1265,7 @@ local function SetupPlayerOutfitRoomTargets()
 
         if Config.EnablePedsForPlayerOutfitRooms then
             TargetPeds.PlayerOutfitRoom[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
-            Target.AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
+            Target.AddTargetEntity(TargetPeds.PlayerOutfitRoom[k], parameters)
         else
             Target.AddBoxZone("playeroutfitroom_" .. k, v.coords, v.size, parameters)
         end
