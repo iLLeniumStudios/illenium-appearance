@@ -1,0 +1,42 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: fivem-lua-lint
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.12.1"
+    tekton.dev/tags: fivem, lua, lint
+    tekton.dev/displayName: "FiveM Lua Lint"
+spec:
+  description: >-
+    FiveM Lua Lint checks for linting errors in FiveM resource files.
+  workspaces:
+  - name: source
+    mountPath: /workspace
+  params:
+  - name: args
+    description: luacheck arguments to pass
+    default: "-t"
+  - name: paths
+    description: the path name to lint lua in
+    default: "."
+  - name: config_path
+    description: Config file path
+    default: /luacheck-fivem/.luacheckrc.default
+  - name: capture
+    description: capture output into a file
+    default: ""
+  - name: extra_libs
+    description: extra definitions to use, in the format of a+b+c
+    default: ""
+  steps:
+  - name: lint
+    image: ghcr.io/illeniumstudios/fivem-lua-lint-action:v2.0.0
+    workingDir: $(workspaces.source.path)
+    args:
+    - $(params.args)
+    - $(params.paths)
+    - $(params.config_path)
+    - $(params.capture)
+    - $(params.extra_libs)
