@@ -1,7 +1,7 @@
 local client = client
 
 local currentZone = nil
-local MenuItemId = nil
+local radialOptionAdded = false
 
 local ManagementItemIDs = {
     Gang = nil,
@@ -150,9 +150,13 @@ local function AddManagementMenuItems()
 end
 
 local function RemoveRadialMenuOption()
-    if MenuItemId then
-        exports["qb-radialmenu"]:RemoveOption(MenuItemId)
-        MenuItemId = nil
+    if radialOptionAdded then
+        if Config.UseOxRadial then
+            lib.removeRadialItem("open_clothing_menu")
+        else
+            exports["qb-radialmenu"]:RemoveOption("open_clothing_menu")
+        end
+        radialOptionAdded = false
     end
 end
 
@@ -188,8 +192,12 @@ AddEventHandler("onResourceStop", function(resource)
         else
             RemoveZones()
         end
-        if Config.UseRadialMenu and GetResourceState("qb-radialmenu") == "started" then
-            RemoveRadialMenuOption()
+        if Config.UseRadialMenu then
+            if Config.UseOxRadial and GetResourceState('ox_lib') == "started" then
+                RemoveRadialMenuOption()
+            elseif GetResourceState("qb-radialmenu") == "started" then
+                RemoveRadialMenuOption()
+            end
         end
         if Config.BossManagedOutfits and GetResourceState("qb-management") == "started" then
             RemoveManagementMenuItems()
@@ -905,7 +913,8 @@ RegisterNetEvent("illenium-appearance:client:ClearStuckProps", function()
     end
 end)
 
-RegisterNetEvent("qb-radialmenu:client:onRadialmenuOpen", function()
+local function AddRadialMenuOption()
+    if not Config.UseRadialMenu then return end
     if not currentZone then
         RemoveRadialMenuOption()
         return
@@ -930,16 +939,28 @@ RegisterNetEvent("qb-radialmenu:client:onRadialmenuOpen", function()
         event = "illenium-appearance:client:OpenSurgeonShop"
         title = _L("menu.surgeonShopTitle")
     end
-
-    MenuItemId = exports["qb-radialmenu"]:AddOption({
-        id = "open_clothing_menu",
-        title = title,
-        icon = "shirt",
-        type = "client",
-        event = event,
-        shouldClose = true
-    }, MenuItemId)
-end)
+    if Config.UseOxRadial then
+        lib.addRadialItem({
+            id = "open_clothing_menu",
+            icon = "tshirt",
+            label = title,
+            event = event,
+            onSelect = function()
+                TriggerEvent(event)
+            end
+        })
+    else
+        exports["qb-radialmenu"]:AddOption({
+            id = "open_clothing_menu",
+            title = title,
+            icon = "tshirt",
+            type = "client",
+            event = event,
+            shouldClose = true
+        }, "open_clothing_menu")
+    end
+    radialOptionAdded = true
+end
 
 local function isPlayerAllowedForOutfitRoom(outfitRoom)
     local isAllowed = false
@@ -1037,6 +1058,7 @@ local function onStoreEnter(data)
         elseif currentZone.name == "surgeon" then
             lib.showTextUI(prefix .. string.format(_L("textUI.surgeon"), Config.SurgeonCost), Config.TextUIOptions)
         end
+        AddRadialMenuOption()
     end
 end
 
@@ -1074,6 +1096,7 @@ end
 
 local function onZoneExit()
     currentZone = nil
+    RemoveRadialMenuOption()
     lib.hideTextUI()
 end
 
