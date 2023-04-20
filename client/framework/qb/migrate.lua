@@ -23,6 +23,7 @@ RegisterNetEvent("illenium-appearance:client:migration:load-qb-clothing-skin", f
     Citizen.CreateThread(function()
         lib.requestModel(model, 1000)
         SetPlayerModel(cache.playerId, model)
+        cache:set("ped", PlayerPedId())
         SetPedComponentVariation(cache.ped, 0, 0, 0, 2)
         TriggerEvent("illenium-appearance:client:migration:load-qb-clothing-clothes", playerSkin, cache.ped)
         SetModelAsNoLongerNeeded(model)
