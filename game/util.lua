@@ -193,7 +193,7 @@ local function setPlayerModel(model)
         while not HasModelLoaded(model) do Wait(0) end
 
         SetPlayerModel(cache.playerId, model)
-        cache:set("ped", PlayerPedId())
+        Wait(150)
         SetModelAsNoLongerNeeded(model)
 
         if isPedFreemodeModel(cache.ped) then
