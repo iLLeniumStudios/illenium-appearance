@@ -2431,6 +2431,230 @@ Config.Tattoos = {
             hashFemale = "MP_Sum2_Tat_044_F",
             zone = "ZONE_TORSO",
             collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_X6_004",
+            label = "Herbal Bouquet",
+            hashMale = "MP_Christmas3_Tat_004_M",
+            hashFemale = "MP_Christmas3_Tat_004_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_005",
+            label = "Cash Krampus",
+            hashMale = "MP_Christmas3_Tat_005_M",
+            hashFemale = "MP_Christmas3_Tat_005_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_006",
+            label = "All In One Night",
+            hashMale = "MP_Christmas3_Tat_006_M",
+            hashFemale = "MP_Christmas3_Tat_006_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_007",
+            label = "A Little Present For You",
+            hashMale = "MP_Christmas3_Tat_007_M",
+            hashFemale = "MP_Christmas3_Tat_007_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_014",
+            label = "Masked Machete Killer",
+            hashMale = "MP_Christmas3_Tat_014_M",
+            hashFemale = "MP_Christmas3_Tat_014_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_015",
+            label = "Killer",
+            hashMale = "MP_Christmas3_Tat_015_M",
+            hashFemale = "MP_Christmas3_Tat_015_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_016",
+            label = "Powwer",
+            hashMale = "MP_Christmas3_Tat_016_M",
+            hashFemale = "MP_Christmas3_Tat_016_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_017",
+            label = "Two Headed Beast",
+            hashMale = "MP_Christmas3_Tat_017_M",
+            hashFemale = "MP_Christmas3_Tat_017_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_018",
+            label = "Dudes",
+            hashMale = "MP_Christmas3_Tat_018_M",
+            hashFemale = "MP_Christmas3_Tat_018_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_019",
+            label = "Fooligan Jester",
+            hashMale = "MP_Christmas3_Tat_019_M",
+            hashFemale = "MP_Christmas3_Tat_019_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_020",
+            label = "Vile Smile",
+            hashMale = "MP_Christmas3_Tat_020_M",
+            hashFemale = "MP_Christmas3_Tat_020_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_021",
+            label = "Demon Skull Jester",
+            hashMale = "MP_Christmas3_Tat_021_M",
+            hashFemale = "MP_Christmas3_Tat_021_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_022",
+            label = "Fatal Incursion Outline",
+            hashMale = "MP_Christmas3_Tat_022_M",
+            hashFemale = "MP_Christmas3_Tat_022_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_023",
+            label = "Many-Headed Beast",
+            hashMale = "MP_Christmas3_Tat_023_M",
+            hashFemale = "MP_Christmas3_Tat_023_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_024",
+            label = "Demon Stitches",
+            hashMale = "MP_Christmas3_Tat_024_M",
+            hashFemale = "MP_Christmas3_Tat_024_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_025",
+            label = "Collector",
+            hashMale = "MP_Christmas3_Tat_025_M",
+            hashFemale = "MP_Christmas3_Tat_025_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_040",
+            label = "Monkey",
+            hashMale = "MP_Christmas3_Tat_040_M",
+            hashFemale = "MP_Christmas3_Tat_040_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_041",
+            label = "Dragon",
+            hashMale = "MP_Christmas3_Tat_041_M",
+            hashFemale = "MP_Christmas3_Tat_041_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_042",
+            label = "Snake",
+            hashMale = "MP_Christmas3_Tat_042_M",
+            hashFemale = "MP_Christmas3_Tat_042_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_043",
+            label = "Goat",
+            hashMale = "MP_Christmas3_Tat_043_M",
+            hashFemale = "MP_Christmas3_Tat_043_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_044",
+            label = "Rat",
+            hashMale = "MP_Christmas3_Tat_044_M",
+            hashFemale = "MP_Christmas3_Tat_044_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_045",
+            label = "Rabbit",
+            hashMale = "MP_Christmas3_Tat_045_M",
+            hashFemale = "MP_Christmas3_Tat_045_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_046",
+            label = "Ox",
+            hashMale = "MP_Christmas3_Tat_046_M",
+            hashFemale = "MP_Christmas3_Tat_046_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_047",
+            label = "Pig",
+            hashMale = "MP_Christmas3_Tat_047_M",
+            hashFemale = "MP_Christmas3_Tat_047_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_048",
+            label = "Rooster",
+            hashMale = "MP_Christmas3_Tat_048_M",
+            hashFemale = "MP_Christmas3_Tat_048_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_049",
+            label = "Dog",
+            hashMale = "MP_Christmas3_Tat_049_M",
+            hashFemale = "MP_Christmas3_Tat_049_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_050",
+            label = "Horse",
+            hashMale = "MP_Christmas3_Tat_050_M",
+            hashFemale = "MP_Christmas3_Tat_050_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_051",
+            label = "Tiger",
+            hashMale = "MP_Christmas3_Tat_051_M",
+            hashFemale = "MP_Christmas3_Tat_051_F",
+            zone = "ZONE_TORSO",
+            collection = "mpchristmas3_overlays"
         }
     },
     ZONE_LEFT_ARM = {
@@ -3225,6 +3449,54 @@ Config.Tattoos = {
             hashFemale = "MP_Sum2_Tat_049_F",
             zone = "ZONE_LEFT_ARM",
             collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_X6_000",
+            label = "The Christmas Spirit",
+            hashMale = "MP_Christmas3_Tat_000_M",
+            hashFemale = "MP_Christmas3_Tat_000_F",
+            zone = "ZONE_LEFT_ARM",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_001",
+            label = "Festive Reaper",
+            hashMale = "MP_Christmas3_Tat_001_M",
+            hashFemale = "MP_Christmas3_Tat_001_F",
+            zone = "ZONE_LEFT_ARM",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_026",
+            label = "Fooligan Clown",
+            hashMale = "MP_Christmas3_Tat_026_M",
+            hashFemale = "MP_Christmas3_Tat_026_F",
+            zone = "ZONE_LEFT_ARM",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_028",
+            label = "Dude Outline",
+            hashMale = "MP_Christmas3_Tat_028_M",
+            hashFemale = "MP_Christmas3_Tat_028_F",
+            zone = "ZONE_LEFT_ARM",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_030",
+            label = "Dude Jester",
+            hashMale = "MP_Christmas3_Tat_030_M",
+            hashFemale = "MP_Christmas3_Tat_030_F",
+            zone = "ZONE_LEFT_ARM",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_033",
+            label = "Fooligan Impotent Rage",
+            hashMale = "MP_Christmas3_Tat_033_M",
+            hashFemale = "MP_Christmas3_Tat_033_F",
+            zone = "ZONE_LEFT_ARM",
+            collection = "mpchristmas3_overlays"
         }
     },
     ZONE_HEAD = {
@@ -3795,6 +4067,38 @@ Config.Tattoos = {
             hashFemale = "MP_Sum2_Tat_027_F",
             zone = "ZONE_HEAD",
             collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_X6_010",
+            label = "Dude",
+            hashMale = "MP_Christmas3_Tat_010_M",
+            hashFemale = "MP_Christmas3_Tat_010_F",
+            zone = "ZONE_HEAD",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_011",
+            label = "Fooligan Tribal",
+            hashMale = "MP_Christmas3_Tat_011_M",
+            hashFemale = "MP_Christmas3_Tat_011_F",
+            zone = "ZONE_HEAD",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_012",
+            label = "Skull Jester",
+            hashMale = "MP_Christmas3_Tat_012_M",
+            hashFemale = "MP_Christmas3_Tat_012_F",
+            zone = "ZONE_HEAD",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_013",
+            label = "Budonk-adonk!",
+            hashMale = "MP_Christmas3_Tat_013_M",
+            hashFemale = "MP_Christmas3_Tat_013_F",
+            zone = "ZONE_HEAD",
+            collection = "mpchristmas3_overlays"
         }
     },
     ZONE_LEFT_LEG = {
@@ -4261,6 +4565,38 @@ Config.Tattoos = {
             hashFemale = "MP_Sum2_Tat_032_F",
             zone = "ZONE_LEFT_LEG",
             collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_X6_009",
+            label = "Naughty Snow Globe",
+            hashMale = "MP_Christmas3_Tat_009_M",
+            hashFemale = "MP_Christmas3_Tat_009_F",
+            zone = "ZONE_LEFT_LEG",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_034",
+            label = "Zombie Head",
+            hashMale = "MP_Christmas3_Tat_034_M",
+            hashFemale = "MP_Christmas3_Tat_034_F",
+            zone = "ZONE_LEFT_LEG",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_037",
+            label = "Orang-O-Tang Grenade",
+            hashMale = "MP_Christmas3_Tat_037_M",
+            hashFemale = "MP_Christmas3_Tat_037_F",
+            zone = "ZONE_LEFT_LEG",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_038",
+            label = "Fool",
+            hashMale = "MP_Christmas3_Tat_038_M",
+            hashFemale = "MP_Christmas3_Tat_038_F",
+            zone = "ZONE_LEFT_LEG",
+            collection = "mpchristmas3_overlays"
         }
     },
     ZONE_RIGHT_LEG = {
@@ -4631,6 +4967,38 @@ Config.Tattoos = {
             hashFemale = "MP_Sum2_Tat_017_F",
             zone = "ZONE_RIGHT_LEG",
             collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_X6_008",
+            label = "Gingerbread Steed",
+            hashMale = "MP_Christmas3_Tat_008_M",
+            hashFemale = "MP_Christmas3_Tat_008_F",
+            zone = "ZONE_RIGHT_LEG",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_035",
+            label = "Erupting Skeleton",
+            hashMale = "MP_Christmas3_Tat_035_M",
+            hashFemale = "MP_Christmas3_Tat_035_F",
+            zone = "ZONE_RIGHT_LEG",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_036",
+            label = "B'Donk Now Crank It Later",
+            hashMale = "MP_Christmas3_Tat_036_M",
+            hashFemale = "MP_Christmas3_Tat_036_F",
+            zone = "ZONE_RIGHT_LEG",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_039",
+            label = "Jack Me",
+            hashMale = "MP_Christmas3_Tat_039_M",
+            hashFemale = "MP_Christmas3_Tat_039_F",
+            zone = "ZONE_RIGHT_LEG",
+            collection = "mpchristmas3_overlays"
         }
     },
     ZONE_RIGHT_ARM = {
@@ -5537,6 +5905,54 @@ Config.Tattoos = {
             hashFemale = "MP_Sum2_Tat_048_F",
             zone = "ZONE_RIGHT_ARM",
             collection = "mpsum2_overlays"
+        },
+        {
+            name = "TAT_X6_002",
+            label = "Skull Bauble",
+            hashMale = "MP_Christmas3_Tat_002_M",
+            hashFemale = "MP_Christmas3_Tat_002_F",
+            zone = "ZONE_RIGHT_ARM",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_003",
+            label = "Bony Snowman",
+            hashMale = "MP_Christmas3_Tat_003_M",
+            hashFemale = "MP_Christmas3_Tat_003_F",
+            zone = "ZONE_RIGHT_ARM",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_027",
+            label = "Orang-O-Tang Dude",
+            hashMale = "MP_Christmas3_Tat_027_M",
+            hashFemale = "MP_Christmas3_Tat_027_F",
+            zone = "ZONE_RIGHT_ARM",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_029",
+            label = "Orang-O-Tang Gray",
+            hashMale = "MP_Christmas3_Tat_029_M",
+            hashFemale = "MP_Christmas3_Tat_029_F",
+            zone = "ZONE_RIGHT_ARM",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_031",
+            label = "Sailor Fuku Killer",
+            hashMale = "MP_Christmas3_Tat_031_M",
+            hashFemale = "MP_Christmas3_Tat_031_F",
+            zone = "ZONE_RIGHT_ARM",
+            collection = "mpchristmas3_overlays"
+        },
+        {
+            name = "TAT_X6_032",
+            label = "Fooligan",
+            hashMale = "MP_Christmas3_Tat_032_M",
+            hashFemale = "MP_Christmas3_Tat_032_F",
+            zone = "ZONE_RIGHT_ARM",
+            collection = "mpchristmas3_overlays"
         }
     },
     ZONE_HAIR = {
