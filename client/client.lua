@@ -942,7 +942,7 @@ local function AddRadialMenuOption()
     if Config.UseOxRadial then
         lib.addRadialItem({
             id = "open_clothing_menu",
-            icon = "tshirt",
+            icon = "shirt",
             label = title,
             event = event,
             onSelect = function()
@@ -953,7 +953,7 @@ local function AddRadialMenuOption()
         exports["qb-radialmenu"]:AddOption({
             id = "open_clothing_menu",
             title = title,
-            icon = "tshirt",
+            icon = "shirt",
             type = "client",
             event = event,
             shouldClose = true
