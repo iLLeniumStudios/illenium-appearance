@@ -1075,6 +1075,7 @@ local function onClothingRoomEnter(data)
             }
             local prefix = Config.UseRadialMenu and "" or "[E] "
             lib.showTextUI(prefix .. _L("textUI.clothingRoom"), Config.TextUIOptions)
+            AddRadialMenuOption()
         end
     end
 end
@@ -1091,6 +1092,7 @@ local function onPlayerOutfitRoomEnter(data)
         }
         local prefix = Config.UseRadialMenu and "" or "[E] "
         lib.showTextUI(prefix .. _L("textUI.playerOutfitRoom"), Config.TextUIOptions)
+        AddRadialMenuOption()
     end
 end
 
