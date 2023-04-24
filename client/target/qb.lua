@@ -18,6 +18,15 @@ function Target.AddBoxZone(name, coords, size, parameters)
     }, parameters)
 end
 
+function Target.AddPolyZone(name, points, parameters)
+    exports["qb-target"]:AddPolyZone(name, points, {
+        name = name,
+        debugPoly = Config.Debug,
+        minZ = points[1].z - 2,
+        maxZ = points[1].z + 2
+    }, parameters)
+end
+
 function Target.IsTargetStarted()
     return GetResourceState("qb-target") == "started"
 end

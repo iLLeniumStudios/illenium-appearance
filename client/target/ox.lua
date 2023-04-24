@@ -40,6 +40,14 @@ function Target.AddBoxZone(name, coords, size, parameters)
     })
 end
 
+function Target.AddPolyZone(name, points, parameters)
+    ZoneIDMap[name] = exports["ox_target"]:addPolyZone({
+        points = points,
+        debug = Config.Debug,
+        options = convert(parameters)
+    })
+end
+
 function Target.IsTargetStarted()
     return GetResourceState("ox_target") == "started"
 end
