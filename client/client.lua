@@ -1,7 +1,6 @@
 local client = client
 
 local currentZone = nil
-local radialOptionAdded = false
 
 local reloadSkinTimer = GetGameTimer()
 
@@ -114,17 +113,6 @@ local function LoadPlayerUniform()
     end)
 end
 
-local function RemoveRadialMenuOption()
-    if radialOptionAdded then
-        if Config.UseOxRadial then
-            lib.removeRadialItem("open_clothing_menu")
-        else
-            exports["qb-radialmenu"]:RemoveOption("open_clothing_menu")
-        end
-        radialOptionAdded = false
-    end
-end
-
 function InitAppearance()
     Framework.UpdatePlayerData()
     lib.callback("illenium-appearance:server:getAppearance", false, function(appearance)
@@ -159,9 +147,9 @@ AddEventHandler("onResourceStop", function(resource)
         end
         if Config.UseRadialMenu then
             if Config.UseOxRadial and GetResourceState('ox_lib') == "started" then
-                RemoveRadialMenuOption()
+                Radial.RemoveOption()
             elseif GetResourceState("qb-radialmenu") == "started" then
-                RemoveRadialMenuOption()
+                Radial.RemoveOption()
             end
         end
         if Config.BossManagedOutfits then
@@ -878,55 +866,6 @@ RegisterNetEvent("illenium-appearance:client:ClearStuckProps", function()
     end
 end)
 
-local function AddRadialMenuOption()
-    if not Config.UseRadialMenu then return end
-    if not currentZone then
-        RemoveRadialMenuOption()
-        return
-    end
-    local event, title
-    if currentZone.name == "clothingRoom" then
-        event = "illenium-appearance:client:OpenClothingRoom"
-        title = _L("menu.title")
-    elseif currentZone.name == "playerOutfitRoom" then
-        event = "illenium-appearance:client:OpenPlayerOutfitRoom"
-        title = _L("menu.outfitsTitle")
-    elseif currentZone.name == "clothing" then
-        event = "illenium-appearance:client:openClothingShopMenu"
-        title = _L("menu.clothingShopTitle")
-    elseif currentZone.name == "barber" then
-        event = "illenium-appearance:client:OpenBarberShop"
-        title = _L("menu.barberShopTitle")
-    elseif currentZone.name == "tattoo" then
-        event = "illenium-appearance:client:OpenTattooShop"
-        title = _L("menu.tattooShopTitle")
-    elseif currentZone.name == "surgeon" then
-        event = "illenium-appearance:client:OpenSurgeonShop"
-        title = _L("menu.surgeonShopTitle")
-    end
-    if Config.UseOxRadial then
-        lib.addRadialItem({
-            id = "open_clothing_menu",
-            icon = "shirt",
-            label = title,
-            event = event,
-            onSelect = function()
-                TriggerEvent(event)
-            end
-        })
-    else
-        exports["qb-radialmenu"]:AddOption({
-            id = "open_clothing_menu",
-            title = title,
-            icon = "shirt",
-            type = "client",
-            event = event,
-            shouldClose = true
-        }, "open_clothing_menu")
-    end
-    radialOptionAdded = true
-end
-
 local function isPlayerAllowedForOutfitRoom(outfitRoom)
     local isAllowed = false
     local count = #outfitRoom.citizenIDs
@@ -1023,7 +962,7 @@ local function onStoreEnter(data)
         elseif currentZone.name == "surgeon" then
             lib.showTextUI(prefix .. string.format(_L("textUI.surgeon"), Config.SurgeonCost), Config.TextUIOptions)
         end
-        AddRadialMenuOption()
+        Radial.AddOption(currentZone)
     end
 end
 
@@ -1040,7 +979,7 @@ local function onClothingRoomEnter(data)
             }
             local prefix = Config.UseRadialMenu and "" or "[E] "
             lib.showTextUI(prefix .. _L("textUI.clothingRoom"), Config.TextUIOptions)
-            AddRadialMenuOption()
+            Radial.AddOption(currentZone)
         end
     end
 end
@@ -1057,13 +996,13 @@ local function onPlayerOutfitRoomEnter(data)
         }
         local prefix = Config.UseRadialMenu and "" or "[E] "
         lib.showTextUI(prefix .. _L("textUI.playerOutfitRoom"), Config.TextUIOptions)
-        AddRadialMenuOption()
+        Radial.AddOption(currentZone)
     end
 end
 
 local function onZoneExit()
     currentZone = nil
-    RemoveRadialMenuOption()
+    Radial.RemoveOption()
     lib.hideTextUI()
 end
 
