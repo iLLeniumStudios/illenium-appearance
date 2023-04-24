@@ -254,7 +254,7 @@ RegisterNetEvent("illenium-appearance:server:saveManagementOutfit", function(out
 
     lib.notify(src, {
         title = _L("outfits.save.success.title"),
-            description = string.format(_L("outfits.save.success.description"), outfitData.name),
+            description = string.format(_L("outfits.save.success.description"), outfitData.Name),
         type = "success",
         position = Config.NotifyOptions.position
     })
