@@ -1,7 +1,6 @@
 local client = client
 
 local currentZone = nil
-local radialOptionAdded = false
 
 local reloadSkinTimer = GetGameTimer()
 
