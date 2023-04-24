@@ -3,11 +3,6 @@ local client = client
 local currentZone = nil
 local radialOptionAdded = false
 
-local ManagementItemIDs = {
-    Gang = nil,
-    Boss = nil
-}
-
 local reloadSkinTimer = GetGameTimer()
 
 local TargetPeds = {
@@ -119,36 +114,6 @@ local function LoadPlayerUniform()
     end)
 end
 
-local function RemoveManagementMenuItems()
-    if ManagementItemIDs.Boss then
-        exports["qb-management"]:RemoveBossMenuItem(ManagementItemIDs.Boss)
-    end
-    if ManagementItemIDs.Gang then
-        exports["qb-management"]:RemoveGangMenuItem(ManagementItemIDs.Gang)
-    end
-end
-
-local function AddManagementMenuItems()
-    local eventName = "illenium-appearance:client:OutfitManagementMenu"
-    local menuItem = {
-        header = _L("outfitManagement.title"),
-        icon = "fa-solid fa-shirt",
-        params = {
-            event = eventName,
-            args = {
-                backEvent = eventName
-            }
-        }
-    }
-    menuItem.txt = _L("outfitManagement.jobText")
-    menuItem.params.args.type = "Job"
-    ManagementItemIDs.Boss = exports["qb-management"]:AddBossMenuItem(menuItem)
-
-    menuItem.txt = _L("outfitManagement.gangText")
-    menuItem.params.args.type = "Gang"
-    ManagementItemIDs.Gang = exports["qb-management"]:AddGangMenuItem(menuItem)
-end
-
 local function RemoveRadialMenuOption()
     if radialOptionAdded then
         if Config.UseOxRadial then
@@ -174,7 +139,7 @@ function InitAppearance()
     end)
     ResetBlips()
     if Config.BossManagedOutfits then
-        AddManagementMenuItems()
+        Management.AddItems()
     end
     RestorePlayerStats()
 end
@@ -199,8 +164,8 @@ AddEventHandler("onResourceStop", function(resource)
                 RemoveRadialMenuOption()
             end
         end
-        if Config.BossManagedOutfits and GetResourceState("qb-management") == "started" then
-            RemoveManagementMenuItems()
+        if Config.BossManagedOutfits then
+            Management.RemoveItems()
         end
     end
 end)
