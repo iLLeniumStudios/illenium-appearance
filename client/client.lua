@@ -1185,6 +1185,8 @@ local function SetupStoreTarget(targetConfig, action, k, v)
     if Config.EnablePedsForShops then
         TargetPeds.Store[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
         Target.AddTargetEntity(TargetPeds.Store[k], parameters)
+    elseif v.usePoly then
+        Target.AddPolyZone(v.type .. k, v.points, parameters)
     else
         Target.AddBoxZone(v.type .. k, v.coords, v.size, parameters)
     end
@@ -1235,11 +1237,13 @@ local function SetupClothingRoomTargets()
             rotation = v.rotation
         }
 
+        local key = "clothing_" .. (v.job or v.gang) .. k
         if Config.EnablePedsForClothingRooms then
             TargetPeds.ClothingRoom[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
             Target.AddTargetEntity(TargetPeds.ClothingRoom[k], parameters)
+        elseif v.usePoly then
+            Target.AddPolyZone(key, v.points, parameters)
         else
-            local key = "clothing_" .. (v.job or v.gang) .. k
             Target.AddBoxZone(key, v.coords, v.size, parameters)
         end
     end
@@ -1268,6 +1272,8 @@ local function SetupPlayerOutfitRoomTargets()
         if Config.EnablePedsForPlayerOutfitRooms then
             TargetPeds.PlayerOutfitRoom[k] = CreatePedAtCoords(v.targetModel or targetConfig.model, v.coords, v.targetScenario or targetConfig.scenario)
             Target.AddTargetEntity(TargetPeds.PlayerOutfitRoom[k], parameters)
+        elseif v.usePoly then
+            Target.AddPolyZone("playeroutfitroom_" .. k, v.points, parameters)
         else
             Target.AddBoxZone("playeroutfitroom_" .. k, v.coords, v.size, parameters)
         end
