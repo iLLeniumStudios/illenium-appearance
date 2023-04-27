@@ -14,6 +14,8 @@ client_scripts {
   "game/customization.lua",
   "game/nui.lua",
   "client/outfits.lua",
+  "client/common.lua",
+  "client/zones.lua",
   "client/framework/framework.lua",
   "client/framework/qb/compatibility.lua",
   "client/framework/qb/main.lua",

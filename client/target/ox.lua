@@ -1,3 +1,5 @@
+if not Config.UseTarget then return end
+
 if not Target.IsOX() then return end
 
 local ZoneIDMap = {}
