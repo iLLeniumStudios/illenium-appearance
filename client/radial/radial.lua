@@ -1,5 +1,3 @@
-if not Config.UseRadialMenu then return end
-
 Radial = {}
 
 Radial.MenuID = "open_clothing_menu"

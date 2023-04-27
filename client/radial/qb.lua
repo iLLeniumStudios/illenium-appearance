@@ -1,5 +1,3 @@
-if not Config.UseRadialMenu then return end
-
 if not Radial.IsQB() then return end
 
 function Radial.Add(title, event)
