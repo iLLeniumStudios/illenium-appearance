@@ -1,3 +1,5 @@
+if not Config.UseRadialMenu then return end
+
 Radial = {}
 
 Radial.MenuID = "open_clothing_menu"
@@ -42,3 +44,11 @@ function Radial.RemoveOption()
         radialOptionAdded = false
     end
 end
+
+AddEventHandler("onResourceStop", function(resource)
+    if resource == GetCurrentResourceName() then
+        if Config.UseOxRadial and GetResourceState("ox_lib") == "started" or GetResourceState("qb-radialmenu") == "started" then
+            Radial.RemoveOption()
+        end
+    end
+end)

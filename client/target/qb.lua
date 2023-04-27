@@ -1,3 +1,5 @@
+if not Config.UseTarget then return end
+
 if not Target.IsQB() then return end
 
 function Target.RemoveZone(zone)
