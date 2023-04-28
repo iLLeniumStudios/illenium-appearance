@@ -5,7 +5,8 @@ function Management.AddItems()
         header = _L("outfitManagement.title"),
         icon = "fa-solid fa-shirt",
         params = {
-            event = "illenium-appearance:client:OutfitManagementMenu"
+            event = "illenium-appearance:client:OutfitManagementMenu",
+            args = {}
         }
     }
     menuItem.txt = _L("outfitManagement.jobText")
