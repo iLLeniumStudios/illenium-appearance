@@ -5,11 +5,30 @@ Radial.MenuID = "open_clothing_menu"
 local radialOptionAdded = false
 
 function Radial.IsOX()
-    return GetResourceState("ox_lib") ~= "missing" and Config.UseOxRadial
+    local resName = "ox_lib"
+    if GetResourceState(resName) ~= "missing" and Config.UseOxRadial then
+        Radial.ResourceName = resName
+        return true
+    end
+    return false
 end
 
 function Radial.IsQB()
-    return GetResourceState("qb-radialmenu") ~= "missing"
+    local resName = "qb-radialmenu"
+    if GetResourceState(resName) ~= "missing" then
+        Radial.ResourceName = resName
+        return true
+    end
+    return false
+end
+
+function Radial.IsQBX()
+    local resName = "qbx-radialmenu"
+    if GetResourceState(resName) ~= "missing" then
+        Radial.ResourceName = resName
+        return true
+    end
+    return false
 end
 
 function Radial.AddOption(currentZone)
