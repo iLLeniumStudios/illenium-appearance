@@ -35,7 +35,9 @@ RegisterNetEvent("skinchanger:loadSkin", function(skin, cb)
     else -- add validation invisible when failed registration (maybe server restarted when apply skin)
         SetInitialClothes(Config.InitialPlayerClothes[Framework.GetGender(true)])
     end
-    TriggerEvent("esx:restoreLoadout")
+    if Framework.PlayerData then
+        TriggerEvent("esx:restoreLoadout")
+    end
     Framework.CachePed()
 	if cb ~= nil then
 		cb()
