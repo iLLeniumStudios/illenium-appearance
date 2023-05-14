@@ -50,11 +50,6 @@ function LoadJobOutfit(oData)
         SetPedComponentVariation(ped, 6, data["shoes"].item, data["shoes"].texture, 0)
     end
 
-    -- Bag
-    if data["bag"] ~= nil then
-        SetPedComponentVariation(ped, 5, data["bag"].item, data["bag"].texture, 0)
-    end
-
     -- Badge
     if data["decals"] ~= nil then
         SetPedComponentVariation(ped, 10, data["decals"].item, data["decals"].texture, 0)
