@@ -36,7 +36,6 @@ function GetDefaultConfig()
         tattoos = false,
         enableExit = true,
         hasTracker = Config.PreventTrackerRemoval and Framework.HasTracker(),
-        trackerClothingOptions = Config.TrackerClothingOptions,
         automaticFade = Config.AutomaticFade
     }
 end
