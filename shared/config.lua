@@ -611,7 +611,7 @@ Config.Outfits = {
                     ["torso2"] = {item = 55, texture = 0}, -- Jacket
                     ["shoes"] = {item = 51, texture = 0}, -- Shoes
                     ["accessory"] = {item = 0, texture = 0}, -- Neck Accessory
-                    ["bag"] = {item = 82, texture = 0}, -- Bag
+                    ["bag"] = {item = 0, texture = 0}, -- Bag
                     ["hat"] = {item = -1, texture = -1}, -- Hat
                     ["glass"] = {item = 0, texture = 0}, -- Glasses
                     ["mask"] = {item = 0, texture = 0} -- Mask
