@@ -114,11 +114,13 @@ RegisterNUICallback("appearance_save", function(appearance, cb)
     client.wearClothes(appearance, "body")
     client.wearClothes(appearance, "bottom")
     client.exitPlayerCustomization(appearance)
+    if Config.InventoryQS then exports['qs-inventory']:setInClothing(false) end
 end)
 
 RegisterNUICallback("appearance_exit", function(_, cb)
     cb(1)
     client.exitPlayerCustomization()
+    if Config.InventoryQS then exports['qs-inventory']:setInClothing(false) end
 end)
 
 RegisterNUICallback("rotate_left", function(_, cb)

@@ -92,6 +92,7 @@ local function onZoneExit()
     currentZone = nil
     Radial.RemoveOption()
     lib.hideTextUI()
+    if Config.InventoryQS then exports['qs-inventory']:setInClothing(false) end
 end
 
 local function SetupZone(store, onEnter, onExit)

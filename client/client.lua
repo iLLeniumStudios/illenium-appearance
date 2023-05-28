@@ -106,6 +106,7 @@ end
 function InitializeCharacter(gender, onSubmit, onCancel)
     SetInitialClothes(Config.InitialPlayerClothes[gender])
     local config = getNewCharacterConfig()
+    if Config.InventoryQS then exports['qs-inventory']:setInClothing(true) end
     TriggerServerEvent("illenium-appearance:server:ChangeRoutingBucket")
     client.startPlayerCustomization(function(appearance)
         if (appearance) then
@@ -124,6 +125,7 @@ end
 function OpenShop(config, isPedMenu, shopType)
     lib.callback("illenium-appearance:server:hasMoney", false, function(hasMoney, money)
         if not hasMoney and not isPedMenu then
+            if Config.InventoryQS then exports['qs-inventory']:setInClothing(false) end
             lib.notify({
                 title = "Cannot Enter Shop",
                 description = "Not enough cash. Need $" .. money,
@@ -313,6 +315,7 @@ RegisterNetEvent('illenium-appearance:client:updateOutfit', function(outfitID)
 end)
 
 local function RegisterChangeOutfitMenu(id, parent, outfits, mType)
+    if Config.InventoryQS then exports['qs-inventory']:setInClothing(true) end
     local changeOutfitMenu = {
         id = id,
         title = _L("outfits.change.title"),
@@ -680,6 +683,7 @@ RegisterNetEvent("illenium-appearance:client:changeOutfit", function(data)
             TriggerServerEvent("illenium-appearance:server:saveAppearance", appearance)
         end
         Framework.CachePed()
+        if Config.InventoryQS then exports['qs-inventory']:setInClothing(false) end
     end
 end)
 
