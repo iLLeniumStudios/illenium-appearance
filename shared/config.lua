@@ -1,3 +1,4 @@
+A = 0
 Config = {}
 
 Config.Debug = false
