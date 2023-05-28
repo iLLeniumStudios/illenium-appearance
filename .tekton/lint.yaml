@@ -48,6 +48,8 @@ spec:
         value: -t --formatter JUnit
       - name: extra_libs
         value: mysql+polyzone+ox_lib
+      - name: paths
+        value: $(workspaces.source.path)
       workspaces:
       - name: source
         workspace: source
