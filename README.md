@@ -1,7 +1,5 @@
 # illenium-appearance
 
-[![Lint](https://github.com/iLLeniumStudios/illenium-appearance/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/iLLeniumStudios/illenium-appearance/actions/workflows/lint.yml)
-
 A replacement for clothing resources for various frameworks
 
 <div align='center'><h1><a href='https://docs.illenium.dev/free-resources/illenium-appearance/installation/'>Documentation</a></h3></div>
