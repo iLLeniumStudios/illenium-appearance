@@ -50,6 +50,8 @@ spec:
         value: mysql+polyzone+ox_lib
       - name: paths
         value: $(workspaces.source.path)
+      - name: fail_on_warnings
+        value: "true"
       workspaces:
       - name: source
         workspace: source
