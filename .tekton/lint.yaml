@@ -45,7 +45,7 @@ spec:
       - name: capture
         value: junit.xml
       - name: args
-        value: -t --formatter JUnit
+        value: -t --formatter JUnit --no-color
       - name: extra_libs
         value: mysql+polyzone+ox_lib
       - name: paths
