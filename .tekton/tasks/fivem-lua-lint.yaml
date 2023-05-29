@@ -27,16 +27,20 @@ spec:
   - name: capture
     description: capture output into a file
     default: ""
+  - name: fail_on_warnings
+    description: should fail on luacheck warnings?
+    default: "false"
   - name: extra_libs
     description: extra definitions to use, in the format of a+b+c
     default: ""
   steps:
   - name: lint
-    image: ghcr.io/illeniumstudios/fivem-lua-lint-action:v2.0.0
+    image: ghcr.io/illeniumstudios/fivem-lua-lint-action:v2.1.0
     workingDir: $(workspaces.source.path)
     args:
     - $(params.args)
     - $(params.paths)
     - $(params.config_path)
     - $(params.capture)
+    - $(params.fail_on_warnings)
     - $(params.extra_libs)

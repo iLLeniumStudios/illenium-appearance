@@ -1,0 +1,68 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: illenium-appearance-lint
+  annotations:
+    pipelinesascode.tekton.dev/on-event: "[push, pull_request, pull_request_target]"
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/task: "[git-clone]"
+    pipelinesascode.tekton.dev/task-1: ".tekton/tasks/fivem-lua-lint.yaml"
+spec:
+  podTemplate:
+    securityContext:
+      fsGroup: 0
+  params:
+  - name: repo_url
+    value: "{{repo_url}}"
+  - name: revision
+    value: "{{revision}}"
+  pipelineSpec:
+    params:
+    - name: repo_url
+    - name: revision
+    tasks:
+    - name: fetch-repo
+      params:
+      - name: url
+        value: $(params.repo_url)
+      - name: revision
+        value: $(params.revision)
+      taskRef:
+        name: git-clone
+      workspaces:
+      - name: output
+        workspace: source
+        secret:
+          secretName: "{{ git_auth_secret }}"
+    - name: run-lint
+      runAfter:
+      - fetch-repo
+      taskRef:
+        name: fivem-lua-lint
+      params:
+      - name: capture
+        value: junit.xml
+      - name: args
+        value: -t --formatter JUnit --no-color
+      - name: extra_libs
+        value: mysql+polyzone+ox_lib
+      - name: paths
+        value: $(workspaces.source.path)
+      - name: fail_on_warnings
+        value: "true"
+      workspaces:
+      - name: source
+        workspace: source
+    workspaces:
+    - name: source
+  workspaces:
+  - name: source
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
