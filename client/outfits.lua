@@ -133,6 +133,5 @@ end
 RegisterNetEvent("illenium-appearance:client:loadJobOutfit", LoadJobOutfit)
 
 RegisterNetEvent("illenium-appearance:client:openOutfitMenu", function()
-    if Config.InventoryQS then exports['qs-inventory']:setInClothing(true) end
     OpenMenu(nil, "outfit")
 end)
