@@ -1,7 +1,7 @@
 if not Framework.ESX() then return end
 
 local ESX = exports["es_extended"]:getSharedObject()
-Framework.PlayerData = ESX.GetPlayerData()
+Framework.PlayerData = nil
 
 RegisterNetEvent("esx:playerLoaded", function(xPlayer)
     Framework.PlayerData = xPlayer
