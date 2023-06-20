@@ -151,7 +151,7 @@ local function ZonesLoop()
             if IsControlJustReleased(0, 38) then
                 if currentZone.name == "clothingRoom" then
                     local clothingRoom = Config.ClothingRooms[currentZone.index]
-                    local outfits = GetPlayerJobOutfits(clothingRoom)
+                    local outfits = GetPlayerJobOutfits(clothingRoom.job)
                     TriggerEvent("illenium-appearance:client:openJobOutfitsMenu", outfits)
                 elseif currentZone.name == "playerOutfitRoom" then
                     local outfitRoom = Config.PlayerOutfitRooms[currentZone.index]
@@ -187,7 +187,7 @@ end)
 
 RegisterNetEvent("illenium-appearance:client:OpenClothingRoom", function()
     local clothingRoom = Config.ClothingRooms[currentZone.index]
-    local outfits = GetPlayerJobOutfits(clothingRoom)
+    local outfits = GetPlayerJobOutfits(clothingRoom.job)
     TriggerEvent("illenium-appearance:client:openJobOutfitsMenu", outfits)
 end)
 

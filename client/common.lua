@@ -14,14 +14,14 @@ function IsPlayerAllowedForOutfitRoom(outfitRoom)
     return isAllowed or not outfitRoom.citizenIDs or count == 0
 end
 
-function GetPlayerJobOutfits(clothingRoom)
+function GetPlayerJobOutfits(job)
     local outfits = {}
     local gender = Framework.GetGender()
-    local gradeLevel = clothingRoom.job and Framework.GetJobGrade() or Framework.GetGangGrade()
-    local jobName = clothingRoom.job and client.job.name or client.gang.name
+    local gradeLevel = job and Framework.GetJobGrade() or Framework.GetGangGrade()
+    local jobName = job and client.job.name or client.gang.name
 
     if Config.BossManagedOutfits then
-        local mType = clothingRoom.job and "Job" or "Gang"
+        local mType = job and "Job" or "Gang"
         local result = lib.callback.await("illenium-appearance:server:getManagementOutfits", false, mType, gender)
         for i = 1, #result, 1 do
             outfits[#outfits + 1] = {
@@ -33,7 +33,7 @@ function GetPlayerJobOutfits(clothingRoom)
                 name = result[i].name
             }
         end
-    else
+    elseif Config.Outfits[jobName] and Config.Outfits[jobName][gender] then
         for i = 1, #Config.Outfits[jobName][gender], 1 do
             for _, v in pairs(Config.Outfits[jobName][gender][i].grades) do
                 if v == gradeLevel then

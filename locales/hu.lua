@@ -308,6 +308,12 @@ Locales["hu"] = {
                 title = "Hiba",
                 description = "Játékos nincs fent"
             }
+        },
+        joboutfits = {
+            title = "Megnyitja a Munkaruhák menüt"
+        },
+        gangoutfits = {
+            title = "Megnyitja a Gang Outfits menüt"
         }
     },
     textUI = {

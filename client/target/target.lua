@@ -118,7 +118,7 @@ local function SetupClothingRoomTargets()
     for k, v in pairs(Config.ClothingRooms) do
         local targetConfig = Config.TargetConfig["clothingroom"]
         local action = function()
-            local outfits = GetPlayerJobOutfits(v)
+            local outfits = GetPlayerJobOutfits(v.job)
             TriggerEvent("illenium-appearance:client:openJobOutfitsMenu", outfits)
         end
 

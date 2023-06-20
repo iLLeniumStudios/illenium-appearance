@@ -308,6 +308,12 @@ Locales["nl"] = {
                 title = "Fout",
                 description = "Speler niet online"
             }
+        },
+        joboutfits = {
+            title = "Opent het menu Joboutfits"
+        },
+        gangoutfits = {
+            title = "Opent het menu Bende-outfits"
         }
     },
     textUI = {

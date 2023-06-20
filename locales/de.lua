@@ -308,6 +308,12 @@ Locales["de"] = {
                 title = "Fehler",
                 description = "Spieler ist nicht online"
             }
+        },
+        joboutfits = {
+            title = "Öffnet das Job-Outfits-Menü"
+        },
+        gangoutfits = {
+            title = "Öffnet das Gang-Outfits-Menü"
         }
     },
     textUI = {
