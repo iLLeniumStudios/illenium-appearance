@@ -308,6 +308,12 @@ Locales["ro-RO"] = {
                 title = "Eroare",
                 description = "Jucătorul nu este conectat"
             }
+        },
+        joboutfits = {
+            title = "Deschide meniul ținute pentru locuri de muncă"
+        },
+        gangoutfits = {
+            title = "Deschide meniul Gang Outfits"
         }
     },
     textUI = {

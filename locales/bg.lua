@@ -308,6 +308,12 @@ Locales["bg"] = {
                 title = "Грешка",
                 description = "Играчът не е на линия"
             }
+        },
+        joboutfits = {
+            title = "Отваря менюто за екипировка за работа"
+        },
+        gangoutfits = {
+            title = "Отваря менюто Gang Outfits"
         }
     },
     textUI = {

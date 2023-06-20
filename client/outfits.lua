@@ -135,3 +135,8 @@ RegisterNetEvent("illenium-appearance:client:loadJobOutfit", LoadJobOutfit)
 RegisterNetEvent("illenium-appearance:client:openOutfitMenu", function()
     OpenMenu(nil, "outfit")
 end)
+
+RegisterNetEvent("illenium-apearance:client:outfitsCommand", function(isJob)
+    local outfits = GetPlayerJobOutfits(isJob)
+    TriggerEvent("illenium-appearance:client:openJobOutfitsMenu", outfits)
+end)

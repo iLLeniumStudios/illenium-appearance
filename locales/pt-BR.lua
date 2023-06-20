@@ -308,6 +308,12 @@ Locales["pt-BR"] = {
                 title = "Erro",
                 description = "Jogador não está online"
             }
+        },
+        joboutfits = {
+            title = "Abre o Menu de Trajes de Trabalho"
+        },
+        gangoutfits = {
+            title = "Abre o menu de trajes de gangue"
         }
     },
     textUI = {

@@ -308,6 +308,12 @@ Locales["fr"] = {
                 title = "Erreur",
                 description = "Joueur non connecté"
             }
+        },
+        joboutfits = {
+            title = "Ouvre le menu des tenues de travail"
+        },
+        gangoutfits = {
+            title = "Ouvre le menu des tenues de gang"
         }
     },
     textUI = {
