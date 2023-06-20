@@ -334,11 +334,11 @@ if Config.EnablePedMenu then
 end
 
 if Config.EnableJobOutfitsCommand then
-    lib.addCommand("joboutfits", { help = _L("commands.joboutfits.title"), }, function(source, args)
+    lib.addCommand("joboutfits", { help = _L("commands.joboutfits.title"), }, function(source)
         TriggerClientEvent("illenium-apearance:client:outfitsCommand", source, true)
     end)
 
-    lib.addCommand("gangoutfits", { help = _L("commands.gangoutfits.title"), }, function(source, args)
+    lib.addCommand("gangoutfits", { help = _L("commands.gangoutfits.title"), }, function(source)
         TriggerClientEvent("illenium-apearance:client:outfitsCommand", source)
     end)
 end
