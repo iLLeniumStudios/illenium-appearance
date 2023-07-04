@@ -258,34 +258,34 @@ Locales["pt-BR"] = {
         manage = {
             title = "👔 | Gerenciar roupas %s"
         },
-        jobOutfits = {
-            title = "Roupas de Trabalho",
-            description = "Escolha entre suas roupas de trabalho"
+    },
+    jobOutfits = {
+        title = "Roupas de Trabalho",
+        description = "Escolha entre suas roupas de trabalho"
+    },
+    menu = {
+        returnTitle = "Voltar",
+        title = "Vestuário",
+        outfitsTitle = "Roupas do Jogador",
+        clothingShopTitle = "Loja de Roupas",
+        barberShopTitle = "Barbearia",
+        tattooShopTitle = "Estúdio de Tatuagem",
+        surgeonShopTitle = "Cirurgião Plástico"
+    },
+    clothing = {
+        title = "Comprar Roupas - $%d",
+        titleNoPrice = "Mudar Roupas",
+        options = {
+            title = "👔 | Opções da loja de roupas",
+            description = "Escolha entre uma ampla variedade de itens para vestir"
         },
-        menu = {
-            returnTitle = "Voltar",
-            title = "Vestuário",
-            outfitsTitle = "Roupas do Jogador",
-            clothingShopTitle = "Loja de Roupas",
-            barberShopTitle = "Barbearia",
-            tattooShopTitle = "Estúdio de Tatuagem",
-            surgeonShopTitle = "Cirurgião Plástico"
-        },
-        clothing = {
-            title = "Comprar Roupas - $%d",
-            titleNoPrice = "Mudar Roupas",
-            options = {
-                title = "👔 | Opções da loja de roupas",
-                description = "Escolha entre uma ampla variedade de itens para vestir"
-            },
-            outfits = {
-                title = "👔 | Opções de roupas",
-                civilian = {
-                    title = "Roupa Civil",
-                    description = "Vista suas roupas"
-                }
+        outfits = {
+            title = "👔 | Opções de roupas",
+            civilian = {
+                title = "Roupa Civil",
+                description = "Vista suas roupas"
             }
-        },
+        }
     },
     commands = {
         reloadskin = {
