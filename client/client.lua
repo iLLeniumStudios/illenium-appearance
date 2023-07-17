@@ -731,7 +731,7 @@ RegisterNetEvent("illenium-appearance:client:reloadSkin", function(bypassChecks)
         end
         client.setPlayerAppearance(appearance)
         if Config.PersistUniforms then
-            TriggerServerEvent("illenium-appearance:server:syncUniform", nil)
+            LoadPlayerUniform()
         end
         RestorePlayerStats()
     end)
