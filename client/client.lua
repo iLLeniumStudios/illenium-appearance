@@ -1,7 +1,11 @@
 local client = client
 local reloadSkinTimer = GetGameTimer()
 
-local function LoadPlayerUniform()
+local function LoadPlayerUniform(reset)
+    if reset then
+        TriggerServerEvent("illenium-appearance:server:syncUniform", nil)
+        return
+    end
     lib.callback("illenium-appearance:server:getUniform", false, function(uniformData)
         if not uniformData then
             return
@@ -731,7 +735,7 @@ RegisterNetEvent("illenium-appearance:client:reloadSkin", function(bypassChecks)
         end
         client.setPlayerAppearance(appearance)
         if Config.PersistUniforms then
-            LoadPlayerUniform()
+            LoadPlayerUniform(bypassChecks)
         end
         RestorePlayerStats()
     end)
