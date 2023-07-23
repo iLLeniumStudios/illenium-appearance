@@ -1,3 +1,5 @@
+if not Config.BossManagedOutfits then return end
+
 if not Management.IsQBX() then return end
 
 function Management.AddItems()

@@ -314,6 +314,9 @@ Locales["fr"] = {
         },
         gangoutfits = {
             title = "Ouvre le menu des tenues de gang"
+        },
+        bossmanagedoutfits = {
+            title = "Ouvre le menu des tenues gérées par le patron"
         }
     },
     textUI = {

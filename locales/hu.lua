@@ -314,6 +314,9 @@ Locales["hu"] = {
         },
         gangoutfits = {
             title = "Megnyitja a Gang Outfits menüt"
+        },
+        bossmanagedoutfits = {
+            title = "Főnök által kezelt ruhák menü megnyitása"
         }
     },
     textUI = {

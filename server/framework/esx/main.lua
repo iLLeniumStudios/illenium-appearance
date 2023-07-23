@@ -29,14 +29,21 @@ function Framework.RemoveMoney(src, type, money)
     return false
 end
 
+function normalizeGrade(job)
+    job.grade = {
+        level = job.grade
+    }
+    return job
+end
+
 function Framework.GetJob(src)
     local Player = ESX.GetPlayerFromId(src)
-    return Player.getJob()
+    return normalizeGrade(Player.getJob())
 end
 
 function Framework.GetGang(src)
     local Player = ESX.GetPlayerFromId(src)
-    return Player.getJob()
+    return normalizeGrade(Player.getJob())
 end
 
 function Framework.SaveAppearance(appearance, citizenID)
