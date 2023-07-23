@@ -413,11 +413,6 @@ local function RegisterDeleteOutfitMenu(id, parent, outfits, deleteEvent)
 end
 
 RegisterNetEvent("illenium-appearance:client:OutfitManagementMenu", function(args)
-    local bossMenuEvent = "qb-bossmenu:client:OpenMenu"
-    if args.type == "Gang" then
-        bossMenuEvent = "qb-gangmenu:client:OpenMenu"
-    end
-
     local outfits = lib.callback.await("illenium-appearance:server:getManagementOutfits", false, args.type, Framework.GetGender())
     local managementMenuID = "illenium_appearance_outfit_management_menu"
     local changeManagementOutfitMenuID = "illenium_appearance_change_management_outfit_menu"
@@ -444,14 +439,11 @@ RegisterNetEvent("illenium-appearance:client:OutfitManagementMenu", function(arg
                 title = _L("outfits.delete.title"),
                 description = string.format(_L("outfits.delete.description"), args.type),
                 menu = deleteManagementOutfitMenuID,
-            },
-            {
-                title = _L("menu.returnTitle"),
-                icon = "fa-solid fa-angle-left",
-                event = bossMenuEvent
             }
         }
     }
+
+    Management.AddBackMenuItem(managementMenu, args)
 
     lib.registerContext(managementMenu)
     lib.showContext(managementMenuID)

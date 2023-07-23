@@ -21,6 +21,17 @@ RegisterNetEvent("esx:setJob", function(job)
     client.gang = Framework.PlayerData.job
 end)
 
+local function getRankInputValues(rankList)
+    local rankValues = {}
+    for k, v in pairs(rankList) do
+        rankValues[#rankValues + 1] = {
+            label = v.label,
+            value = v.grade
+        }
+    end
+    return rankValues
+end
+
 function Framework.GetPlayerGender()
     Framework.PlayerData = ESX.GetPlayerData()
     if Framework.PlayerData.sex == "f" then
@@ -52,10 +63,9 @@ function Framework.IsPlayerAllowed(citizenid)
     return citizenid == Framework.PlayerData.identifier
 end
 
--- Not implemented entirely
 function Framework.GetRankInputValues(type)
     local jobGrades = lib.callback.await("illenium-appearance:server:esx:getGradesForJob", false, client[type].name)
-    return jobGrades
+    return getRankInputValues(jobGrades)
 end
 
 function Framework.GetJobGrade()
