@@ -693,7 +693,7 @@ RegisterNetEvent("illenium-appearance:client:deleteOutfit", function(id)
     TriggerServerEvent("illenium-appearance:server:deleteOutfit", id)
     lib.notify({
         title = _L("outfits.delete.success.title"),
-        description = _L("outfits.delete.success.failure"),
+        description = _L("outfits.delete.success.description"),
         type = "success",
         position = Config.NotifyOptions.position
     })

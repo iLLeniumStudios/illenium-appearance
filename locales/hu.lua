@@ -17,7 +17,7 @@ Locales["hu"] = {
             model = "Model"
         },
         headBlend = {
-            title = "Öröklés",
+            title = "Öröklődés",
             shape = {
                 title = "Arc",
                 firstOption = "Apa",
@@ -25,20 +25,20 @@ Locales["hu"] = {
                 mix = "Vegyes"
             },
             skin = {
-                title = "Bör Szin",
+                title = "Bőrszín",
                 firstOption = "Apa",
                 secondOption = "Anya",
                 mix = "Vegyes"
             },
             race = {
-                title = "Race",
+                title = "Rassz",
                 shape = "Alak",
-                skin = "Bör Szin",
+                skin = "Bőrszín",
                 mix = "Vegyes"
             }
         },
         faceFeatures = {
-            title = "Arc Jellemzök",
+            title = "Arci Jellemzők",
             nose = {
                 title = "Orr",
                 width = "Szélesség",
@@ -56,198 +56,198 @@ Locales["hu"] = {
             cheeks = {
                 title = "Száj",
                 boneHeight = "Magasság",
-                boneWidth = "Szélleség",
-                width = "Szélleség"
+                boneWidth = "Szélesség",
+                width = "Szélesség"
             },
             eyesAndMouth = {
-                title = "Szem és Száj",
+                title = "Szemek és Száj",
                 eyesOpening = "Szem Kinyitása",
-                lipsThickness = "Száj Tipusok"
+                lipsThickness = "Száj Típusok"
             },
             jaw = {
                 title = "Állkapocs",
-                width = "Szélleség",
+                width = "Szélesség",
                 size = "Méret"
             },
             chin = {
                 title = "Áll",
                 lowering = "Leeresztés",
-                length = "Hósszúság",
+                length = "Hosszúság",
                 size = "Méret",
                 hole = "Méret"
             },
             neck = {
                 title = "Nyak",
-                thickness = "Vastagsága"
+                thickness = "Vastagság"
             }
         },
         headOverlays = {
             title = "Kinézet",
             hair = {
                 title = "Haj",
-                style = "Stilus",
-                color = "Szin",
+                style = "Stílus",
+                color = "Szín",
                 highlight = "Kiemelt",
                 texture = "Kinézet",
                 fade = "Halvány"
             },
-            opacity = "Nem Átlátszó",
-            style = "Stilus",
-            color = "Szin",
-            secondColor = "Másodlgos Szin",
+            opacity = "Átlátszóság",
+            style = "Stílus",
+            color = "Szín",
+            secondColor = "Másodlagos Szín",
             blemishes = "Foltok",
-            beard = "Szakál",
+            beard = "Szakáll",
             eyebrows = "Szemöldök",
             ageing = "Öregedés",
             makeUp = "Smink",
             blush = "Elpirulás",
-            complexion = "Arcszin",
-            sunDamage = "Barnitás",
+            complexion = "Arcszín",
+            sunDamage = "Napfény okozta bőröregedés",
             lipstick = "Rúzs",
-            moleAndFreckles = "Anyajegyek és Szeplök",
-            chestHair = "Test Szörzet",
-            bodyBlemishes = "Test Foltok",
-            eyeColor = "Szem Szin"
+            moleAndFreckles = "Anyajegyek és Szeplők",
+            chestHair = "Mellszőrzet",
+            bodyBlemishes = "Bőrhibák",
+            eyeColor = "Szemszín"
         },
         components = {
             title = "Ruhák",
-            drawable = "Rajzólható",
+            drawable = "Rajzolható",
             texture = "Kinézet",
             mask = "Maszk",
             upperBody = "Kezek",
             lowerBody = "Lábak",
-            bags = "Táskák és Ejtöernyök",
-            shoes = "Cipök",
+            bags = "Táskák és ejtőernyő",
+            shoes = "Cipők",
             scarfAndChains = "Sál és Láncok",
-            shirt = "Pólok",
-            bodyArmor = "Test Páncél",
+            shirt = "Póló",
+            bodyArmor = "Test páncél",
             decals = "Matricák",
-            jackets = "Dzsekik",
+            jackets = "Kabátok",
             head = "Fej"
         },
         props = {
             title = "Kellékek",
-            drawable = "Rajzólhtó",
+            drawable = "Rajzolható",
             texture = "Kinézet",
             hats = "Sapkák",
             glasses = "Szemüvegek",
             ear = "Fül",
-            watches = "Orák",
-            bracelets = "Krkötök"
+            watches = "órák",
+            bracelets = "Karkötők"
         },
         tattoos = {
-            title = "Tetováláspk",
+            title = "Tetoválások",
             items = {
-                ZONE_TORSO = "Torzó",
+                ZONE_TORSO = "Törzs",
                 ZONE_HEAD = "Fej",
-                ZONE_LEFT_ARM = "Ball Kar",
+                ZONE_LEFT_ARM = "Bal Kar",
                 ZONE_RIGHT_ARM = "Jobb Kar",
-                ZONE_LEFT_LEG = "Ball Láb",
+                ZONE_LEFT_LEG = "Bal Láb",
                 ZONE_RIGHT_LEG = "Jobb Láb"
             },
             apply = "Mentés",
             delete = "Törlés",
-            deleteAll = "Visszavónása",
-            opacity = "Nem Átlátszó"
+            deleteAll = "Összes tetkó törlése",
+            opacity = "Átlátszóság"
         }
     },
     outfitManagement = {
-        title = "Kinézet Kezelése",
-        jobText = "Munka Ruha Kezelése",
-        gangText = "Banda Ruha Kezelése"
+        title = "Ruházat Kezelése",
+        jobText = "Munkaruha Kezelése",
+        gangText = "Bandaruha Kezelése"
     },
     cancelled = {
-        title = "Testreszabás Törölve",
+        title = "Testreszabás Visszavonva",
         description = "Testreszabás Nincs Mentve"
     },
     outfits = {
         import = {
-            title = "Ird be az öltözék kódját",
-            menuTitle = "Öltözék Berakása",
-            description = "Öltözék berakás megosztott kóddal",
+            title = "Írd be az ruházat kódját",
+            menuTitle = "Ruházat Berakása",
+            description = "Ruházat importálása megosztási kóddal",
             name = {
-                label = "Öltözék Elnevezése",
-                placeholder = "Szép Öltözet",
-                default = "Berakot Öltözék"
+                label = "Ruházat Elnevezése",
+                placeholder = "Egy szép öltözet",
+                default = "Berakot Ruházat"
             },
             code = {
-                label = "Öltözék Kódja"
+                label = "Ruházat Kódja"
             },
             success = {
-                title = "Öltözék Berakva",
-                description = "Most átt tudsz öltözni az öltözék menüt használva"
+                title = "Ruházat Importálva",
+                description = "Most át tudsz öltözni az ruházat menü használatával"
             },
             failure = {
-                title = "Nem tudod berakni",
-                description = "Nem létezö ruha"
+                title = "Sikertelen Importálás",
+                description = "Hibás ruházat kód"
             }
         },
         generate = {
-            title = "Ruha kód generálása",
-            description = "Ruha kód generálása megosztáshoz",
+            title = "Ruházat kód generálása",
+            description = "Ruházat kód generálása megosztáshoz",
             failure = {
-                title = "Valami hiba van",
-                description = "Hibás kód"
+                title = "Hiba történt",
+                description = "Nem sikerült kódot létrehozni az ruházathoz"
             },
             success = {
-                title = "Öltözék kód legenerálva",
-                description = "Itt az öltözék kóddod"
+                title = "Ruházat kód legenerálva",
+                description = "Itt az ruházat kódod"
             }
         },
         save = {
             menuTitle = "Ruha mentése",
-            menuDescription = "Jellenlegi ruha mentése mint %s Ruházat",
-            description = "Jellenlegi ruházat lementve",
+            menuDescription = "Jelenlegi ruha mentése mint %s ruházat",
+            description = "Jelenlegi ruházat lementve",
             title = "Ruházat elnevezése",
             managementTitle = "Ruházat részletek kezelése",
             name = {
                 label = "Ruházat Neve",
-                placeholder = "Nagyon Szép Ruházat Te Paraszt"
+                placeholder = "Nagyon szép ruházat"
             },
             gender = {
                 label = "Nem",
                 male = "Férfi",
-                female = "Nö"
+                female = "Nő"
             },
             rank = {
                 label = "Minimális Rang"
             },
             failure = {
                 title = "Sikertelen Mentés",
-                description = "Ruházat ezzel a nével már létezik"
+                description = "Ezzel a nével már létezik ruházat"
             },
             success = {
                 title = "Sikeres",
-                description = "Ruházat %s Mentve"
+                description = "%s nevű ruházat mentve"
             }
         },
         update = {
-            title = "Ruházat Frissitve",
-            description = "Jellenlegi ruhák mentése a meglévö öltözetben",
+            title = "Ruházat Frissítése",
+            description = "Jelenlegi ruhák mentése egy meglévő ruházat helyére",
             failure = {
                 title = "Frissités Sikertelen",
                 description = "Ez a ruházat nem létezik"
             },
             success = {
                 title = "Sikeres",
-                description = "Ruházat %s Frissitve"
+                description = "%s nevű ruházat frissítve"
             }
         },
         change = {
             title = "Ruházat Megváltoztatása",
-            description = "Válasz a jellenlegi mentésekböl %s ruházatok",
-            pDescription = "Válasz a jellenlegi mentett ruházatokból",
+            description = "Válasz a jelenlegi %s ruházatod közül",
+            pDescription = "Válasz a jelenlegi ruházataid közül",
             failure = {
-                title = "Valami hiba történt",
-                description = "A jellenlegi ruházatod melyet probálsz lementeni, nincs alap megjelenitése",
+                title = "Hiba történt",
+                description = "A ruházatnak, amibe próbálsz átöltözni, nincs alap megjelenítése",
             }
         },
         delete = {
             title = "Ruházat Törlése",
-            description = "Mentés törlése %s ruházat",
-            mDescription = "Összes mentett ruházat törlése",
+            description = "Egy mentett %s ruházat törlése",
+            mDescription = "Egy mentett ruházatod törlése",
             item = {
-                title = 'Törlése "%s"',
+                title = '"%s" törlése',
                 description = "Model: %s%s"
             },
             success = {
@@ -256,111 +256,108 @@ Locales["hu"] = {
             }
         },
         manage = {
-            title = "👔 | Kezelés %s Ruházatok"
+            title = "👔 | %s Ruházatok Kezelése"
         }
     },
     jobOutfits = {
-        title = "Munka Ruhák",
+        title = "Munkaruhák",
         description = "Válasz egy munkaruhát"
     },
     menu = {
-        returnTitle = "Visszalépés",
-        title = "Ruha Szoba",
+        returnTitle = "Vissza",
+        title = "Ruhatár",
         outfitsTitle = "Játékos Ruházatok",
-        clothingShopTitle = "Ruha Bolt",
+        clothingShopTitle = "Ruhabolt",
         barberShopTitle = "Fodrászat",
         tattooShopTitle = "Tetováló Szalon",
         surgeonShopTitle = "Sebészet"
     },
     clothing = {
         title = "Ruha Vásárlás - $%d",
-        titleNoPrice = "Ruha Váltás",
+        titleNoPrice = "Ruha Váltása",
         options = {
-            title = "👔 | Ruha Bolt Beállitások",
-            description = "Válasszon a ruhák szélles kináltából"
+            title = "👔 | Ruhabolt Beállítások",
+            description = "Válasszon a ruhák széles kínálatából"
         },
         outfits = {
-            title = "👔 | Ruházat Beállitása",
+            title = "👔 | Ruházat Beállítások",
             civilian = {
-                title = "Játékos Ruházat",
+                title = "Civil Ruházat",
                 description = "Ruházat felvétele"
             }
         }
     },
     commands = {
         reloadskin = {
-            title = "Karaktere újratöltése",
+            title = "Karakter újratöltése",
             failure = {
                 title = "Hiba",
-                description = "Újratöltöt skint nem tudsz használni jellenleg"
+                description = "Ezt most nem használhatod"
             }
         },
         clearstuckprops = {
-            title = "Eltávolitja a Játokoshoz csatolt összes kelléket",
+            title = "Eltávolítja az entitáshoz csatolt összes kelléket",
             failure = {
                 title = "Hiba",
-                description = "Nem tudod az összeállitot ruházatot"
+                description = "Ezt most nem használhatod"
             }
         },
         pedmenu = {
-            title = "Nyitva / Ruha Menü Hozzáadása",
+            title = "Ruházati Menü Megnyitása",
             failure = {
                 title = "Hiba",
-                description = "Játékos nincs fent"
+                description = "A játékos nem online"
             }
         },
         joboutfits = {
-            title = "Megnyitja a Munkaruhák menüt"
+            title = "Munkaruházati menü megnyitása"
         },
         gangoutfits = {
-            title = "Megnyitja a Gang Outfits menüt"
-        },
-        bossmanagedoutfits = {
-            title = "Főnök által kezelt ruhák menü megnyitása"
+            title = "Bandaruházati menü megnyitása"
         }
     },
     textUI = {
-        clothing = "Ruha Bolt - Ár: $%d",
+        clothing = "Ruhabolt - Ár: $%d",
         barber = "Fodrászat - Ár: $%d",
-        tattoo = "Tetoválo Szalon - Ár: $%d",
+        tattoo = "Tetováló Szalon - Ár: $d",
         surgeon = "Sebészet - Ár: $%d",
-        clothingRoom = "Ruha Szoba",
+        clothingRoom = "Ruhatár",
         playerOutfitRoom = "Ruházatok"
     },
     migrate = {
         success = {
-            title = "Sikeress",
-            description = "Migrén Sikeres. %s Migrén",
-            descriptionSingle = "Migrén Kinézet"
+            title = "Sikeres",
+            description = "Áthelyezés sikeres. %s kinézet(ek) áthelyezve",
+            descriptionSingle = "Kinézet áthelyezve"
         },
         skip = {
             title = "Információ",
-            description = "Kihagyot Kinézet"
+            description = "Kinézet kihagyva"
         },
         typeError = {
             title = "Hiba",
-            description = "Nem létezö tipus"
+            description = "Nem létező típus"
         }
     },
     purchase = {
         tattoo = {
             success = {
                 title = "Sikeres",
-                description = "Megvásárolt %s Tetoválás ennyiért %s$"
+                description = "Megvásárolt %s tetoválás ennyiért: $%s"
             },
             failure = {
-                title = "Tetoválás mentési hiba",
+                title = "Tetoválás alkalmazása sikertelen",
                 description = "Nincs elég pénzed!"
             }
         },
         store = {
             success = {
                 title = "Sikeres",
-                description = "Adsz $%s Neki %s!"
+                description = "Ennyit fizettél: $%s" --"Gave $100 to clothing" doesn't really make sense, I just removed the second %s
             },
             failure = {
-                title = "Kizsákmányolás!",
-                description = "Nincs elég pénzed! Probáld kihasználni a rendszert!"
+                title = "Hiba",
+                description = "Nincs elég pénzed! Megpróbáltad kihasználni a rendszert!"
             }
         }
     }
