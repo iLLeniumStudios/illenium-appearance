@@ -3,7 +3,7 @@ Locales["zh-TW"] = {
         modal = {
             save = {
                 title = "儲存客製化",
-                description = "你還是一樣醜"
+                description = "您還是一樣醜"
             },
             exit = {
                 title = "退出客製化",
@@ -175,7 +175,7 @@ Locales["zh-TW"] = {
             },
             success = {
                 title = "匯入服裝成功",
-                description = "現在你可以使用服裝菜單切換到該服裝"
+                description = "現在您可以使用服裝菜單切換到該服裝"
             },
             failure = {
                 title = "匯入失敗",
@@ -191,14 +191,14 @@ Locales["zh-TW"] = {
             },
             success = {
                 title = "生成服裝代碼成功",
-                description = "這是你的服裝代碼"
+                description = "這是您的服裝代碼"
             }
         },
         save = {
             menuTitle = "儲存當前服裝",
             menuDescription = "將當前服裝儲存為%s服裝",
             description = "儲存當前服裝",
-            title = "命名你的服裝",
+            title = "命名您的服裝",
             managementTitle = "管理服裝細節",
             name = {
                 label = "服裝名稱",
@@ -261,7 +261,7 @@ Locales["zh-TW"] = {
     },
     jobOutfits = {
         title = "工作服裝",
-        description = "從你的工作服裝中選擇"
+        description = "從您的工作服裝中選擇"
     },
     menu = {
         returnTitle = "返回",
@@ -283,23 +283,23 @@ Locales["zh-TW"] = {
             title = "👔 | 服裝選項",
             civilian = {
                 title = "民用服裝",
-                description = "穿上你的衣服"
+                description = "穿上您的衣服"
             }
         }
     },
     commands = {
         reloadskin = {
-            title = "重新加載你的角色",
+            title = "重新加載您的角色",
             failure = {
                 title = "錯誤",
-                description = "你現在不能使用reloadskin"
+                description = "您現在不能重新加載角色"
             }
         },
         clearstuckprops = {
             title = "移除附加到實體的所有道具",
             failure = {
                 title = "錯誤",
-                description = "你現在不能使用clearstuckprops"
+                description = "您現在不能移除掛飾"
             }
         },
         pedmenu = {
@@ -350,7 +350,7 @@ Locales["zh-TW"] = {
             },
             failure = {
                 title = "紋身應用失敗",
-                description = "你沒有足夠的錢！"
+                description = "您沒有足夠的錢！"
             }
         },
         store = {
