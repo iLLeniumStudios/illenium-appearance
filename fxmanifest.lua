@@ -82,6 +82,7 @@ shared_scripts {
   "locales/nl.lua",
   "locales/pt-BR.lua",
   "locales/ro-RO.lua",
+  "locales/id.lua",
   "@ox_lib/init.lua"
 }
 
