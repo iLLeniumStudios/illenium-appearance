@@ -17,7 +17,7 @@ function Management.IsQB()
 end
 
 function Management.IsQBX()
-    local resName = "qbx-management"
+    local resName = "qbx_management"
     if GetResourceState(resName) ~= "missing" then
         Management.ResourceName = resName
         return true
