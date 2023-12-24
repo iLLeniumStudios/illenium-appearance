@@ -308,6 +308,15 @@ Locales["es-ES"] = {
                 title = "Error",
                 description = "Jugador no en línea"
             }
+        },
+        joboutfits = {
+            title = "Abre el menú de atuendos de trabajo"
+        },
+        gangoutfits = {
+            title = "Abre el menú de atuendos de pandillas"
+        },
+        bossmanagedoutfits = {
+            title = "Abre el menú de conjuntos gestionados por el jefe"
         }
     },
     textUI = {

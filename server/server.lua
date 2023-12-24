@@ -333,6 +333,16 @@ if Config.EnablePedMenu then
     end)
 end
 
+if Config.EnableJobOutfitsCommand then
+    lib.addCommand("joboutfits", { help = _L("commands.joboutfits.title"), }, function(source)
+        TriggerClientEvent("illenium-apearance:client:outfitsCommand", source, true)
+    end)
+
+    lib.addCommand("gangoutfits", { help = _L("commands.gangoutfits.title"), }, function(source)
+        TriggerClientEvent("illenium-apearance:client:outfitsCommand", source)
+    end)
+end
+
 lib.addCommand("reloadskin", { help = _L("commands.reloadskin.title") }, function(source)
     TriggerClientEvent("illenium-appearance:client:reloadSkin", source)
 end)

@@ -13,6 +13,6 @@ ESX.RegisterServerCallback("esx_skin:getPlayerSkin", function(source, cb)
     })
 end)
 
-lib.callback.register("illenium-appearance:server:esx:getGradesForJob", function(jobName)
+lib.callback.register("illenium-appearance:server:esx:getGradesForJob", function(_, jobName)
     return Database.JobGrades.GetByJobName(jobName)
 end)

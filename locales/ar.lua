@@ -308,6 +308,15 @@ Locales["ar"] = {
                 title = "خطأ",
                 description = "لا يوجد اللاعب على الإنترنت"
             }
+        },
+        joboutfits = {
+            title = "يفتح قائمة أزياء العمل"
+        },
+        gangoutfits = {
+            title = "يفتح قائمة أزياء العصابات"
+        },
+        bossmanagedoutfits = {
+            title = "يفتح قائمة ملابس المدير"
         }
     },
     textUI = {

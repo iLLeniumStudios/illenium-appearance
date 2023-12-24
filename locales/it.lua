@@ -308,6 +308,15 @@ Locales["it"] = {
                 title = "Errore",
                 description = "Giocatore non connesso"
             }
+        },
+        joboutfits = {
+            title = "Apre il menu degli abiti da lavoro"
+        },
+        gangoutfits = {
+            title = "Apre il menu degli abiti da gang"
+        },
+        bossmanagedoutfits = {
+            title = "Apre il menu delle outfit gestite dal capo"
         }
     },
     textUI = {
