@@ -197,12 +197,10 @@ local function setPlayerModel(model)
 
         if isPedFreemodeModel(cache.ped) then
             SetPedDefaultComponentVariation(cache.ped)
-
-            -- Check if the model is male or female, then change the face mix based on this.
-            if GetEntityModel(cache.ped) == `mp_m_freemode_01` then
+             -- Check if the model is male or female, then change the face mix based on this.
+             if model == `mp_m_freemode_01` then
                 SetPedHeadBlendData(cache.ped, 0, 0, 0, 0, 0, 0, 0, 0, 0, false)
-
-            elseif GetEntityModel(cache.ped) == `mp_f_freemode_01` then
+            elseif model == `mp_f_freemode_01` then
                 SetPedHeadBlendData(cache.ped, 45, 21, 0, 20, 15, 0, 0.3, 0.1, 0, false)
             end
         end
