@@ -15,11 +15,13 @@ Discord: https://discord.illenium.dev
 
 - qb-core
 - ESX
+- ox_core
 
 ## Dependencies
 
 - [qb-core](https://github.com/qbcore-framework/qb-core) (Latest) (Only for qb-core based servers)
 - [es_extended](https://github.com/esx-framework/esx-legacy) (Latest) (Only for ESX based servers)
+- [ox_core](https://github.com/overextended/ox_core) (experimental) (Only for ox_core based servers)
 - [ox_lib](https://github.com/overextended/ox_lib)
 - [qb-target](https://github.com/BerkieBb/qb-target) (Optional) (Only for qb-core based servers)
 
