@@ -23,7 +23,7 @@ function Radial.IsQB()
 end
 
 function Radial.IsQBX()
-    local resName = "qbx-radialmenu"
+    local resName = "qbx_radialmenu"
     if GetResourceState(resName) ~= "missing" then
         Radial.ResourceName = resName
         return true
