@@ -94,6 +94,9 @@ Config.DisableProps = {
     Bracelets = false
 }
 
+---@type string[]
+Config.Aces = {} -- list of ace permissions used for blacklisting
+
 Config.Blips = {
     ["clothing"] = {
         Show = true,
