@@ -2,8 +2,9 @@ lib.callback.register("illenium-appearance:server:GetPlayerAces", function()
     local src = source
     local allowedAces = {}
     for i = 1, #Config.Aces do
-        if IsPlayerAceAllowed(src, Config.Aces[i]) then
-            allowedAces[#allowedAces+1] = k
+        local ace = Config.Aces[i]
+        if IsPlayerAceAllowed(src, ace) then
+            allowedAces[#allowedAces+1] = ace
         end
     end
     return allowedAces
