@@ -73,11 +73,6 @@ Config.ReloadSkinCooldown = 5000
 
 Config.AutomaticFade = false -- Enables automatic fading and hides the Fade section from Hair
 
--- ACE Permissions Config
-Config.EnableACEPermissions = false
-Config.ACEResetCooldown = 5000
-Config.ACEListCooldown = 60 * 60 * 1000 -- 1 Hour
-
 Config.DisableComponents = {
     Masks = false,
     UpperBody = false,
@@ -98,6 +93,9 @@ Config.DisableProps = {
     Watches = false,
     Bracelets = false
 }
+
+---@type string[]
+Config.Aces = {} -- list of ace permissions used for blacklisting
 
 Config.Blips = {
     ["clothing"] = {
