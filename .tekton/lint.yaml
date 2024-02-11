@@ -10,9 +10,6 @@ metadata:
     pipelinesascode.tekton.dev/task: "[git-clone]"
     pipelinesascode.tekton.dev/task-1: ".tekton/tasks/fivem-lua-lint.yaml"
 spec:
-  podTemplate:
-    securityContext:
-      fsGroup: 0
   params:
   - name: repo_url
     value: "{{repo_url}}"
