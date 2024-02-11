@@ -23,7 +23,7 @@ end)
 
 local function getRankInputValues(rankList)
     local rankValues = {}
-    for k, v in pairs(rankList) do
+    for _, v in pairs(rankList) do
         rankValues[#rankValues + 1] = {
             label = v.label,
             value = v.grade
