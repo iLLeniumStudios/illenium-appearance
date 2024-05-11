@@ -93,14 +93,14 @@ Error generating stack: `+o.message+`
 
   z-index: 2;
 
-  background: rgba(${e=>e.theme.secondaryBackground||"0, 0, 0"}, ${({active:e})=>e?"0.9":"0.7"});
+  background: rgba(${e=>e.theme.secondaryBackground||"0, 0, 0"}, ${({active:e})=>e?"1":"0.0.9"});
 
   box-shadow: 0px 0px 5px rgb(0, 0, 0, 0.2);
 
   transition: background 0.1s;
 
   &:hover {
-    background: rgba(${e=>e.theme.primaryBackground||"0, 0, 0"}, 0.9);
+    background: rgba(${e=>e.theme.primaryBackground||"0, 0, 0"}, 1);
     transform: scale(1.05);
     transition: background 0.2s;
     cursor: pointer;
@@ -131,7 +131,7 @@ Error generating stack: `+o.message+`
   padding: 10px;
   border-radius: 2px;
 
-  background: rgba(${e=>e.theme.secondayBackground||"0, 0, 0"}, 0.3);
+  background: rgba(${e=>e.theme.secondayBackground||"0, 0, 0"}, 1);
 
   span {
     color: rgba(${e=>e.theme.fontColor||"255, 255, 255"}, 1);

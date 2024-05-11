@@ -1,6 +1,34 @@
 Config.Theme = {
-    currentTheme = "qb-core",
+    currentTheme = "murai",
     themes = {
+        {
+            id = "juliroo",
+            borderRadius = ".2vw",
+            fontColor = "0, 0, 0",
+            fontColorHover = "0, 0, 0",
+            fontColorSelected = "0, 0, 0",
+            fontFamily = "Inter",
+            primaryBackground = "250, 250, 250",
+            primaryBackgroundSelected = "250, 250, 250",
+            secondaryBackground = "250, 250, 250",
+            scaleOnHover = false,
+            sectionFontWeight = "normal",
+            smoothBackgroundTransition = false
+        },
+        {
+            id = "murai",
+            borderRadius = ".2vw",
+            fontColor = "200, 200, 200",
+            fontColorHover = "255, 255, 255",
+            fontColorSelected = "37, 38, 43",
+            fontFamily = "Inter",
+            primaryBackground = "37, 38, 43",
+            primaryBackgroundSelected = "200, 200, 200",
+            secondaryBackground = "37, 38, 43",
+            scaleOnHover = true,
+            sectionFontWeight = "normal",
+            smoothBackgroundTransition = true
+        },
         {
             id = "default",
             borderRadius = "4px",
