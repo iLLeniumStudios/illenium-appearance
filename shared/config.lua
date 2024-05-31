@@ -36,9 +36,9 @@ Config.EnablePedsForPlayerOutfitRooms = true
 Config.EnablePedMenu = true
 Config.PedMenuGroup = "group.admin"
 
-Config.EnableJobOutfitsCommand = false -- Enables /joboutfits and /gangoutfits commands
+Config.EnableJobOutfitsCommand = true -- Enables /joboutfits and /gangoutfits commands
 
-Config.ShowNearestShopOnly = false
+Config.ShowNearestShopOnly = true
 Config.HideRadar = false -- Hides the minimap while the appearance menu is open
 Config.NearestShopBlipUpdateDelay = 10000
 
@@ -71,7 +71,7 @@ Config.BossManagedOutfits = true -- Allows Job / Gang bosses to manage their own
 
 Config.ReloadSkinCooldown = 5000
 
-Config.AutomaticFade = false -- Enables automatic fading and hides the Fade section from Hair
+Config.AutomaticFade = true -- Enables automatic fading and hides the Fade section from Hair
 
 -- ACE Permissions Config
 Config.EnableACEPermissions = false
