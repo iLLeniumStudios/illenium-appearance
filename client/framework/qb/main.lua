@@ -4,16 +4,20 @@ local client = client
 
 local QBCore = exports["qb-core"]:GetCoreObject()
 
+QBCore.Shared.Jobs = exports.qbx_core:GetJobs()
+QBCore.Shared.Gangs = exports.qbx_core:GetGangs()
+
 local PlayerData = QBCore.Functions.GetPlayerData()
 
 local function getRankInputValues(rankList)
     local rankValues = {}
     for k, v in pairs(rankList) do
         rankValues[#rankValues + 1] = {
-            label = v.name,
+            label = "["..k.."] ".. v.name,
             value = k
         }
     end
+    table.sort(rankValues, function(a, b) return a.value < b.value end)
     return rankValues
 end
 
