@@ -4,9 +4,6 @@ local client = client
 
 local QBCore = exports["qb-core"]:GetCoreObject()
 
-QBCore.Shared.Jobs = exports.qbx_core:GetJobs()
-QBCore.Shared.Gangs = exports.qbx_core:GetGangs()
-
 local PlayerData = QBCore.Functions.GetPlayerData()
 
 local function getRankInputValues(rankList)
