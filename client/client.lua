@@ -515,18 +515,24 @@ local function RegisterWorkOutfitsListMenu(id, parent, menuData)
         title = _L("jobOutfits.title"),
         options = {}
     }
-    local event = "illenium-appearance:client:loadJobOutfit"
-    if Config.BossManagedOutfits then
-        event = "illenium-appearance:client:changeOutfit"
-    end
-    if menuData then
-        for _, v in pairs(menuData) do
-            menu.options[#menu.options + 1] = {
-                title = v.name,
-                event = event,
-                args = v
-            }
+
+    local groupedOutfits = {}
+    for _, outfit in pairs(menuData) do
+        if not groupedOutfits[outfit.group] then
+            groupedOutfits[outfit.group] = {}
         end
+        table.insert(groupedOutfits[outfit.group], outfit) 
+    end
+
+    for groupName, outfitsInGroup in pairs(groupedOutfits) do
+        local groupMenuId = id .. "_" .. groupName -- Unique ID for sub menu
+        RegisterChangeOutfitMenu(groupMenuId, id, outfitsInGroup, Config.BossManagedOutfits and outfitsInGroup[1].type or nil) -- Register sub menu
+
+        menu.options[#menu.options + 1] = {
+            title = groupName,
+            description = _L("jobOutfits.groupDescription"),
+            menu = groupMenuId
+        }
     end
     lib.registerContext(menu)
 end
