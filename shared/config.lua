@@ -603,6 +603,7 @@ Config.Outfits = {
         ["Male"] = {
             {
                 name = "Short Sleeve",
+                group = "Patrol",
                 outfitData = {
                     ["pants"] = {item = 24, texture = 0}, -- Pants
                     ["arms"] = {item = 19, texture = 0}, -- Arms
@@ -620,6 +621,7 @@ Config.Outfits = {
             },
             {
                 name = "Trooper Tan",
+                group = "Patrol",
                 outfitData = {
                     ["pants"] = {item = 24, texture = 0}, -- Pants
                     ["arms"] = {item = 20, texture = 0}, -- Arms
@@ -637,6 +639,7 @@ Config.Outfits = {
             },
             {
                 name = "Long Sleeve",
+                group = "Patrol",
                 outfitData = {
                     ["pants"] = {item = 24, texture = 0}, -- Pants
                     ["arms"] = {item = 20, texture = 0}, -- Arms
@@ -654,6 +657,7 @@ Config.Outfits = {
             },
             {
                 name = "Trooper Black",
+                group = "Utility",
                 outfitData = {
                     ["pants"] = {item = 24, texture = 0}, -- Pants
                     ["arms"] = {item = 20, texture = 0}, -- Arms
@@ -671,6 +675,7 @@ Config.Outfits = {
             },
             {
                 name = "SWAT",
+                group = "Specialized",
                 outfitData = {
                     ["pants"] = {item = 130, texture = 1}, -- Pants
                     ["arms"] = {item = 172, texture = 0}, -- Arms
@@ -689,6 +694,7 @@ Config.Outfits = {
         ["Female"] = {
             {
                 name = "Short Sleeve",
+                group = "Patrol",
                 outfitData = {
                     ["pants"] = {item = 133, texture = 0}, -- Pants
                     ["arms"] = {item = 31, texture = 0}, -- Arms
@@ -706,6 +712,7 @@ Config.Outfits = {
             },
             {
                 name = "Trooper Tan",
+                group = "Patrol",
                 outfitData = {
                     ["pants"] = {item = 133, texture = 0}, -- Pants
                     ["arms"] = {item = 31, texture = 0}, -- Arms
@@ -723,6 +730,7 @@ Config.Outfits = {
             },
             {
                 name = "Long Sleeve",
+                group = "Patrol",
                 outfitData = {
                     ["pants"] = {item = 133, texture = 0}, -- Pants
                     ["arms"] = {item = 31, texture = 0}, -- Arms
@@ -740,6 +748,7 @@ Config.Outfits = {
             },
             {
                 name = "Trooper Black",
+                group = "Utility",
                 outfitData = {
                     ["pants"] = {item = 133, texture = 0}, -- Pants
                     ["arms"] = {item = 31, texture = 0}, -- Arms
@@ -757,6 +766,7 @@ Config.Outfits = {
             },
             {
                 name = "SWAT",
+                group = "Specialized",
                 outfitData = {
                     ["pants"] = {item = 135, texture = 1}, -- Pants
                     ["arms"] = {item = 213, texture = 0}, -- Arms
@@ -779,6 +789,7 @@ Config.Outfits = {
             {
                 -- Outfits
                 name = "Worker",
+                group = "Basic",
                 outfitData = {
                     ["pants"]       = { item = 28, texture = 0},  -- Pants
                     ["arms"]        = { item = 1, texture = 0},  -- Arms
@@ -798,6 +809,7 @@ Config.Outfits = {
         ["Female"] = {
             {
                 name = "Worker",
+                group = "Basic",
                 outfitData = {
                     ["pants"]       = { item = 57, texture = 2},  -- Pants
                     ["arms"]        = { item = 0, texture = 0},  -- Arms
@@ -819,6 +831,7 @@ Config.Outfits = {
         ["Male"] = {
             {
                 name = "T-Shirt",
+                group = "Ambulance",
                 outfitData = {
                     ["arms"] = {item = 85, texture = 0}, -- Arms
                     ["t-shirt"] = {item = 129, texture = 0}, -- T-Shirt
@@ -838,6 +851,7 @@ Config.Outfits = {
             },
             {
                 name = "Polo",
+                group = "Ambulance",
                 outfitData = {
                     ["arms"] = {item = 90, texture = 0}, -- Arms
                     ["t-shirt"] = {item = 15, texture = 0}, -- T-Shirt
@@ -857,6 +871,7 @@ Config.Outfits = {
             },
             {
                 name = "Doctor",
+                group = "Doctor",
                 outfitData = {
                     ["arms"] = {item = 93, texture = 0}, -- Arms
                     ["t-shirt"] = {item = 32, texture = 3}, -- T-Shirt
@@ -878,6 +893,7 @@ Config.Outfits = {
         ["Female"] = {
             {
                 name = "T-Shirt",
+                group = "Ambulance",
                 outfitData = {
                     ["arms"] = {item = 109, texture = 0}, -- Arms
                     ["t-shirt"] = {item = 159, texture = 0}, -- T-Shirt
@@ -897,6 +913,7 @@ Config.Outfits = {
             },
             {
                 name = "Polo",
+                group = "Ambulance",
                 outfitData = {
                     ["arms"] = {item = 105, texture = 0}, -- Arms
                     ["t-shirt"] = {item = 13, texture = 0}, -- T-Shirt
@@ -916,6 +933,7 @@ Config.Outfits = {
             },
             {
                 name = "Doctor",
+                group = "Doctor",
                 outfitData = {
                     ["arms"] = {item = 105, texture = 0}, -- Arms
                     ["t-shirt"] = {item = 39, texture = 3}, -- T-Shirt
