@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `player_outfits` (
   `model` varchar(50) DEFAULT NULL,
   `props` varchar(1000) DEFAULT NULL,
   `components` varchar(1500) DEFAULT NULL,
+  `favorite` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `citizenid_outfitname_model` (`citizenid`,`outfitname`,`model`),
   KEY `citizenid` (`citizenid`)
