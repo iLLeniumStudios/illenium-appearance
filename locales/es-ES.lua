@@ -257,6 +257,15 @@ Locales["es-ES"] = {
         },
         manage = {
             title = "👔 | Administrar trajes %s"
+        },
+        favorite = {
+            title = "Favoritos",
+            description = "Haz click aqúi para añadir tus atuendos al inicio de la lista",
+            input = "Atuendos favoritos",
+            success = {
+                title = "Éxito",
+                description = "Los atuendos han sido añadidos a favoritos"
+            }
         }
     },
     jobOutfits = {

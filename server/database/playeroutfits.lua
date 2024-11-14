@@ -31,6 +31,10 @@ function Database.PlayerOutfits.Update(outfitID, model, components, props)
     })
 end
 
+function Database.PlayerOutfits.Favorite(outfitName)
+    return MySQL.update.await("UPDATE player_outfits SET favorite = (favorite ^ 1) WHERE outfitname = ?", {outfitName})
+end
+
 function Database.PlayerOutfits.DeleteByID(id)
     MySQL.query.await("DELETE FROM player_outfits WHERE id = ?", {id})
 end

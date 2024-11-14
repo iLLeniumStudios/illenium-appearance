@@ -323,8 +323,33 @@ local function RegisterChangeOutfitMenu(id, parent, outfits, mType)
         menu = parent,
         options = {}
     }
+
+    local allOutfits, favoriteOutfits = {}, {}
+    local favoriteButton = {
+        title = _L("outfits.favorite.title"),
+        description = _L("outfits.favorite.description"),
+        icon = 'star',
+        onSelect = function()
+            local input = lib.inputDialog(_L("outfits.favorite.input"), {
+                {type = 'multi-select', clearable = true, searchable = true,  default = favoriteOutfits, options = allOutfits}
+            })
+            if not input then return end
+            local newFavoriteOutfits = {}
+            for _, v in pairs(input[1]) do
+                for _, outfit in pairs(allOutfits) do
+                    if v == outfit.value then
+                        newFavoriteOutfits[#newFavoriteOutfits + 1] = outfit.value
+                    end
+                end
+            end
+            TriggerServerEvent("illenium-appearance:server:favoriteOutfits", newFavoriteOutfits)
+        end
+    }
+
+    local favoritesSection, outfitsSection = {}, {}
     for i = 1, #outfits, 1 do
-        changeOutfitMenu.options[#changeOutfitMenu.options + 1] = {
+        if not outfits[i].name then return end
+        local data = {
             title = outfits[i].name,
             description = outfits[i].model,
             event = "illenium-appearance:client:changeOutfit",
@@ -334,14 +359,28 @@ local function RegisterChangeOutfitMenu(id, parent, outfits, mType)
                 model = outfits[i].model,
                 components = outfits[i].components,
                 props = outfits[i].props,
-                disableSave = mType and true or false
+                disableSave = mType and true or false,
+                favorite = outfits[i].favorite and true or false
             }
         }
+        allOutfits[#allOutfits + 1] = {value = outfits[i].name} -- {value: string, label?: string}
+        if outfits[i].favorite then
+            favoriteOutfits[#favoriteOutfits + 1] = outfits[i].name
+            favoritesSection[#favoritesSection + 1] = data
+        else   
+            outfitsSection[#outfitsSection + 1] = data
+        end
     end
 
-    table.sort(changeOutfitMenu.options, function(a, b)
-        return a.title < b.title
-    end)
+    table.sort(favoritesSection, function(a,b) return a.title:lower() < b.title:lower() end)
+    for _, v in pairs(favoritesSection) do
+        changeOutfitMenu.options[#changeOutfitMenu.options + 1] = v
+    end
+    changeOutfitMenu.options[#changeOutfitMenu.options + 1] = favoriteButton
+    table.sort(outfitsSection, function(a,b) return a.title:lower() < b.title:lower() end)
+    for _, v in pairs(outfitsSection) do
+        changeOutfitMenu.options[#changeOutfitMenu.options + 1] = v
+    end
 
     lib.registerContext(changeOutfitMenu)
 end

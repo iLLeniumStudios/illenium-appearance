@@ -257,6 +257,15 @@ Locales["en"] = {
         },
         manage = {
             title = "👔 | Manage %s Outfits"
+        },
+        favorite = {
+            title = "Favorites",
+            description = "Click here to add your outfits to the top of the list",
+            input = "Favorite Outfits",
+            success = {
+                title = "Success",
+                description = "Outfits added to favorites"
+            }
         }
     },
     jobOutfits = {

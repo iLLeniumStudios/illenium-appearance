@@ -25,7 +25,8 @@ local function getOutfitsForPlayer(citizenid)
             name = result[i].outfitname,
             model = result[i].model,
             components = json.decode(result[i].components),
-            props = json.decode(result[i].props)
+            props = json.decode(result[i].props),
+            favorite = result[i].favorite
         }
     end
 end
@@ -243,6 +244,35 @@ RegisterNetEvent("illenium-appearance:server:updateOutfit", function(id, model, 
             position = Config.NotifyOptions.position
         })
     end
+end)
+
+RegisterNetEvent("illenium-appearance:server:favoriteOutfits", function(outfits)
+    local src = source
+    local citizenID = Framework.GetPlayerID(src)
+    if outfitCache[citizenID] == nil then
+        getOutfitsForPlayer(citizenID)
+    end
+
+    for i = 1, #outfitCache[citizenID], 1 do
+        local outfit = outfitCache[citizenID][i]
+        if outfit.favorite then
+            outfit.favorite = false
+            Database.PlayerOutfits.Favorite(outfit.name)
+        end
+        for _, v in pairs(outfits) do
+            if outfit.name == v then
+                outfit.favorite = true
+                Database.PlayerOutfits.Favorite(outfit.name)
+            end
+        end
+    end
+    
+    lib.notify(src, {
+        title = _L("outfits.favorite.success.title"),
+        description = _L("outfits.favorite.success.description"),
+        type = "success",
+        position = Config.NotifyOptions.position
+    })
 end)
 
 RegisterNetEvent("illenium-appearance:server:saveManagementOutfit", function(outfitData)
