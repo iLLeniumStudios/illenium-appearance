@@ -100,6 +100,16 @@ local function SetupZone(store, onEnter, onExit)
     end
 
     if Config.UseRadialMenu or store.usePoly then
+        if not store.points or not next(store.points) then
+            return lib.zones.box({
+                coords = store.coords,
+                size = store.size,
+                rotation = store.rotation,
+                debug = Config.Debug,
+                onEnter = onEnter,
+                onExit = onExit
+            })
+        end
         return lib.zones.poly({
             points = store.points,
             debug = Config.Debug,
