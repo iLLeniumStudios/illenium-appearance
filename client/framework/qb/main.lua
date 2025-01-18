@@ -24,7 +24,7 @@ local function setClientParams()
 end
 
 function Framework.GetPlayerGender()
-    if PlayerData.charinfo.gender == 1 then
+    if PlayerData.charinfo.gender == "1" then
         return "Female"
     end
     return "Male"
