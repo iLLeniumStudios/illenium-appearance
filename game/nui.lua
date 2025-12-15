@@ -1,7 +1,11 @@
 local client = client
 
 RegisterNUICallback("appearance_get_locales", function(_, cb)
-    cb(Locales[GetConvar("illenium-appearance:locale", "en")].UI)
+    local lang = GetConvar("illenium-appearance:locale", "en")
+    if not Locales[lang] then
+        lang = "en"
+    end
+    cb(Locales[lang].UI)
 end)
 
 RegisterNUICallback("appearance_get_settings", function(_, cb)
