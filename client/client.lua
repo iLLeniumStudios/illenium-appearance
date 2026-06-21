@@ -34,12 +34,15 @@ local function LoadPlayerUniform(reset)
 
             TriggerEvent("illenium-appearance:client:changeOutfit", uniform)
         else
-            local outfits = Config.Outfits[uniformData.jobName][uniformData.gender]
+            local jobOutfits = Config.Outfits[uniformData.jobName]
+            local outfits = jobOutfits and jobOutfits[uniformData.gender]
             local uniform = nil
-            for i = 1, #outfits, 1 do
-                if outfits[i].name == uniformData.label then
-                    uniform = outfits[i]
-                    break
+            if outfits then
+                for i = 1, #outfits, 1 do
+                    if outfits[i].name == uniformData.label then
+                        uniform = outfits[i]
+                        break
+                    end
                 end
             end
 
@@ -727,7 +730,7 @@ RegisterNetEvent("illenium-appearance:client:reloadSkin", function(bypassChecks)
         end
         client.setPlayerAppearance(appearance)
         if Config.PersistUniforms then
-            LoadPlayerUniform(bypassChecks)
+            LoadPlayerUniform()
         end
         RestorePlayerStats()
     end)

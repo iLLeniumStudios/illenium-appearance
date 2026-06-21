@@ -3,6 +3,9 @@ function CheckDuty()
 end
 
 function IsPlayerAllowedForOutfitRoom(outfitRoom)
+    if not outfitRoom or not outfitRoom.citizenIDs or #outfitRoom.citizenIDs == 0 then
+        return true
+    end
     local isAllowed = false
     local count = #outfitRoom.citizenIDs
     for i = 1, count, 1 do
@@ -11,7 +14,7 @@ function IsPlayerAllowedForOutfitRoom(outfitRoom)
             break
         end
     end
-    return isAllowed or not outfitRoom.citizenIDs or count == 0
+    return isAllowed
 end
 
 function GetPlayerJobOutfits(job)

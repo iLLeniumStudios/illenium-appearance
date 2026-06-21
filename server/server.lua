@@ -57,6 +57,8 @@ end)
 
 lib.callback.register("illenium-appearance:server:importOutfitCode", function(source, outfitName, outfitCode)
     local citizenID = Framework.GetPlayerID(source)
+    if not citizenID then return nil end
+
     local existingOutfitCode = Database.PlayerOutfitCodes.GetByCode(outfitCode)
     if not existingOutfitCode then
         return nil
@@ -75,6 +77,10 @@ lib.callback.register("illenium-appearance:server:importOutfitCode", function(so
     if not id then
         print("Something went wrong while importing the outfit")
         return
+    end
+
+    if outfitCache[citizenID] == nil then
+        getOutfitsForPlayer(citizenID)
     end
 
     outfitCache[citizenID][#outfitCache[citizenID] + 1] = {
@@ -272,8 +278,13 @@ end)
 RegisterNetEvent("illenium-appearance:server:deleteOutfit", function(id)
     local src = source
     local citizenID = Framework.GetPlayerID(src)
+    if not citizenID then return end
     Database.PlayerOutfitCodes.DeleteByOutfitID(id)
     Database.PlayerOutfits.DeleteByID(id)
+
+    if outfitCache[citizenID] == nil then
+        getOutfitsForPlayer(citizenID)
+    end
 
     for k, v in ipairs(outfitCache[citizenID]) do
         if v.id == id then
@@ -335,11 +346,11 @@ end
 
 if Config.EnableJobOutfitsCommand then
     lib.addCommand("joboutfits", { help = _L("commands.joboutfits.title"), }, function(source)
-        TriggerClientEvent("illenium-apearance:client:outfitsCommand", source, true)
+        TriggerClientEvent("illenium-appearance:client:outfitsCommand", source, true)
     end)
 
     lib.addCommand("gangoutfits", { help = _L("commands.gangoutfits.title"), }, function(source)
-        TriggerClientEvent("illenium-apearance:client:outfitsCommand", source)
+        TriggerClientEvent("illenium-appearance:client:outfitsCommand", source)
     end)
 end
 

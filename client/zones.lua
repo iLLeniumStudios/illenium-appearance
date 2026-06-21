@@ -186,12 +186,16 @@ AddEventHandler("onResourceStop", function(resource)
 end)
 
 RegisterNetEvent("illenium-appearance:client:OpenClothingRoom", function()
+    if not currentZone or not currentZone.index then return end
     local clothingRoom = Config.ClothingRooms[currentZone.index]
+    if not clothingRoom then return end
     local outfits = GetPlayerJobOutfits(clothingRoom.job)
     TriggerEvent("illenium-appearance:client:openJobOutfitsMenu", outfits)
 end)
 
 RegisterNetEvent("illenium-appearance:client:OpenPlayerOutfitRoom", function()
+    if not currentZone or not currentZone.index then return end
     local outfitRoom = Config.PlayerOutfitRooms[currentZone.index]
+    if not outfitRoom then return end
     OpenOutfitRoom(outfitRoom)
 end)
