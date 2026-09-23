@@ -1,5 +1,9 @@
 Database.ManagementOutfits = {}
 
+function Database.ManagementOutfits.GetByID(id)
+    return MySQL.single.await("SELECT * FROM management_outfits WHERE id = ?", {id})
+end
+
 function Database.ManagementOutfits.GetAllByJob(type, jobName, gender)
     local query = "SELECT * FROM management_outfits WHERE type = ? AND job_name = ?"
     local queryArgs = {type, jobName}

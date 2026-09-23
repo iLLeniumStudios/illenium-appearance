@@ -16,6 +16,24 @@ local function getMoneyForShop(shopType)
     return money
 end
 
+local function getValidatedTattooCost(tattoo)
+    local baseCost = Config.TattooCost
+    if not Config.ChargePerTattoo then
+        return 0
+    end
+
+    if type(tattoo) ~= "table" or not tattoo.cost then
+        return baseCost
+    end
+
+    local requestedCost = tonumber(tattoo.cost)
+    if not requestedCost or requestedCost <= 0 then
+        return baseCost
+    end
+
+    return math.min(requestedCost, baseCost)
+end
+
 local function getOutfitsForPlayer(citizenid)
     outfitCache[citizenid] = {}
     local result = Database.PlayerOutfits.GetAllByCitizenID(citizenid)
@@ -104,12 +122,12 @@ end)
 
 lib.callback.register("illenium-appearance:server:payForTattoo", function(source, tattoo)
     local src = source
-    local cost = tattoo.cost or Config.TattooCost
+    local cost = getValidatedTattooCost(tattoo)
 
     if Framework.RemoveMoney(src, "cash", cost) then
         lib.notify(src, {
             title = _L("purchase.tattoo.success.title"),
-            description = string.format(_L("purchase.tattoo.success.description"), tattoo.label, cost),
+            description = string.format(_L("purchase.tattoo.success.description"), tattoo and tattoo.label or _L("purchase.tattoo.default.label"), cost),
             type = "success",
             position = Config.NotifyOptions.position
         })
@@ -224,7 +242,12 @@ RegisterNetEvent("illenium-appearance:server:updateOutfit", function(id, model, 
         getOutfitsForPlayer(citizenID)
     end
     if model and components and props then
-        if not Database.PlayerOutfits.Update(id, model, json.encode(components), json.encode(props)) then return end
+        local existingOutfit = Database.PlayerOutfits.GetByID(id)
+        if not existingOutfit or existingOutfit.citizenid ~= citizenID then
+            return
+        end
+
+        if not Database.PlayerOutfits.Update(id, citizenID, model, json.encode(components), json.encode(props)) then return end
         local outfitName = ""
         for i = 1, #outfitCache[citizenID], 1 do
             local outfit = outfitCache[citizenID][i]
@@ -247,6 +270,25 @@ end)
 
 RegisterNetEvent("illenium-appearance:server:saveManagementOutfit", function(outfitData)
     local src = source
+    if not outfitData or not outfitData.Type or not outfitData.JobName or not outfitData.Name then
+        return
+    end
+
+    local job = Framework.GetJob(src)
+    if outfitData.Type == "Gang" then
+        job = Framework.GetGang(src)
+    end
+
+    if not job or not job.name or outfitData.JobName ~= job.name then
+        return
+    end
+
+    local rank = tonumber(job.grade and job.grade.level or job.grade)
+    local minRank = tonumber(outfitData.MinRank)
+    if not rank or not minRank or rank < minRank then
+        return
+    end
+
     local id = Database.ManagementOutfits.Add(outfitData)
     if not id then
         return
@@ -261,6 +303,27 @@ RegisterNetEvent("illenium-appearance:server:saveManagementOutfit", function(out
 end)
 
 RegisterNetEvent("illenium-appearance:server:deleteManagementOutfit", function(id)
+    local src = source
+    local outfit = Database.ManagementOutfits.GetByID(id)
+    if not outfit then
+        return
+    end
+
+    local job = Framework.GetJob(src)
+    if outfit.type == "Gang" then
+        job = Framework.GetGang(src)
+    end
+
+    if not job or job.name ~= outfit.job_name then
+        return
+    end
+
+    local rank = tonumber(job.grade and job.grade.level or job.grade)
+    local minRank = tonumber(outfit.minrank)
+    if not rank or not minRank or rank < minRank then
+        return
+    end
+
     Database.ManagementOutfits.DeleteByID(id)
 end)
 
@@ -272,12 +335,18 @@ end)
 RegisterNetEvent("illenium-appearance:server:deleteOutfit", function(id)
     local src = source
     local citizenID = Framework.GetPlayerID(src)
-    Database.PlayerOutfitCodes.DeleteByOutfitID(id)
-    Database.PlayerOutfits.DeleteByID(id)
+    local outfit = Database.PlayerOutfits.GetByID(id)
+    if not outfit or outfit.citizenid ~= citizenID then
+        return
+    end
 
-    for k, v in ipairs(outfitCache[citizenID]) do
+    Database.PlayerOutfitCodes.DeleteByOutfitID(id)
+    Database.PlayerOutfits.DeleteByID(id, citizenID)
+
+    local outfits = outfitCache[citizenID] or {}
+    for k, v in ipairs(outfits) do
         if v.id == id then
-            table.remove(outfitCache[citizenID], k)
+            table.remove(outfits, k)
             break
         end
     end
@@ -335,11 +404,11 @@ end
 
 if Config.EnableJobOutfitsCommand then
     lib.addCommand("joboutfits", { help = _L("commands.joboutfits.title"), }, function(source)
-        TriggerClientEvent("illenium-apearance:client:outfitsCommand", source, true)
+        TriggerClientEvent("illenium-appearance:client:outfitsCommand", source, true)
     end)
 
     lib.addCommand("gangoutfits", { help = _L("commands.gangoutfits.title"), }, function(source)
-        TriggerClientEvent("illenium-apearance:client:outfitsCommand", source)
+        TriggerClientEvent("illenium-appearance:client:outfitsCommand", source)
     end)
 end
 

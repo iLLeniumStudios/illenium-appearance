@@ -2,7 +2,7 @@
 
 A replacement for clothing resources for various frameworks
 
-<div align='center'><h1><a href='https://docs.illenium.dev/free-resources/illenium-appearance/installation/'>Documentation</a></h3></div>
+<div align='center'><h1><a href='https://docs-illenium-dev-phem.vercel.app/free-resources/illenium-appearance/intro/'>Documentation</a></h3></div>
 <br>
 
 <img src="https://i.imgur.com/ltLSMmh.png" alt="illenium-appearance with Tattoos" />

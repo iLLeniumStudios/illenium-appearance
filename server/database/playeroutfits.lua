@@ -22,15 +22,16 @@ function Database.PlayerOutfits.Add(citizenID, outfitName, model, components, pr
     })
 end
 
-function Database.PlayerOutfits.Update(outfitID, model, components, props)
-    return MySQL.update.await("UPDATE player_outfits SET model = ?, components = ?, props = ? WHERE id = ?", {
+function Database.PlayerOutfits.Update(outfitID, citizenid, model, components, props)
+    return MySQL.update.await("UPDATE player_outfits SET model = ?, components = ?, props = ? WHERE id = ? AND citizenid = ?", {
         model,
         components,
         props,
-        outfitID
+        outfitID,
+        citizenid
     })
 end
 
-function Database.PlayerOutfits.DeleteByID(id)
-    MySQL.query.await("DELETE FROM player_outfits WHERE id = ?", {id})
+function Database.PlayerOutfits.DeleteByID(id, citizenid)
+    MySQL.query.await("DELETE FROM player_outfits WHERE id = ? AND citizenid = ?", {id, citizenid})
 end
