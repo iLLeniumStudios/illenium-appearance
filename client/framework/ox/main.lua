@@ -40,6 +40,11 @@ function Framework.UpdatePlayerData()
     client.citizenid = player.charId
 end
 
+AddEventHandler("ox:playerLoaded", function()
+    Framework.UpdatePlayerData()
+    ResetBlips()
+end)
+
 function Framework.HasTracker() return false end
 
 function Framework.CheckPlayerMeta()
