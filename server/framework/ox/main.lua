@@ -3,7 +3,8 @@ if not Framework.Ox() then return end
 local Ox = require '@ox_core.lib.init'
 
 function Framework.GetPlayerID(playerId)
-    return Ox.GetPlayer(playerId).charId
+    local player = Ox.GetPlayer(playerId)
+    return player and player.charId
 end
 
 function Framework.HasMoney(playerId, item, amount)
@@ -14,12 +15,27 @@ function Framework.RemoveMoney(playerId, type, amount)
     return exports.ox_inventory:RemoveItem(playerId, type, amount)
 end
 
-function Framework.GetJob()
-    return ---@todo
+local function getPlayerGroup(playerId, type)
+    local player = Ox.GetPlayer(playerId)
+    if not player then return nil end
+
+    local name, grade = player.getGroupByType(type)
+    if not name then return nil end
+
+    return {
+        name = name,
+        grade = {
+            level = grade or 0
+        }
+    }
 end
 
-function Framework.GetGang()
-    return ---@todo
+function Framework.GetJob(playerId)
+    return getPlayerGroup(playerId, 'job')
+end
+
+function Framework.GetGang(playerId)
+    return getPlayerGroup(playerId, 'gang')
 end
 
 function Framework.SaveAppearance(appearance, charId)

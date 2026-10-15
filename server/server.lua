@@ -67,7 +67,7 @@ lib.callback.register("illenium-appearance:server:importOutfitCode", function(so
         return
     end
 
-    if playerOutfit.citizenid == citizenID then return end -- Validation when someone tried to duplicate own outfit
+    if playerOutfit.citizenid == citizenID then return end                       -- Validation when someone tried to duplicate own outfit
     if Database.PlayerOutfits.GetByOutfit(outfitName, citizenID) then return end -- Validation duplicate outfit name, if validate on local id, someone can "spam error" server-sided
 
     local id = Database.PlayerOutfits.Add(citizenID, outfitName, playerOutfit.model, playerOutfit.components, playerOutfit.props)
@@ -138,6 +138,7 @@ lib.callback.register("illenium-appearance:server:getManagementOutfits", functio
     if mType == "Gang" then
         job = Framework.GetGang(source)
     end
+    if not job then return {} end
 
     local grade = tonumber(job.grade.level)
     local managementOutfits = {}
@@ -254,7 +255,7 @@ RegisterNetEvent("illenium-appearance:server:saveManagementOutfit", function(out
 
     lib.notify(src, {
         title = _L("outfits.save.success.title"),
-            description = string.format(_L("outfits.save.success.description"), outfitData.Name),
+        description = string.format(_L("outfits.save.success.description"), outfitData.Name),
         type = "success",
         position = Config.NotifyOptions.position
     })
@@ -351,4 +352,4 @@ lib.addCommand("clearstuckprops", { help = _L("commands.clearstuckprops.title") 
     TriggerClientEvent("illenium-appearance:client:ClearStuckProps", source)
 end)
 
-lib.versionCheck("iLLeniumStudios/illenium-appearance")
+lib.versionCheck("jimmydeluxe0/illenium-appearance")
