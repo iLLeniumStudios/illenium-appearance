@@ -352,4 +352,4 @@ lib.addCommand("clearstuckprops", { help = _L("commands.clearstuckprops.title") 
     TriggerClientEvent("illenium-appearance:client:ClearStuckProps", source)
 end)
 
-lib.versionCheck("jimmydeluxe0/illenium-appearance")
+lib.versionCheck("iLLeniumStudios/illenium-appearance")
